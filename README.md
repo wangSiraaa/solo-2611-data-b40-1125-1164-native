@@ -17,8 +17,10 @@ src/pqscan/
   reference.py  独立核对：无剪枝全扫描 + 纯 Python 3VL（与引擎不同代码路径）
   runner.py     串联计划/扫描/核对，落盘 plans、results、run_record、verification
   cli.py        命令行入口
-tests/          pytest 套件（12 个用例）
+  warranty/     保修接单层：证据重建、接单决策、跨单台账、三种杠杆与 CLI
+tests/          pytest 套件（33 个用例：pqscan 12 + 保修接单 21）
 docs/plan_format.md  计划与运行记录的 JSON 格式契约
+docs/warranty.md      保修接单：按炉/锅调取证据、三种整单办法、拆检分支与跨单台账
 output/         运行产物（git 忽略）
 ```
 
@@ -91,3 +93,17 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 null_count 推理、NOT 的 UNKNOWN 处理与可证明 FALSE、OR 跨列不关联极值、
 无统计全保留、3VL 真值表、无命中不读投影列、过滤列复用、端到端与无剪枝
 全扫描一致、有/无统计结果相同而计划保守度不同、空结果 schema 与输出顺序。
+
+## 保修接单（pqscan.warranty）
+
+在扫描结果之上按锅号重建「底釉 × 温区」证据，为整单出接单/条件接单/拒签操作单。
+详见 `docs/warranty.md`，一键演示：
+
+```bash
+PYTHONPATH=src .venv/bin/python -m pqscan.warranty.cli demo --out output/warranty
+```
+
+要点：挂架翻身两排一道对调，朝向是整架一个变量（缺读数保留两种可能、矛盾则不可证）；
+同组要求底釉与温区**完全相等**；拆检计划同时写明阴/阳分支，`decide()` 不接受拆检结果，
+阴性只清该组、阳性只隔离该组且不挪用已承诺库存；跨单台账阻止已交出替换锅/已拆见证锅
+被别单再用。`tests/test_warranty.py`（21 用例）覆盖上述规则及三种单点杠杆。

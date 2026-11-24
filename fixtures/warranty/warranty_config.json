@@ -1,0 +1,84 @@
+{
+  "problem": {
+    "problem_groups": [
+      {
+        "glaze": "GX",
+        "zone": "high"
+      },
+      {
+        "glaze": "GY",
+        "zone": "high"
+      },
+      {
+        "glaze": "GZ",
+        "zone": "high"
+      }
+    ]
+  },
+  "inventory": [
+    {
+      "item_id": "R1",
+      "glaze_batch": "GX",
+      "zone": "low",
+      "source": {
+        "note": "库存合格锅 R1"
+      }
+    },
+    {
+      "item_id": "R2",
+      "glaze_batch": "GY",
+      "zone": "low",
+      "source": {
+        "note": "库存合格锅 R2"
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "pot_id": "W-GY-HIGH",
+      "glaze_batch": "GY",
+      "zone": "high",
+      "source": {
+        "note": "可拆见证锅"
+      }
+    },
+    {
+      "pot_id": "W-GZ-HIGH",
+      "glaze_batch": "GZ",
+      "zone": "high",
+      "source": {
+        "note": "可拆见证锅"
+      }
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "ORD-A",
+      "furnace_id": "furnace-alpha",
+      "pot_ids": [
+        "A10",
+        "A20",
+        "B10",
+        "B20"
+      ],
+      "method": "auto"
+    },
+    {
+      "order_id": "ORD-B",
+      "furnace_id": "furnace-beta",
+      "pot_ids": [
+        "C10",
+        "C20"
+      ],
+      "method": "auto"
+    }
+  ],
+  "evidence_for_order": {
+    "ORD-A": [
+      "scanned_alpha.parquet"
+    ],
+    "ORD-B": [
+      "scanned_beta.parquet"
+    ]
+  }
+}
