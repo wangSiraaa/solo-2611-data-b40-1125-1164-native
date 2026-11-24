@@ -1,0 +1,41 @@
+{
+  "name": "压样翻转-缺口看不清-只一粒可交付应拒",
+  "nights": [
+    100,
+    200
+  ],
+  "proof_files": [
+    "proofs_vague.parquet"
+  ],
+  "box_count_file": "box_counts.parquet",
+  "order_file": "orders_proof_flip.parquet",
+  "faces": {
+    "甲": [
+      "竖",
+      "横",
+      "缺口J"
+    ],
+    "乙": [
+      "竖",
+      "横",
+      "缺口Y"
+    ]
+  },
+  "open_boxes": {
+    "0": [
+      "B1",
+      "B2"
+    ],
+    "1": [
+      "B1",
+      "B2"
+    ]
+  },
+  "table_slots": {
+    "0": 1,
+    "1": 2
+  },
+  "old_forms": [],
+  "sealed_forms": [],
+  "proof_predicate": null
+}

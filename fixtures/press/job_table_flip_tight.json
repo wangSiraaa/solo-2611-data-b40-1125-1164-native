@@ -1,0 +1,49 @@
+{
+  "name": "台面翻转-仅一个时段-第二张应拒",
+  "nights": [
+    100,
+    200
+  ],
+  "proof_files": [
+    "proofs_clear.parquet"
+  ],
+  "box_count_file": "box_counts.parquet",
+  "order_file": "orders_table_flip.parquet",
+  "faces": {
+    "甲": [
+      "竖",
+      "横",
+      "缺口J"
+    ],
+    "乙": [
+      "竖",
+      "横",
+      "缺口Y"
+    ]
+  },
+  "open_boxes": {
+    "0": [
+      "B1",
+      "B2"
+    ],
+    "1": [
+      "B1",
+      "B2"
+    ]
+  },
+  "table_slots": {
+    "0": 0,
+    "1": 1
+  },
+  "old_forms": [
+    {
+      "form_id": "OF1",
+      "pieces": [
+        "P3",
+        "P4"
+      ]
+    }
+  ],
+  "sealed_forms": [],
+  "proof_predicate": null
+}

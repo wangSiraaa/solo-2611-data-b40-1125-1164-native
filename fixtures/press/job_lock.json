@@ -1,0 +1,50 @@
+{
+  "name": "封版-P1 两晚锁死-同字另票应拒",
+  "nights": [
+    100,
+    200
+  ],
+  "proof_files": [
+    "proofs_clear.parquet"
+  ],
+  "box_count_file": "box_counts.parquet",
+  "order_file": "orders_lock.parquet",
+  "faces": {
+    "甲": [
+      "竖",
+      "横",
+      "缺口J"
+    ],
+    "乙": [
+      "竖",
+      "横",
+      "缺口Y"
+    ]
+  },
+  "open_boxes": {
+    "0": [
+      "B1",
+      "B2"
+    ],
+    "1": [
+      "B1",
+      "B2"
+    ]
+  },
+  "table_slots": {
+    "0": 1,
+    "1": 1
+  },
+  "old_forms": [],
+  "sealed_forms": [
+    {
+      "form_id": "SF1",
+      "pieces": [
+        "P1"
+      ],
+      "machine": "M1",
+      "print_night": 1
+    }
+  ],
+  "proof_predicate": null
+}
