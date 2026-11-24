@@ -15,17 +15,34 @@ from .errors import PqScanError
 from .expr import parse_queries, validate, validate_projection
 from .reference import reference_scan
 from .runner import run
+from .inspection import run_inspection
+from .springdesk import SpringDeskError
 
 
 def _cmd_run(args: argparse.Namespace) -> int:
-    doc = run(args.files, args.queries, args.out)
+    doc = run(args.files, args.queries, args.out, inspection=args.inspection)
     all_ok = all(q["passed"] for q in doc["verification"]["queries"])
     for q in doc["verification"]["queries"]:
         flag = "PASS" if q["passed"] else "FAIL"
         print(f"[verify:{flag}] {q['query_id']}: {q['detail']} "
               f"(engine={q['engine_rows']}, reference={q['reference_rows']})")
+    inspection = doc.get("spring_inspection")
+    if inspection:
+        print(f"[spring] 受理 {len(inspection.get('orders', []))} 单；"
+              f"接受 {inspection.get('accepted_order_ids')}，"
+              f"拒绝 {inspection.get('rejected_order_ids')}；"
+              f"报告 {args.out}/spring_inspection.json")
     print(f"\n计划与结果已写入 {args.out}/ (plans/、results/、run_record.json、verification.json)")
     return 0 if all_ok else 2
+
+
+def _cmd_inspect(args: argparse.Namespace) -> int:
+    with open(args.config, encoding="utf-8") as fh:
+        config = json.load(fh)
+    report = run_inspection(args.out, config)
+    print(f"[spring] 接受 {report['accepted_order_ids']}；拒绝 {report['rejected_order_ids']}")
+    print(f"[spring] 报告 {args.out}/spring_inspection.json")
+    return 0
 
 
 def _cmd_verify(args: argparse.Namespace) -> int:
@@ -60,6 +77,8 @@ def main(argv: list[str] | None = None) -> int:
     p_run.add_argument("--files", required=True)
     p_run.add_argument("--queries", required=True)
     p_run.add_argument("--out", default="output")
+    p_run.add_argument("--inspection", default=None,
+                       help="弹簧检验/装机单配置 JSON；也可在 queries 文档中放 spring_inspection")
     p_run.set_defaults(func=_cmd_run)
 
     p_ver = sub.add_parser("verify", help="对已产出的结果再跑一次无剪枝全扫描核对")
@@ -68,10 +87,15 @@ def main(argv: list[str] | None = None) -> int:
     p_ver.add_argument("--out", default="output")
     p_ver.set_defaults(func=_cmd_verify)
 
+    p_inspect = sub.add_parser("inspect", help="从 output/results 的选定 Parquet 执行弹簧检验")
+    p_inspect.add_argument("--out", default="output")
+    p_inspect.add_argument("--config", required=True, help="弹簧检验/装机单 JSON 配置")
+    p_inspect.set_defaults(func=_cmd_inspect)
+
     args = parser.parse_args(argv)
     try:
         return args.func(args)
-    except PqScanError as exc:
+    except (PqScanError, SpringDeskError) as exc:
         print(f"错误: {exc}", file=sys.stderr)
         return 1
 

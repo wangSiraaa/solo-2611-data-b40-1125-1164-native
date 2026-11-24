@@ -17,7 +17,7 @@ src/pqscan/
   reference.py  独立核对：无剪枝全扫描 + 纯 Python 3VL（与引擎不同代码路径）
   runner.py     串联计划/扫描/核对，落盘 plans、results、run_record、verification
   cli.py        命令行入口
-tests/          pytest 套件（12 个用例）
+tests/          pytest 套件（原扫描 12 个 + 弹簧检验 10 个）
 docs/plan_format.md  计划与运行记录的 JSON 格式契约
 output/         运行产物（git 忽略）
 ```
@@ -85,9 +85,38 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 `no_hits_after_filter` 行组只有 `phase=filter` 的请求，从不读取投影专用列
 （`row_id/payload/kind/amount`）；`planned_skip` 行组零请求。
 
+## 弹簧顶料台检验入口（新增）
+
+`run(...)` 在原有查询结果全部写出后，可额外执行弹簧全程曲线恢复、直接配簧/实簧占用、
+凸轮补偿节拍与可重开台账检验。契约、JSON 配置和题面两组手算结论见
+[`docs/spring_inspection.md`](docs/spring_inspection.md)。
+
+最小入口：
+
+```python
+from pqscan.runner import run
+
+doc = run(files_json, queries_json, out_dir)
+spring_report = doc.get("spring_inspection")
+```
+
+检验读取的是 `<out_dir>/results/<selected_batch>.parquet` 真实结果，不回读 fixtures
+源文件；每条判定依据保留 `_source_file/_source_row_group/_source_row_in_group`。
+
+演示：
+
+```bash
+.venv/bin/python tools/make_spring_fixture.py
+.venv/bin/python tools/spring_walkthrough.py
+```
+
 ## 测试覆盖
 
 `tests/test_pqscan.py`（12 用例）覆盖：范围剪枝、全 NULL 组、IS NULL 的
 null_count 推理、NOT 的 UNKNOWN 处理与可证明 FALSE、OR 跨列不关联极值、
 无统计全保留、3VL 真值表、无命中不读投影列、过滤列复用、端到端与无剪枝
 全扫描一致、有/无统计结果相同而计划保守度不同、空结果 schema 与输出顺序。
+
+`tests/test_springdesk.py`（10 用例）覆盖：去/回程全程判定、不能逐测点挑零位、
+台账补录改判与恢复、实簧占用和重开余库、撤簧/撤空拍、凸轮抬左侧与卸锁交接、
+遗留锁不能默认复位，以及 `runner.run` 从真实 `results/*.parquet` 读批次并保留溯源。
