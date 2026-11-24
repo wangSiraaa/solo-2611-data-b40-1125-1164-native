@@ -1,0 +1,14 @@
+{
+  "overhaul_limits": {
+    "W1": 21,
+    "W2": 30,
+    "W3": 10
+  },
+  "initial_mount": {
+    "C-A": "W1",
+    "C-B": "W2"
+  },
+  "spare_axles": [
+    "W3"
+  ]
+}

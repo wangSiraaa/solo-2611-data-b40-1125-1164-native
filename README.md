@@ -91,3 +91,24 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 null_count 推理、NOT 的 UNKNOWN 处理与可证明 FALSE、OR 跨列不关联极值、
 无统计全保留、3VL 真值表、无命中不读投影列、过滤列复用、端到端与无剪枝
 全扫描一致、有/无统计结果相同而计划保守度不同、空结果 schema 与输出顺序。
+
+## 展演排轮入口（wheels 子命令）
+
+在同一套扁平 Parquet 扫描之上加了一层模型铁路周末展演排轮，代码在
+`src/pqscan/wheels/`，输出契约见 `docs/wheels_format.md`：
+
+```bash
+PYTHONPATH=src .venv/bin/python tools/make_wheel_fixtures.py     # 生成 fixtures/wheels/
+PYTHONPATH=src .venv/bin/python -m pqscan.cli wheels \
+    --fixtures fixtures/wheels --out output/wheels
+```
+
+- `drum.py`：计程鼓模 10 翻零算术，按首尾鼓面与行程表区间求全部相符走行格数
+  及跨零次数（`d ≡ after-before (mod 10)`，跨零 `d//10`）；
+- `history.py`：按实物轴对接回履历，模糊换轮签条展开成互斥分支，
+  同轮同时挂两车的分支标 `feasible=false` 但保留；
+- `quota.py`：轴对已耗/剩余额度区间，恰好到限可收车、超一格即超期；
+- `schedule.py`：封存（每节目一套独立轮）与共用（仅举升台展台能换、
+  散场前出发列车的轴对锁死叫不回）两条路线的回溯排程与拒绝理由；
+- `replay.py` / `tests/test_wheels.py`：两台车、三套轮、三个节目，
+  四类单点突变（读数/签条/备轮/举升台各改一处）各使原节目单不可排，共 13 用例。

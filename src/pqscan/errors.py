@@ -8,3 +8,7 @@ class PqScanError(Exception):
 
 class PlanError(PqScanError):
     """查询表达式或 schema 不支持。"""
+
+
+class WheelsError(PqScanError):
+    """展演排轮输入不合法或履历自相矛盾（不用于损坏 Parquet 恢复）。"""

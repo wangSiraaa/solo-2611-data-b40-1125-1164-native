@@ -1,0 +1,26 @@
+[
+  {
+    "program_id": "P1",
+    "car": "C-A",
+    "stage": "ST-主线",
+    "has_lift": false,
+    "ticks": 2,
+    "departs_before_close": false
+  },
+  {
+    "program_id": "P2",
+    "car": "C-B",
+    "stage": "ST-侧线",
+    "has_lift": false,
+    "ticks": 4,
+    "departs_before_close": true
+  },
+  {
+    "program_id": "P3",
+    "car": "C-B",
+    "stage": "ST-举升台",
+    "has_lift": true,
+    "ticks": 2,
+    "departs_before_close": false
+  }
+]

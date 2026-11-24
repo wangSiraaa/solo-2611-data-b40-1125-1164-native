@@ -52,6 +52,33 @@ def _cmd_verify(args: argparse.Namespace) -> int:
     return 0 if failed == 0 else 2
 
 
+def _cmd_wheels(args: argparse.Namespace) -> int:
+    from .wheels.runner import run_wheels
+
+    doc = run_wheels(args.fixtures, args.out)
+    for plan in doc["handover"]["plans"]:
+        flag = "可排" if plan["feasible"] else "不可排"
+        print(f"[route:{plan['route']}] {flag}")
+        for a in plan["assignments"]:
+            if a["status"] == "accepted":
+                swap = "（举升台换轮）" if a["lift_used"] else ("（换轮封存）" if a["swapped"] else "")
+                print(f"  - {a['program_id']}: {a['stage']} 用 {a['axle']}{swap}，"
+                      f"走 {a['ticks']} 格，剩 {a['headroom_after']} 格")
+            else:
+                print(f"  - {a['program_id']}: 拒绝；{'；'.join(a['reject_reasons'])}")
+    print("\n单点突变回放：")
+    for r in doc["replay"]["results"]:
+        if r["history_error"]:
+            print(f"  - {r['mutation']}: 履历矛盾 -> {r['history_error']}")
+            continue
+        flags = ", ".join(
+            f"{p['route']}={'可排' if p['feasible'] else '不可排'}" for p in r["plans"]
+        )
+        print(f"  - {r['mutation']}（{r['mutation_detail']}）: {flags}")
+    print(f"\n交接清单与回放已写入 {args.out}/")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="pqscan", description="Parquet footer 统计驱动的保守 plan/scan")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -67,6 +94,15 @@ def main(argv: list[str] | None = None) -> int:
     p_ver.add_argument("--queries", required=True)
     p_ver.add_argument("--out", default="output")
     p_ver.set_defaults(func=_cmd_verify)
+
+    p_wheels = sub.add_parser(
+        "wheels",
+        help="展演排轮：履历复原/额度/交接清单/单点突变回放",
+    )
+    p_wheels.add_argument("--fixtures", default="fixtures/wheels",
+                          help="observations.parquet 与 itinerary/tags/depot/programs.json 所在目录")
+    p_wheels.add_argument("--out", default="output/wheels")
+    p_wheels.set_defaults(func=_cmd_wheels)
 
     args = parser.parse_args(argv)
     try:
