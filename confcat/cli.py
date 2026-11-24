@@ -21,7 +21,26 @@ from pathlib import Path
 
 from .catalog import Catalog
 from .codec import path_str
+from .index_service import (
+    Actor,
+    BiblioService,
+    ROLE_EDITOR,
+    ROLE_LIBRARIAN,
+    ROLE_PREPRESS,
+)
 from .ingest import TaskRepository
+
+_ROLES = {
+    "editor": ROLE_EDITOR,
+    "prepress": ROLE_PREPRESS,
+    "librarian": ROLE_LIBRARIAN,
+}
+
+
+def _actor(role: str, name: str) -> Actor:
+    if role not in _ROLES:
+        raise SystemExit(f"未知岗位 {role!r}，可选: {', '.join(_ROLES)}")
+    return Actor(name=name, role=_ROLES[role])
 
 
 def _print(obj) -> None:
@@ -82,6 +101,75 @@ def main(argv: list[str] | None = None) -> int:
     p_rows.add_argument("catalog_db")
     p_rows.add_argument("task_id")
 
+    # ----- 地方译本索引出版 ------------------------------------------------ #
+    def _biblio(name: str, help_text: str):
+        p = sub.add_parser(name, help=help_text)
+        p.add_argument("index_db", help="译本索引库 SQLite 路径")
+        p.add_argument("--actor", default="librarian", choices=list(_ROLES))
+        p.add_argument("--actor-name", default="cli")
+        return p
+
+    p_bload = _biblio("biblio-load", "从已有接入任务装载笔名声明（编辑岗）")
+    p_bload.add_argument("catalog_db")
+    p_bload.add_argument("task_db")
+    p_bload.add_argument("task_id")
+
+    p_brev = _biblio("biblio-revise", "提交一条声明修订（amend/withdraw，编辑岗）")
+    p_brev.add_argument("kind", choices=["amend", "withdraw"])
+    p_brev.add_argument("decl_id")
+    p_brev.add_argument("note")
+    p_brev.add_argument("--pen-name")
+    p_brev.add_argument("--translator-id")
+    p_brev.add_argument("--translator-name")
+    p_brev.add_argument("--language")
+    p_brev.add_argument("--volume-from", type=int)
+    p_brev.add_argument("--volume-to", type=int)
+
+    p_bcopy = _biblio("biblio-receive", "收册并开受理凭证（馆员岗）")
+    p_bcopy.add_argument("copy_id")
+    p_bcopy.add_argument("volume", type=int)
+    p_bcopy.add_argument("edition")
+    p_bcopy.add_argument("pen_name")
+    p_bcopy.add_argument("--title", default="")
+    p_bcopy.add_argument("--language")
+    p_bcopy.add_argument("--print-number")
+    p_bcopy.add_argument("--visible", nargs="*", default=[],
+                         help="该版扉页实际可见的区分字段，如 original_language")
+    p_bcopy.add_argument("--printable", action="store_true")
+
+    p_bproof = _biblio("biblio-proof", "印前具名校样核验（印前岗位）")
+    p_bproof.add_argument("proof_id")
+    p_bproof.add_argument("copy_id")
+    p_bproof.add_argument("draft_no")
+    p_bproof.add_argument("translator_id")
+    p_bproof.add_argument("translator_name")
+
+    p_bpool = _biblio("biblio-pool", "向印号池加入可用印号")
+    p_bpool.add_argument("numbers", nargs="+")
+
+    p_breprint = _biblio("biblio-reprint", "重印配号签发证（馆员岗）")
+    p_breprint.add_argument("copy_id")
+
+    p_binq = _biblio("biblio-inquiry", "馆员查问：能分则签，问不出登记缺项")
+    p_binq.add_argument("copy_id")
+
+    p_berrata = _biblio("biblio-errata", "事后改归属发勘误（编辑岗）")
+    p_berrata.add_argument("old_voucher_id")
+    p_berrata.add_argument("new_translator_id")
+    p_berrata.add_argument("reason")
+
+    p_bvol = _biblio("biblio-lookup-volume", "按卷号查可签依据/待查原因（馆员视图）")
+    p_bvol.add_argument("volume", type=int)
+
+    p_bpub = _biblio("biblio-public", "读者视图：只给该版能答的信息")
+    p_bpub.add_argument("volume", type=int)
+
+    p_bvoucher = _biblio("biblio-recall", "凭原凭证号调回当时采用的声明版本")
+    p_bvoucher.add_argument("voucher_id")
+
+    p_btrace = _biblio("biblio-trace", "从印号倒查书、凭证、声明版本与勘误")
+    p_btrace.add_argument("print_number")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "publish":
@@ -96,6 +184,14 @@ def main(argv: list[str] | None = None) -> int:
             }
         )
         return 0
+
+    biblio_cmds = {
+        "biblio-load", "biblio-revise", "biblio-receive", "biblio-proof",
+        "biblio-pool", "biblio-reprint", "biblio-inquiry", "biblio-errata",
+        "biblio-lookup-volume", "biblio-public", "biblio-recall", "biblio-trace",
+    }
+    if args.cmd in biblio_cmds:
+        return _run_biblio(args)
 
     is_task_cmd = args.cmd in ("run-task", "tasks", "rows")
     catalog_db = args.catalog_db if is_task_cmd else args.db
@@ -150,6 +246,57 @@ def main(argv: list[str] | None = None) -> int:
                             "rows": repo.get_rows(args.task_id),
                         }
                     )
+    return 0
+
+
+def _run_biblio(args) -> int:
+    actor = _actor(args.actor, args.actor_name)
+    with BiblioService(args.index_db) as svc:
+        if args.cmd == "biblio-load":
+            with Catalog(args.catalog_db) as cat2, TaskRepository(args.task_db, cat2) as repo:
+                out = svc.load_declarations_from_task(actor, repo, args.task_id)
+                _print([d.as_dict() for d in out])
+        elif args.cmd == "biblio-revise":
+            out = svc.submit_revision(
+                actor, args.kind, args.decl_id, args.note,
+                pen_name=args.pen_name, translator_id=args.translator_id,
+                translator_name=args.translator_name,
+                original_language=args.language,
+                volume_from=args.volume_from, volume_to=args.volume_to,
+            )
+            _print(out.as_dict())
+        elif args.cmd == "biblio-receive":
+            out = svc.register_copy(
+                actor, args.copy_id, args.volume, args.edition, args.pen_name,
+                visible_fields=args.visible, title=args.title,
+                original_language=args.language, print_number=args.print_number,
+                printable_new_edition=args.printable,
+            )
+            _print(out)
+        elif args.cmd == "biblio-proof":
+            out = svc.verify_prepress_proof(
+                actor, args.proof_id, args.copy_id, args.draft_no,
+                args.translator_id, args.translator_name,
+            )
+            _print(out.__dict__)
+        elif args.cmd == "biblio-pool":
+            svc.add_print_numbers(actor, args.numbers)
+            _print({"available": svc.available_print_numbers()})
+        elif args.cmd == "biblio-reprint":
+            _print(svc.issue_reprint_voucher(actor, args.copy_id))
+        elif args.cmd == "biblio-inquiry":
+            _print(svc.issue_inquiry(actor, args.copy_id))
+        elif args.cmd == "biblio-errata":
+            _print(svc.issue_errata(actor, args.old_voucher_id,
+                                    args.new_translator_id, args.reason))
+        elif args.cmd == "biblio-lookup-volume":
+            _print(svc.lookup_by_volume(args.volume))
+        elif args.cmd == "biblio-public":
+            _print(svc.public_lookup(args.volume))
+        elif args.cmd == "biblio-recall":
+            _print(svc.recall_voucher(args.voucher_id))
+        else:  # biblio-trace
+            _print(svc.trace_print_number(args.print_number))
     return 0
 
 

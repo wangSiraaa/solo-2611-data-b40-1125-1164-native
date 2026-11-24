@@ -1,0 +1,18 @@
+# 受限 YAML 合同样例：地方译本目录——笔名声明归一化配置。
+# 该文件作为目录产品 "biblio-product" 的配置源；接入任务用它把原始署名表
+# 归一化为编目端读取的关系表（目标列 -> 原 CSV 列，逐列保留血缘）。
+
+ingest:
+  source_uri: file:///data/biblio_declarations.csv
+  column_mapping:
+    decl_id: decl_id
+    pen_name: pen
+    translator_id: translator
+    translator_name: tname
+    original_language: lang
+    volume_from: vol_start
+    volume_to: vol_end
+    note: src_note
+  missing_value:
+    token: ""
+    default: ""
