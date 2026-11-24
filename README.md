@@ -289,7 +289,67 @@ extcontract/
   adapter.py    per-row validation + plan application -> reader-records/v1
   ingest.py     revision-aware, atomic, idempotent target state
   cli.py        compat / adapt / ingest commands
-examples/run_745_demo.py   end-to-end scenario against the real client
-fixtures/                  bootstrap, F-BAD, F-NEW documents
-tests/                     compat, adapter, ingest, fixtures, scale
+  promotion/    two-person jump-rope promotion (see section 4)
+examples/run_745_demo.py       end-to-end scenario against the real client
+examples/run_promotion_demo.py promotion narratives on revision-aware feeds
+fixtures/                      bootstrap, F-BAD, F-NEW documents
+tests/                         compat, adapter, ingest, fixtures, scale, promotion
 ```
+
+---
+
+## 4. Two-person jump-rope promotion (`extcontract/promotion/`)
+
+The promotion desk reuses the same three-layer separation as the 745 workflow:
+
+| Layer | Object | Responsibility |
+|-------|--------|----------------|
+| Feed (read/write contract) | `StationFeed` / `StationDirectory` | one `IngestionLibrary` per station; segment reports are writer rows, ruling corrections are higher-revision rows, and only the **published effective rows** feed anything above |
+| Eligibility (pure) | `evaluate_pair` / `evaluate_all` | five counted jumps at each of **two different stations**, the pair's **best match per station**, summing only segments where both athletes are actually on the rope together |
+| Desk (stateful) | `PromotionBoard` | time-boxed mutual-consent declarations, remaining seats, issued/revoked credentials, and exactly **one** operated mechanism |
+
+A board is constructed for one mechanism and refuses the other's verbs:
+
+* `MECHANISM_EARLY_LOCK` — a doubly-signed, already-qualified pair locks both
+  athletes and one seat on the spot (`apply_lock` returns a same-day usable
+  accept/reject). A later disqualifying ruling or a formal athlete withdrawal
+  revokes the credential (version + reason retained) and releases the seat; the
+  released seat is only re-taken through an explicit lock whose declarations
+  are still valid.
+* `MECHANISM_LATE_SEAL` (the operated mechanism, `OPERATED_MECHANISM`) —
+  declarations are intentions with an expiry; nobody holds a formal seat before
+  `seal()`. At the deadline an exact maximum-cardinality matching (subset DP over
+  the at-most-six athletes, with deterministic lexicographic tie-breaking) over
+  the still-valid, still-qualified intentions issues as many credentials as the
+  remaining seats allow. Because the consent graph is a general undirected graph,
+  no athlete can ever appear in two issued credentials. Declined receipts stay
+  queryable by application number; once a window closes they become `EXPIRED` and
+  can never be back-signed, so a correction that arrives after expiry cannot
+  revive them.
+
+Guarantees worth calling out:
+
+* a substitute's segments are attributed to the pair actually on the rope — a
+  segment re-decided from 甲+乙 to 甲+丙 moves the jumps with it;
+* `credential_history()` never deletes a revoked credential — the issued
+  version, revocation time, reason and the qualification snapshot are retained;
+* `receipt_for(application_no)` answers for signed, paired, declined, expired
+  and withdrawn declarations, each with its event journal;
+* the scenario envelope is bounded to six athletes and four stations, and each
+  station feed rejects foreign-station rows, non-0/1 validity flags, and
+  same-revision conflicts atomically.
+
+The mandated narratives run end to end with:
+
+```bash
+PYTHONPATH=. python3 examples/run_promotion_demo.py
+```
+
+They cover: the two-athlete promote → rule-correction (drops to four) →
+restore → single-consent-withdrawal story; the four-athlete/two-seal late
+seal where the first day-1 applicant gets **no formal seat** before the
+deadline and is the pair the maximum matching cannot keep; and two replays
+from the identical pre-seal record with the 甲+乙-only correction arriving
+before the seal versus after the intentions expire.
+
+---
