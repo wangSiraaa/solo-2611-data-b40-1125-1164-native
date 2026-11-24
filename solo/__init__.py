@@ -40,6 +40,8 @@ from .revision import (
     preserve,
     replace,
 )
+from . import zipper
+from .zipper import *  # noqa: F403
 
 __all__ = [
     "MODE_SINGLE",
@@ -75,3 +77,7 @@ __all__ = [
     "preserve",
     "replace",
 ]
+
+from .zipper import __all__ as _zipper_all
+
+__all__ = __all__ + [name for name in _zipper_all if name not in __all__]

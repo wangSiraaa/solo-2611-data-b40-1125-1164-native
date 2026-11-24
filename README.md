@@ -67,6 +67,26 @@ SHA-256**；`Checkpoint.resume(body)` / `Decoder.from_checkpoint()` 只在给定
 前后模式和切换字节；`kept_runs` 与 `dropped_switch_spans` 记录原样复制和未保留的
 纯切换跨度。
 
+## 拉链样衣修配复演
+
+`solo.zipper`（也可用 `solo.zipper_shop` / `solo.repair_shop`）在修订库之上实现题面的样衣馆流程：
+
+- `parse_work_order()` / `RevisionEditor`：解析 ASCII 工单；PAIR 旁注经 `Version.decode()` 解码后忽略。
+- `RevisionEditor.change_boundary()` / `change_tooth()` / `change_trip_cells()`：都通过 `RevisionLibrary.apply()` 改一个字符；`ConditionChange.actual_old_span` / `actual_new_span` 来自改动前后 `Version.decode()` 的真实字符跨度。
+- `simulate_zipper()`：反装带从尾向头读，外出逐格配对，退回按相反顺序逐格开齿并检查边界方向。报告给出实际位置、首次卡住的方向/格/边界，以及本次已经完成一开一合的旧齿段。
+- `RepairCounter` / `RepairCabinet`：估修、接单、完工复验；记录散齿序列号、供体号、连续余带范围和剪口。`ShiftPlanner` 强制相邻铆位的班次至少隔一班。
+- 权限：未授权移动的止口只会得到 rejected 估修单，代码不会替店方改止口；未授权动齿时也不会生成可接单的铆补方案。
+
+本机一键复演题面全部关键情形：
+
+```bash
+python3 examples/run_zipper_replay.py
+# 或
+python3 -m solo zipper --output artifacts/zipper_replay.json
+```
+
+复演包含：`ABC`/`CBA(reversed)` 三格往返成功；第二边界改外出-only 后退回卡在 boundary/cell 2 且拒交；右带中格改 `D` 后出程卡在 cell 2；行程改四格后卡在 cell 4；两件共用材料样衣分别验证散 B 序列号/补料受理与有号供体剪口/余带。
+
 ## 运行
 
 ```bash

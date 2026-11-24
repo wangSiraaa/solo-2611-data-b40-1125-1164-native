@@ -103,6 +103,20 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_zipper(args: argparse.Namespace) -> int:
+    from .zipper import build_story_demo
+
+    report = build_story_demo()
+    text = json.dumps(report, ensure_ascii=False, indent=2)
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as fh:
+            fh.write(text + "\n")
+        print(f"wrote {args.output}", file=sys.stderr)
+    else:
+        print(text)
+    return 0
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     body = _load(args.file)
     try:
@@ -138,6 +152,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("demo", help="write a demo and artifacts")
     p.set_defaults(func=cmd_demo)
+
+    p = sub.add_parser("zipper", help="replay the zipper repair story as JSON")
+    p.add_argument("--output", default=None, help="optional JSON output path")
+    p.set_defaults(func=cmd_zipper)
 
     p = sub.add_parser("check", help="validate a body")
     p.add_argument("file")

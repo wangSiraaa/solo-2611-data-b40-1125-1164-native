@@ -1,0 +1,1929 @@
+{
+  "title_answer": {
+    "canonical_durable_segment": [
+      1,
+      3
+    ],
+    "one_way_boundary_two_actual_cycled_segment": [
+      3,
+      3
+    ],
+    "one_way_local_durable_segments": [
+      [
+        1,
+        1
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "note": "Actual failed full trip cycles cell 3; counter still rejects the owner-required full trip."
+  },
+  "base_version": 0,
+  "base_report": {
+    "complete": true,
+    "deliverable": true,
+    "outbound_complete": true,
+    "return_complete": true,
+    "position": 0,
+    "required_cells": 3,
+    "tape_cells": 3,
+    "blocked": false,
+    "blocked_direction": null,
+    "stuck_direction": null,
+    "direction": null,
+    "blocked_cell": null,
+    "cell": null,
+    "blocked_boundary": null,
+    "boundary": null,
+    "cell_index": null,
+    "reason": null,
+    "code": null,
+    "furthest_position": 3,
+    "outbound_position": 3,
+    "return_position": 0,
+    "paired_cells": 3,
+    "opened_cells": 3,
+    "cycled_cells": [
+      3,
+      2,
+      1
+    ],
+    "matching": true,
+    "events": [
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 1,
+        "cell": 1,
+        "boundary": null,
+        "left_letter": "A",
+        "right_letter": "A",
+        "allowed": true,
+        "detail": "meshed A"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 1,
+        "cell": 1,
+        "boundary": 1,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 2,
+        "cell": 2,
+        "boundary": null,
+        "left_letter": "B",
+        "right_letter": "B",
+        "allowed": true,
+        "detail": "meshed B"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 3,
+        "cell": 3,
+        "boundary": null,
+        "left_letter": "C",
+        "right_letter": "C",
+        "allowed": true,
+        "detail": "meshed C"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 3,
+        "cell": 3,
+        "boundary": 3,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "return",
+        "kind": "cross_reverse",
+        "step": 1,
+        "cell": 3,
+        "boundary": 3,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": ""
+      },
+      {
+        "phase": "return",
+        "kind": "unpair",
+        "step": 1,
+        "cell": 3,
+        "boundary": null,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "opened cell 3"
+      },
+      {
+        "phase": "return",
+        "kind": "cross_reverse",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": ""
+      },
+      {
+        "phase": "return",
+        "kind": "unpair",
+        "step": 2,
+        "cell": 2,
+        "boundary": null,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "opened cell 2"
+      },
+      {
+        "phase": "return",
+        "kind": "cross_reverse",
+        "step": 3,
+        "cell": 1,
+        "boundary": 1,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": ""
+      },
+      {
+        "phase": "return",
+        "kind": "unpair",
+        "step": 3,
+        "cell": 1,
+        "boundary": null,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "opened cell 1"
+      }
+    ],
+    "mismatches": []
+  },
+  "boundary_change": {
+    "version_id": 1,
+    "base_version": 0,
+    "char_start": 87,
+    "char_end": 88,
+    "old_char": "+",
+    "new_char": ">",
+    "old_byte_start": 87,
+    "old_byte_end": 88,
+    "new_byte_start": 87,
+    "new_byte_end": 88,
+    "line_number": 5,
+    "line": "BOUNDARY 2 +",
+    "condition_kind": "boundary_direction",
+    "boundary": 2,
+    "side": null,
+    "cell": null,
+    "physical_position": null,
+    "before": "both",
+    "after": "outbound"
+  },
+  "one_way_report": {
+    "complete": false,
+    "deliverable": false,
+    "outbound_complete": true,
+    "return_complete": false,
+    "position": 2,
+    "required_cells": 3,
+    "tape_cells": 3,
+    "blocked": true,
+    "blocked_direction": "return",
+    "stuck_direction": "return",
+    "direction": "return",
+    "blocked_cell": 2,
+    "cell": 2,
+    "blocked_boundary": 2,
+    "boundary": 2,
+    "cell_index": 1,
+    "reason": "boundary 2 stop does not permit return crossing",
+    "code": "STOP_DIRECTION",
+    "furthest_position": 3,
+    "outbound_position": 3,
+    "return_position": 2,
+    "paired_cells": 3,
+    "opened_cells": 1,
+    "cycled_cells": [
+      3
+    ],
+    "matching": true,
+    "events": [
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 1,
+        "cell": 1,
+        "boundary": null,
+        "left_letter": "A",
+        "right_letter": "A",
+        "allowed": true,
+        "detail": "meshed A"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 1,
+        "cell": 1,
+        "boundary": 1,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 2,
+        "cell": 2,
+        "boundary": null,
+        "left_letter": "B",
+        "right_letter": "B",
+        "allowed": true,
+        "detail": "meshed B"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 3,
+        "cell": 3,
+        "boundary": null,
+        "left_letter": "C",
+        "right_letter": "C",
+        "allowed": true,
+        "detail": "meshed C"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 3,
+        "cell": 3,
+        "boundary": 3,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "return",
+        "kind": "cross_reverse",
+        "step": 1,
+        "cell": 3,
+        "boundary": 3,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": ""
+      },
+      {
+        "phase": "return",
+        "kind": "unpair",
+        "step": 1,
+        "cell": 3,
+        "boundary": null,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "opened cell 3"
+      },
+      {
+        "phase": "return",
+        "kind": "stop_blocked",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": false,
+        "detail": "boundary 2 stop does not permit return crossing"
+      }
+    ],
+    "mismatches": []
+  },
+  "one_way_estimate": {
+    "estimate_id": "EST-001",
+    "garment_id": null,
+    "status": "rejected",
+    "current_report": {
+      "complete": false,
+      "deliverable": false,
+      "outbound_complete": true,
+      "return_complete": false,
+      "position": 2,
+      "required_cells": 3,
+      "tape_cells": 3,
+      "blocked": true,
+      "blocked_direction": "return",
+      "stuck_direction": "return",
+      "direction": "return",
+      "blocked_cell": 2,
+      "cell": 2,
+      "blocked_boundary": 2,
+      "boundary": 2,
+      "cell_index": 1,
+      "reason": "boundary 2 stop does not permit return crossing",
+      "code": "STOP_DIRECTION",
+      "furthest_position": 3,
+      "outbound_position": 3,
+      "return_position": 2,
+      "paired_cells": 3,
+      "opened_cells": 1,
+      "cycled_cells": [
+        3
+      ],
+      "matching": true,
+      "events": [
+        {
+          "phase": "outbound",
+          "kind": "pair",
+          "step": 1,
+          "cell": 1,
+          "boundary": null,
+          "left_letter": "A",
+          "right_letter": "A",
+          "allowed": true,
+          "detail": "meshed A"
+        },
+        {
+          "phase": "outbound",
+          "kind": "cross",
+          "step": 1,
+          "cell": 1,
+          "boundary": 1,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": true,
+          "detail": "crossed boundary"
+        },
+        {
+          "phase": "outbound",
+          "kind": "pair",
+          "step": 2,
+          "cell": 2,
+          "boundary": null,
+          "left_letter": "B",
+          "right_letter": "B",
+          "allowed": true,
+          "detail": "meshed B"
+        },
+        {
+          "phase": "outbound",
+          "kind": "cross",
+          "step": 2,
+          "cell": 2,
+          "boundary": 2,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": true,
+          "detail": "crossed boundary"
+        },
+        {
+          "phase": "outbound",
+          "kind": "pair",
+          "step": 3,
+          "cell": 3,
+          "boundary": null,
+          "left_letter": "C",
+          "right_letter": "C",
+          "allowed": true,
+          "detail": "meshed C"
+        },
+        {
+          "phase": "outbound",
+          "kind": "cross",
+          "step": 3,
+          "cell": 3,
+          "boundary": 3,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": true,
+          "detail": "crossed boundary"
+        },
+        {
+          "phase": "return",
+          "kind": "cross_reverse",
+          "step": 1,
+          "cell": 3,
+          "boundary": 3,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": true,
+          "detail": ""
+        },
+        {
+          "phase": "return",
+          "kind": "unpair",
+          "step": 1,
+          "cell": 3,
+          "boundary": null,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": true,
+          "detail": "opened cell 3"
+        },
+        {
+          "phase": "return",
+          "kind": "stop_blocked",
+          "step": 2,
+          "cell": 2,
+          "boundary": 2,
+          "left_letter": null,
+          "right_letter": null,
+          "allowed": false,
+          "detail": "boundary 2 stop does not permit return crossing"
+        }
+      ],
+      "mismatches": []
+    },
+    "options": {
+      "rivet": {
+        "craft": "rivet",
+        "feasible": true,
+        "needs": [],
+        "materials": [],
+        "missing": [],
+        "shift_assignment": {},
+        "shift_tags": [],
+        "donor_plan": null,
+        "start_seam": null,
+        "end_seam": null,
+        "reasons": [
+          "no teeth require riveting"
+        ]
+      },
+      "transplant": {
+        "craft": "transplant",
+        "feasible": true,
+        "needs": [],
+        "materials": [],
+        "missing": [],
+        "shift_assignment": {},
+        "shift_tags": [],
+        "donor_plan": null,
+        "start_seam": null,
+        "end_seam": null,
+        "reasons": [
+          "no segment requires transplant"
+        ]
+      }
+    },
+    "needs": [
+      {
+        "kind": "stop",
+        "repairable": false,
+        "cell": 2,
+        "boundary": 2,
+        "side": null,
+        "expected": null,
+        "actual": null,
+        "reason": "boundary 2 stop requires owner authorization to move/re-mark",
+        "authorized": false
+      }
+    ],
+    "chosen_craft": null,
+    "preserved_embroidery": [],
+    "reasons": [
+      "boundary 2 stop requires owner authorization to move/re-mark"
+    ],
+    "can_accept": false
+  },
+  "mismatch_change": {
+    "version_id": 3,
+    "base_version": 2,
+    "char_start": 51,
+    "char_end": 52,
+    "old_char": "B",
+    "new_char": "D",
+    "old_byte_start": 51,
+    "old_byte_end": 52,
+    "new_byte_start": 51,
+    "new_byte_end": 52,
+    "line_number": 3,
+    "line": "RIGHT CBA REVERSED",
+    "condition_kind": "right_tooth",
+    "boundary": null,
+    "side": "right",
+    "cell": 2,
+    "physical_position": 2,
+    "before": null,
+    "after": null
+  },
+  "mismatch_report": {
+    "complete": false,
+    "deliverable": false,
+    "outbound_complete": false,
+    "return_complete": false,
+    "position": 1,
+    "required_cells": 3,
+    "tape_cells": 3,
+    "blocked": true,
+    "blocked_direction": "outbound",
+    "stuck_direction": "outbound",
+    "direction": "outbound",
+    "blocked_cell": 2,
+    "cell": 2,
+    "blocked_boundary": 2,
+    "boundary": 2,
+    "cell_index": 1,
+    "reason": "cell 2: 'B' does not mesh with 'D'",
+    "code": "TOOTH_MISMATCH",
+    "furthest_position": 1,
+    "outbound_position": 1,
+    "return_position": 1,
+    "paired_cells": 1,
+    "opened_cells": 0,
+    "cycled_cells": [],
+    "matching": false,
+    "events": [
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 1,
+        "cell": 1,
+        "boundary": null,
+        "left_letter": "A",
+        "right_letter": "A",
+        "allowed": true,
+        "detail": "meshed A"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 1,
+        "cell": 1,
+        "boundary": 1,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair_blocked",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": "B",
+        "right_letter": "D",
+        "allowed": false,
+        "detail": "cell 2: 'B' does not mesh with 'D'"
+      }
+    ],
+    "mismatches": [
+      {
+        "cell": 2,
+        "left": "B",
+        "right": "D",
+        "left_physical_index": 2,
+        "right_physical_index": 2
+      }
+    ]
+  },
+  "trip_change": {
+    "version_id": 5,
+    "base_version": 4,
+    "char_start": 107,
+    "char_end": 108,
+    "old_char": "3",
+    "new_char": "4",
+    "old_byte_start": 107,
+    "old_byte_end": 108,
+    "new_byte_start": 107,
+    "new_byte_end": 108,
+    "line_number": 7,
+    "line": "TRIP 3",
+    "condition_kind": "required_cells",
+    "boundary": null,
+    "side": null,
+    "cell": null,
+    "physical_position": null,
+    "before": null,
+    "after": null
+  },
+  "four_cell_report": {
+    "complete": false,
+    "deliverable": false,
+    "outbound_complete": false,
+    "return_complete": false,
+    "position": 3,
+    "required_cells": 4,
+    "tape_cells": 3,
+    "blocked": true,
+    "blocked_direction": "outbound",
+    "stuck_direction": "outbound",
+    "direction": "outbound",
+    "blocked_cell": 4,
+    "cell": 4,
+    "blocked_boundary": 4,
+    "boundary": 4,
+    "cell_index": 3,
+    "reason": "required cell 4 does not exist on both tapes",
+    "code": "BEYOND_TAPE",
+    "furthest_position": 3,
+    "outbound_position": 3,
+    "return_position": 3,
+    "paired_cells": 3,
+    "opened_cells": 0,
+    "cycled_cells": [],
+    "matching": true,
+    "events": [
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 1,
+        "cell": 1,
+        "boundary": null,
+        "left_letter": "A",
+        "right_letter": "A",
+        "allowed": true,
+        "detail": "meshed A"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 1,
+        "cell": 1,
+        "boundary": 1,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 2,
+        "cell": 2,
+        "boundary": null,
+        "left_letter": "B",
+        "right_letter": "B",
+        "allowed": true,
+        "detail": "meshed B"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 2,
+        "cell": 2,
+        "boundary": 2,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "pair",
+        "step": 3,
+        "cell": 3,
+        "boundary": null,
+        "left_letter": "C",
+        "right_letter": "C",
+        "allowed": true,
+        "detail": "meshed C"
+      },
+      {
+        "phase": "outbound",
+        "kind": "cross",
+        "step": 3,
+        "cell": 3,
+        "boundary": 3,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "crossed boundary"
+      },
+      {
+        "phase": "outbound",
+        "kind": "missing_cell",
+        "step": 4,
+        "cell": 4,
+        "boundary": null,
+        "left_letter": null,
+        "right_letter": null,
+        "allowed": true,
+        "detail": "required cell 4 does not exist on both tapes"
+      }
+    ],
+    "mismatches": []
+  },
+  "rivet": {
+    "first_receipt": {
+      "order_id": "ORD-001",
+      "garment_id": "G1-RIVET",
+      "passed": true,
+      "status": "delivered",
+      "report": {
+        "complete": true,
+        "deliverable": true,
+        "outbound_complete": true,
+        "return_complete": true,
+        "position": 0,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": false,
+        "blocked_direction": null,
+        "stuck_direction": null,
+        "direction": null,
+        "blocked_cell": null,
+        "cell": null,
+        "blocked_boundary": null,
+        "boundary": null,
+        "cell_index": null,
+        "reason": null,
+        "code": null,
+        "furthest_position": 3,
+        "outbound_position": 3,
+        "return_position": 0,
+        "paired_cells": 3,
+        "opened_cells": 3,
+        "cycled_cells": [
+          3,
+          2,
+          1
+        ],
+        "matching": true,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": "B",
+            "right_letter": "B",
+            "allowed": true,
+            "detail": "meshed B"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 3,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": "C",
+            "right_letter": "C",
+            "allowed": true,
+            "detail": "meshed C"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 3,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 1,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 1,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 3"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 2"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 3,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 3,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 1"
+          }
+        ],
+        "mismatches": []
+      },
+      "audit": {
+        "garment_id": "G1-RIVET",
+        "order_id": "ORD-001",
+        "teeth": [
+          {
+            "serial": "LOOSE-B-LAST",
+            "letter": "B",
+            "garment_id": "G1-RIVET",
+            "order_id": "ORD-001",
+            "cell": 2,
+            "physical_position": 2,
+            "side": "right",
+            "shift": 1,
+            "craft": "rivet"
+          }
+        ],
+        "cuts": []
+      },
+      "preserved_embroidery": [
+        "绣字带·云雁"
+      ],
+      "errors": []
+    },
+    "second_before_restock": {
+      "estimate_id": "EST-002",
+      "garment_id": "G2-RIVET",
+      "status": "rejected",
+      "current_report": {
+        "complete": false,
+        "deliverable": false,
+        "outbound_complete": false,
+        "return_complete": false,
+        "position": 1,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": true,
+        "blocked_direction": "outbound",
+        "stuck_direction": "outbound",
+        "direction": "outbound",
+        "blocked_cell": 2,
+        "cell": 2,
+        "blocked_boundary": 2,
+        "boundary": 2,
+        "cell_index": 1,
+        "reason": "cell 2: 'B' does not mesh with 'X'",
+        "code": "TOOTH_MISMATCH",
+        "furthest_position": 1,
+        "outbound_position": 1,
+        "return_position": 1,
+        "paired_cells": 1,
+        "opened_cells": 0,
+        "cycled_cells": [],
+        "matching": false,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair_blocked",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": "B",
+            "right_letter": "X",
+            "allowed": false,
+            "detail": "cell 2: 'B' does not mesh with 'X'"
+          }
+        ],
+        "mismatches": [
+          {
+            "cell": 2,
+            "left": "B",
+            "right": "X",
+            "left_physical_index": 2,
+            "right_physical_index": 2
+          }
+        ]
+      },
+      "options": {
+        "rivet": {
+          "craft": "rivet",
+          "feasible": false,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [],
+          "missing": [
+            "loose B tooth"
+          ],
+          "shift_assignment": {
+            "2": 1
+          },
+          "shift_tags": [
+            {
+              "position": 2,
+              "shift": 1,
+              "tag_id": "RIVET-2-SHIFT-1",
+              "movable": true
+            }
+          ],
+          "donor_plan": null,
+          "start_seam": null,
+          "end_seam": null,
+          "reasons": [
+            "loose B tooth"
+          ]
+        },
+        "transplant": {
+          "craft": "transplant",
+          "feasible": true,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [
+            {
+              "donor_id": "DONOR-B-7",
+              "id": "DONOR-B-7",
+              "number": "DONOR-B-7",
+              "physical_letters": [
+                "B",
+                "X",
+                "Y"
+              ],
+              "orientation": "normal",
+              "available_ranges": [
+                [
+                  0,
+                  3
+                ]
+              ],
+              "cut_records": []
+            }
+          ],
+          "missing": [],
+          "shift_assignment": {},
+          "shift_tags": [],
+          "donor_plan": {
+            "donor_id": "DONOR-B-7",
+            "start": 0,
+            "end": 1,
+            "target_letters": "B",
+            "physical_letters": "B",
+            "orientation": "normal",
+            "mount_orientation": "normal",
+            "cut_marks": [
+              0,
+              1
+            ],
+            "includes_backing": true,
+            "start_seam": 1,
+            "end_seam": 2
+          },
+          "start_seam": 1,
+          "end_seam": 2,
+          "reasons": []
+        }
+      },
+      "needs": [
+        {
+          "kind": "tooth",
+          "repairable": true,
+          "cell": 2,
+          "boundary": null,
+          "side": "right",
+          "expected": "B",
+          "actual": "X",
+          "reason": "right cell 2 must become B",
+          "authorized": true
+        }
+      ],
+      "chosen_craft": "rivet",
+      "preserved_embroidery": [
+        "绣字带·松烟"
+      ],
+      "reasons": [
+        "loose B tooth"
+      ],
+      "can_accept": false
+    },
+    "second_receipt": {
+      "order_id": "ORD-002",
+      "garment_id": "G2-RIVET",
+      "passed": true,
+      "status": "delivered",
+      "report": {
+        "complete": true,
+        "deliverable": true,
+        "outbound_complete": true,
+        "return_complete": true,
+        "position": 0,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": false,
+        "blocked_direction": null,
+        "stuck_direction": null,
+        "direction": null,
+        "blocked_cell": null,
+        "cell": null,
+        "blocked_boundary": null,
+        "boundary": null,
+        "cell_index": null,
+        "reason": null,
+        "code": null,
+        "furthest_position": 3,
+        "outbound_position": 3,
+        "return_position": 0,
+        "paired_cells": 3,
+        "opened_cells": 3,
+        "cycled_cells": [
+          3,
+          2,
+          1
+        ],
+        "matching": true,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": "B",
+            "right_letter": "B",
+            "allowed": true,
+            "detail": "meshed B"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 3,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": "C",
+            "right_letter": "C",
+            "allowed": true,
+            "detail": "meshed C"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 3,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 1,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 1,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 3"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 2"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 3,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 3,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 1"
+          }
+        ],
+        "mismatches": []
+      },
+      "audit": {
+        "garment_id": "G2-RIVET",
+        "order_id": "ORD-002",
+        "teeth": [
+          {
+            "serial": "LOOSE-B-NEW",
+            "letter": "B",
+            "garment_id": "G2-RIVET",
+            "order_id": "ORD-002",
+            "cell": 2,
+            "physical_position": 2,
+            "side": "right",
+            "shift": 1,
+            "craft": "rivet"
+          }
+        ],
+        "cuts": []
+      },
+      "preserved_embroidery": [
+        "绣字带·松烟"
+      ],
+      "errors": []
+    },
+    "audit": {
+      "garment_id": null,
+      "order_id": null,
+      "teeth": [
+        {
+          "serial": "LOOSE-B-LAST",
+          "letter": "B",
+          "garment_id": "G1-RIVET",
+          "order_id": "ORD-001",
+          "cell": 2,
+          "physical_position": 2,
+          "side": "right",
+          "shift": 1,
+          "craft": "rivet"
+        },
+        {
+          "serial": "LOOSE-B-NEW",
+          "letter": "B",
+          "garment_id": "G2-RIVET",
+          "order_id": "ORD-002",
+          "cell": 2,
+          "physical_position": 2,
+          "side": "right",
+          "shift": 1,
+          "craft": "rivet"
+        }
+      ],
+      "cuts": []
+    }
+  },
+  "donor": {
+    "first_receipt": {
+      "order_id": "ORD-001",
+      "garment_id": "H1-DONOR",
+      "passed": true,
+      "status": "delivered",
+      "report": {
+        "complete": true,
+        "deliverable": true,
+        "outbound_complete": true,
+        "return_complete": true,
+        "position": 0,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": false,
+        "blocked_direction": null,
+        "stuck_direction": null,
+        "direction": null,
+        "blocked_cell": null,
+        "cell": null,
+        "blocked_boundary": null,
+        "boundary": null,
+        "cell_index": null,
+        "reason": null,
+        "code": null,
+        "furthest_position": 3,
+        "outbound_position": 3,
+        "return_position": 0,
+        "paired_cells": 3,
+        "opened_cells": 3,
+        "cycled_cells": [
+          3,
+          2,
+          1
+        ],
+        "matching": true,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": "B",
+            "right_letter": "B",
+            "allowed": true,
+            "detail": "meshed B"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 3,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": "C",
+            "right_letter": "C",
+            "allowed": true,
+            "detail": "meshed C"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 3,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 1,
+            "cell": 3,
+            "boundary": 3,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 1,
+            "cell": 3,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 3"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 2,
+            "cell": 2,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 2"
+          },
+          {
+            "phase": "return",
+            "kind": "cross_reverse",
+            "step": 3,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": ""
+          },
+          {
+            "phase": "return",
+            "kind": "unpair",
+            "step": 3,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "opened cell 1"
+          }
+        ],
+        "mismatches": []
+      },
+      "audit": {
+        "garment_id": "H1-DONOR",
+        "order_id": "ORD-001",
+        "teeth": [],
+        "cuts": [
+          {
+            "donor_id": "DONOR-B-7",
+            "start": 0,
+            "end": 1,
+            "order_id": "ORD-001",
+            "garment_id": "H1-DONOR",
+            "effective_letters": "B",
+            "cut_marks": [
+              0,
+              1
+            ],
+            "remaining_ranges": [
+              [
+                1,
+                3
+              ]
+            ]
+          }
+        ]
+      },
+      "preserved_embroidery": [
+        "绣字带·青衿"
+      ],
+      "errors": []
+    },
+    "second_before_loose": {
+      "estimate_id": "EST-002",
+      "garment_id": "H2-DONOR",
+      "status": "rejected",
+      "current_report": {
+        "complete": false,
+        "deliverable": false,
+        "outbound_complete": false,
+        "return_complete": false,
+        "position": 1,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": true,
+        "blocked_direction": "outbound",
+        "stuck_direction": "outbound",
+        "direction": "outbound",
+        "blocked_cell": 2,
+        "cell": 2,
+        "blocked_boundary": 2,
+        "boundary": 2,
+        "cell_index": 1,
+        "reason": "cell 2: 'B' does not mesh with 'X'",
+        "code": "TOOTH_MISMATCH",
+        "furthest_position": 1,
+        "outbound_position": 1,
+        "return_position": 1,
+        "paired_cells": 1,
+        "opened_cells": 0,
+        "cycled_cells": [],
+        "matching": false,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair_blocked",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": "B",
+            "right_letter": "X",
+            "allowed": false,
+            "detail": "cell 2: 'B' does not mesh with 'X'"
+          }
+        ],
+        "mismatches": [
+          {
+            "cell": 2,
+            "left": "B",
+            "right": "X",
+            "left_physical_index": 2,
+            "right_physical_index": 2
+          }
+        ]
+      },
+      "options": {
+        "rivet": {
+          "craft": "rivet",
+          "feasible": false,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [],
+          "missing": [
+            "loose B tooth"
+          ],
+          "shift_assignment": {
+            "2": 1
+          },
+          "shift_tags": [
+            {
+              "position": 2,
+              "shift": 1,
+              "tag_id": "RIVET-2-SHIFT-1",
+              "movable": true
+            }
+          ],
+          "donor_plan": null,
+          "start_seam": null,
+          "end_seam": null,
+          "reasons": [
+            "loose B tooth"
+          ]
+        },
+        "transplant": {
+          "craft": "transplant",
+          "feasible": false,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [],
+          "missing": [
+            "numbered donor segment 'B'"
+          ],
+          "shift_assignment": {},
+          "shift_tags": [],
+          "donor_plan": null,
+          "start_seam": null,
+          "end_seam": null,
+          "reasons": [
+            "no compatible donor segment for 'B'"
+          ]
+        }
+      },
+      "needs": [
+        {
+          "kind": "tooth",
+          "repairable": true,
+          "cell": 2,
+          "boundary": null,
+          "side": "right",
+          "expected": "B",
+          "actual": "X",
+          "reason": "right cell 2 must become B",
+          "authorized": true
+        }
+      ],
+      "chosen_craft": "transplant",
+      "preserved_embroidery": [
+        "绣字带·白露"
+      ],
+      "reasons": [
+        "no compatible donor segment for 'B'"
+      ],
+      "can_accept": false
+    },
+    "second_after_loose_only": {
+      "estimate_id": "EST-003",
+      "garment_id": "H2-DONOR",
+      "status": "rejected",
+      "current_report": {
+        "complete": false,
+        "deliverable": false,
+        "outbound_complete": false,
+        "return_complete": false,
+        "position": 1,
+        "required_cells": 3,
+        "tape_cells": 3,
+        "blocked": true,
+        "blocked_direction": "outbound",
+        "stuck_direction": "outbound",
+        "direction": "outbound",
+        "blocked_cell": 2,
+        "cell": 2,
+        "blocked_boundary": 2,
+        "boundary": 2,
+        "cell_index": 1,
+        "reason": "cell 2: 'B' does not mesh with 'X'",
+        "code": "TOOTH_MISMATCH",
+        "furthest_position": 1,
+        "outbound_position": 1,
+        "return_position": 1,
+        "paired_cells": 1,
+        "opened_cells": 0,
+        "cycled_cells": [],
+        "matching": false,
+        "events": [
+          {
+            "phase": "outbound",
+            "kind": "pair",
+            "step": 1,
+            "cell": 1,
+            "boundary": null,
+            "left_letter": "A",
+            "right_letter": "A",
+            "allowed": true,
+            "detail": "meshed A"
+          },
+          {
+            "phase": "outbound",
+            "kind": "cross",
+            "step": 1,
+            "cell": 1,
+            "boundary": 1,
+            "left_letter": null,
+            "right_letter": null,
+            "allowed": true,
+            "detail": "crossed boundary"
+          },
+          {
+            "phase": "outbound",
+            "kind": "pair_blocked",
+            "step": 2,
+            "cell": 2,
+            "boundary": 2,
+            "left_letter": "B",
+            "right_letter": "X",
+            "allowed": false,
+            "detail": "cell 2: 'B' does not mesh with 'X'"
+          }
+        ],
+        "mismatches": [
+          {
+            "cell": 2,
+            "left": "B",
+            "right": "X",
+            "left_physical_index": 2,
+            "right_physical_index": 2
+          }
+        ]
+      },
+      "options": {
+        "rivet": {
+          "craft": "rivet",
+          "feasible": true,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [
+            {
+              "letter": "B",
+              "serial": "LOOSE-B-AFTER",
+              "batch": null,
+              "consumed": false
+            }
+          ],
+          "missing": [],
+          "shift_assignment": {
+            "2": 1
+          },
+          "shift_tags": [
+            {
+              "position": 2,
+              "shift": 1,
+              "tag_id": "RIVET-2-SHIFT-1",
+              "movable": true
+            }
+          ],
+          "donor_plan": null,
+          "start_seam": null,
+          "end_seam": null,
+          "reasons": []
+        },
+        "transplant": {
+          "craft": "transplant",
+          "feasible": false,
+          "needs": [
+            {
+              "kind": "tooth",
+              "repairable": true,
+              "cell": 2,
+              "boundary": null,
+              "side": "right",
+              "expected": "B",
+              "actual": "X",
+              "reason": "right cell 2 must become B",
+              "authorized": true
+            }
+          ],
+          "materials": [],
+          "missing": [
+            "numbered donor segment 'B'"
+          ],
+          "shift_assignment": {},
+          "shift_tags": [],
+          "donor_plan": null,
+          "start_seam": null,
+          "end_seam": null,
+          "reasons": [
+            "no compatible donor segment for 'B'"
+          ]
+        }
+      },
+      "needs": [
+        {
+          "kind": "tooth",
+          "repairable": true,
+          "cell": 2,
+          "boundary": null,
+          "side": "right",
+          "expected": "B",
+          "actual": "X",
+          "reason": "right cell 2 must become B",
+          "authorized": true
+        }
+      ],
+      "chosen_craft": "transplant",
+      "preserved_embroidery": [
+        "绣字带·白露"
+      ],
+      "reasons": [
+        "no compatible donor segment for 'B'"
+      ],
+      "can_accept": false
+    },
+    "audit": {
+      "garment_id": null,
+      "order_id": null,
+      "teeth": [],
+      "cuts": [
+        {
+          "donor_id": "DONOR-B-7",
+          "start": 0,
+          "end": 1,
+          "order_id": "ORD-001",
+          "garment_id": "H1-DONOR",
+          "effective_letters": "B",
+          "cut_marks": [
+            0,
+            1
+          ],
+          "remaining_ranges": [
+            [
+              1,
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    "remaining_donor": "DONOR-B-7[1:3]=XY"
+  },
+  "replay_assertions": "passed"
+}
