@@ -288,8 +288,72 @@ extcontract/
   compat.py     row-free whole-domain proof + adaptation plan + witnesses
   adapter.py    per-row validation + plan application -> reader-records/v1
   ingest.py     revision-aware, atomic, idempotent target state
+  embroidery/   double-sided embroidery screen repair domain (see below)
   cli.py        compat / adapt / ingest commands
-examples/run_745_demo.py   end-to-end scenario against the real client
+examples/run_745_demo.py          end-to-end scenario against the real client
+examples/run_embroidery_demo.py  needle-road registry, reconstruction, repair
 fixtures/                  bootstrap, F-BAD, F-NEW documents
-tests/                     compat, adapter, ingest, fixtures, scale
+tests/                     compat, adapter, ingest, fixtures, scale, embroidery
 ```
+
+---
+
+## 4. Double-sided embroidery screen repair (`extcontract.embroidery`)
+
+The embroidery domain reuses the exact same machinery: the needle-road registry
+is a flat, all-nullable-TEXT writer/reader contract (`ew1` / `er1`), every fact
+is an ingestible row, corrections are higher revisions of the same `row_id`, and
+reconstruction always starts from the **published effective rows** of a real
+`IngestionLibrary` (`registry_from_publish(library.publish())`).
+
+```bash
+PYTHONPATH=. python3 examples/run_embroidery_demo.py
+PYTHONPATH=. python3 -m pytest tests/test_embroidery.py -q
+```
+
+### Registry rows (one physical fact per row)
+
+| `record_type` | Content |
+|---|---|
+| `THREAD` | embroiderer thread id, physical colour, ordered holes, per-segment full-screen flow sequence, optional starting-end face (`start_face`), tail hole |
+| `OBSERVATION` | a side view: one coloured segment between two holes on one face (never names a thread) |
+| `PROTECT` | a collector circle: an original stitch that must be preserved |
+| `NOKNOT` | a face/hole region where a fixing knot head must not show |
+
+A segment lies on exactly one face and every hole crossing switches face. When
+the starting-end face is recorded, all segment faces are forced; unknown starts
+are enumerated (at most three threads → at most eight combinations).
+
+### Reconstruction rules (`reconstruct`)
+
+* Every world satisfies all needle roads, all observations, and every
+  protection circle; worlds where a circled stitch lies on the wrong face are
+  dropped.
+* An observation is an **existence** claim. When two same-coloured segments fit
+  one view, the segment with the greatest full-screen flow sequence covers the
+  place last and is the observation's unique owner — two threads can never each
+  claim the same observation inside one world.
+* `resolve_target(face, hole_a, hole_b, color)` applies the same last-covering
+  rule to counter requests: `CERTAIN` only when every world settles on the same
+  segment; `AMBIGUOUS` / `NOT_FOUND` / `UNSATISFIABLE` otherwise, in which case
+  the order can only be held.
+
+### Counter, workshops and delivery (`orders.py`)
+
+* `intake_order` signs only a `CERTAIN`, still-present, unprotected target.
+  A protected stitch blocks signing even when its location is judged correctly;
+  a removed target is never reopened (delivered faces are immutable).
+* A `WorkOrder` practises exactly one trade and carries its permit faces,
+  stocked supplies and permit together:
+  * **`CUT`** — local cut: one fixing knot per end, each consuming one loop of
+    its hole on a permitted face, refused inside a `NOKNOT` zone or when a
+    required loop is already taken; then the middle segment is withdrawn.
+  * **`UNTHREAD`** — reverse unthreading from the recognised reachable tail.
+    A protected later original stitch produces a `BLOCKED` quote naming the
+    blocker stitch on the rejection receipt; otherwise the suffix is undone in
+    strict reverse order and those stitches stop counting as preserved.
+* `deliver` mutates the live `Panel` (loop inventory, removed segments, knots),
+  freezes the `DeliveryNote`, and `recheck_originals` confirms every preserved
+  circle is still held and every removed stitch is actually gone — so a repaired
+  piece can accept the next order, while adjacent orders needing the last loop
+  of an already-used hole are held until that recheck.

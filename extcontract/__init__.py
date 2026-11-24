@@ -36,6 +36,10 @@ from .adapter import (
     write_records,
 )
 from .ingest import IngestionLibrary, IngestResult, Receipt, RowState
+
+# Embroidery-screen repair domain (needle-road registry, threading
+# reconstruction, single-mode workshop orders); see ``extcontract.embroidery``.
+from . import embroidery
 from .errors import (
     ContractError,
     ConversionError,
@@ -72,6 +76,7 @@ __all__ = [
     "IngestResult",
     "Receipt",
     "RowState",
+    "embroidery",
     "ContractError",
     "ConversionError",
     "DomainError",
@@ -79,4 +84,4 @@ __all__ = [
     "LimitError",
 ]
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
