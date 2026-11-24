@@ -1,0 +1,16 @@
+{
+  "file_id": "D-BASE",
+  "writer_version": "dw1",
+  "reader_version": "dr1",
+  "rows": [
+    {"row_id": "wd-size", "revision": 1, "values": {
+      "block": "B1", "edition": "workday", "round": 1,
+      "measure": "set_size", "household": null, "qty": 2}},
+    {"row_id": "we-size", "revision": 1, "values": {
+      "block": "B1", "edition": "weekend", "round": 1,
+      "measure": "set_size", "household": null, "qty": 2}},
+    {"row_id": "wd-we-intersect", "revision": 1, "values": {
+      "block": "B1", "edition": "workday|weekend", "round": 1,
+      "measure": "intersection", "household": null, "qty": 1}}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "file_id": "D-FIX2",
+  "writer_version": "dw1",
+  "reader_version": "dr1",
+  "rows": [
+    {"row_id": "wd-we-intersect", "revision": 2, "values": {
+      "block": "B1", "edition": "workday|weekend", "round": 1,
+      "measure": "intersection", "household": null, "qty": 2}}
+  ]
+}

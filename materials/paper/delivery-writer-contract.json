@@ -1,0 +1,41 @@
+{
+  "version": "dw1",
+  "fields": [
+    {
+      "field_id": "block",
+      "name": "街区",
+      "type": {"kind": "TEXT"},
+      "nullable": false
+    },
+    {
+      "field_id": "edition",
+      "name": "版次",
+      "type": {"kind": "TEXT"},
+      "nullable": true
+    },
+    {
+      "field_id": "round",
+      "name": "轮次",
+      "type": {"kind": "INT", "bits": 8},
+      "nullable": false
+    },
+    {
+      "field_id": "measure",
+      "name": "观测种类",
+      "type": {"kind": "TEXT"},
+      "nullable": false
+    },
+    {
+      "field_id": "household",
+      "name": "具名户",
+      "type": {"kind": "TEXT"},
+      "nullable": true
+    },
+    {
+      "field_id": "qty",
+      "name": "集合大小",
+      "type": {"kind": "INT", "bits": 8},
+      "nullable": true
+    }
+  ]
+}

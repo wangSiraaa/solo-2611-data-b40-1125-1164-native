@@ -14,6 +14,12 @@ deliberately separated concerns:
    fixed reader contract, resolves row revisions, and accepts or rejects each file
    **atomically**.
 
+On top of those three, the `extcontract.paper` subpackage models the 社区小报
+(community-paper) distribution cabinet and its guaranteed-quantity advertising
+settlement — see [section 4](#4-community-paper-distribution-cabinet-extcontractpaper)
+below. It reuses the exact same ingestion machinery; the station files are ordinary
+ingest documents.
+
 The supplied `reader_client.py` is never imported or modified. It is exercised
 as a real subprocess against our output in the tests and demo.
 
@@ -289,7 +295,129 @@ extcontract/
   adapter.py    per-row validation + plan application -> reader-records/v1
   ingest.py     revision-aware, atomic, idempotent target state
   cli.py        compat / adapt / ingest commands
-examples/run_745_demo.py   end-to-end scenario against the real client
+  paper/        community-paper distribution cabinet (section 4)
+    settle.py     worst-case constraint engine over partial delivery evidence
+    cabinet.py    发行柜/补量柜: contracts, slots, crediting, makeup orders
+    cli.py        local `python -m extcontract paper ...` entry point
+examples/run_745_demo.py    end-to-end scenario against the real client
+examples/run_paper_demo.py  full guaranteed-quantity narrative
 fixtures/                  bootstrap, F-BAD, F-NEW documents
-tests/                     compat, adapter, ingest, fixtures, scale
+materials/paper/           delivery contracts + station-file scenario
+tests/                     compat, adapter, ingest, fixtures, scale, paper
 ```
+
+---
+
+## 4. Community-paper distribution cabinet (`extcontract.paper`)
+
+The community paper sells **guaranteed-quantity** advertising: a contract promises
+the advertiser that its ad reaches at least N distinct mailboxes. The station never
+publishes every delivered mailbox, though — each round/edition is only described by
+partial evidence, so settlement is a constraint problem over every history compatible
+with that evidence. The envelope is deliberately tiny (**at most 8 households and 4
+lines, all data local**).
+
+### 4.1 Delivery records ride the original ingest path
+
+The station's delivery records have stable field numbers and flow through the
+**unchanged** `IngestionLibrary` (`materials/paper/*-contract.json`; INT8 writer →
+DECIMAL(3,0) reader is a safe widening, exactly like the 745 scenario):
+
+| field_id    | meaning | legal `measure` values |
+|-------------|---------|------------------------|
+| `block`     | disjoint street block | — |
+| `edition`   | edition name; intersections use `"A\|B"` | — |
+| `round`     | delivery round (INT) | — |
+| `measure`   | observation kind | `named_delivered`, `set_size`, `intersection`, `named_missed` |
+| `household` | named household (nullable) | used by the two named measures |
+| `qty`       | set/intersection size (nullable INT) | used by the two size measures |
+
+Settlement only ever reads `library.publish()` — the **valid rows and editions** — so
+a rejected station file changes nothing, a higher revision corrects an earlier record
+(the intersection fix in the scenario), and replaying a delivery receipt is idempotent
+and never credited twice.
+
+### 4.2 The settlement engine (`extcontract.paper.settle`)
+
+A *history* picks one delivered set per edition satisfying every observation. The
+engine enumerates all compatible histories (backtracking over at most 256 candidate
+subsets per edition) and returns:
+
+* `lower_bound` — `min |union of delivered sets|` over all compatible histories, the
+  guaranteed quantity that can be 认款 (credited);
+* `witness` — one concrete per-edition arrangement that actually attains the bound,
+  independently re-checkable with `verify_arrangement`;
+* `possible_missers` / `proven_missed` — households that can be missed in some history
+  vs. those with a named non-receipt in **every** edition;
+* per-candidate-line `added_lower_bound` — `min |line \ union|`, the households the
+  line still adds under the **worst possible overlap**; a line is bought whole without
+  publishing per-household prior receipt, but must reach its guarantee even then.
+
+```python
+from extcontract.paper.settle import settle_block
+verdict = settle_block("B1", ["甲","乙","丙","丁"], observations,
+                       lines={"L": ["甲","乙","丙","丁"], "M": ["甲","乙"]})
+verdict.lower_bound                       # 3 for two size-2 sets intersecting in 1
+verdict.line_evaluations["L"].added_lower_bound  # 1
+verdict.line_evaluations["M"].added_lower_bound  # 0 (the cheap 甲乙 line may add nothing)
+```
+
+### 4.3 The cabinet (`extcontract.paper.cabinet.PaperCabinet`)
+
+The 发行员's one local, stateful entry point. It repeatedly accepts new contracts and
+station files; each new order may name a different block, permitted household or
+candidate line. One issue runs **exactly one operation mode**:
+
+* **`targeted`** — per-household orders. An order may only name a household the current
+  evidence *proves* never received (`proven_missed`); a possible-misser is not enough,
+  so the cabinet waits for the named non-receipt receipt. Each order reserves one slot
+  and later produces a named delivery receipt.
+* **`whole_line`** — an unsplittable line is bought whole; signing is allowed only when
+  its `added_lower_bound` closes the residual gap under the worst overlap.
+
+Lifecycle rules the cabinet enforces:
+
+* **slots/版位**: a signed order merely reserves slots; `seal_edition` (封版) converts
+  reservations into real, locked slot usage. A sealed/delivered order keeps the basis
+  it was signed against forever and cannot be withdrawn;
+* **basis retention**: every order freezes its basis (lower bound, per-line added
+  bound, witnesses). After evidence changes, `basis_still_holds` re-checks an unsealed
+  order; one that no longer holds can be `withdraw`ed, releasing its reservation;
+* **deadline/截稿**: signing after the cutoff is refused;
+* **idempotency**: station files reuse ingest replay, and re-delivering an order
+  returns a replay instead of a second credit.
+
+`readback(contract_no)` returns the makeup edition actually used, the signed services
+and their bases, and the current accounting.
+
+### 4.4 Mandated scenario (all asserted in `tests/` and `examples/run_paper_demo.py`)
+
+Four mailboxes, two rounds of two households, intersection one → **three guaranteed**,
+and any of the four could be the single misser. Correcting the intersection to two
+drops the guarantee to **two**; restoring the record and raising the contract to four
+leaves a **one-household gap**. With the advertiser permitting 丁:
+
+* the **targeted** cabinet refuses 丁 until the named non-receipt arrives, then signs;
+* the **whole-line** cabinet signs line L (all four households) on added lower bound 1;
+  the cheap 甲乙 line has added bound 0 and cannot fill the gap;
+* sealing L uses four of five print slots; the last slot serves another contract;
+* replaying receipts never double-credits.
+
+### 4.5 Local CLI
+
+```bash
+python -m extcontract paper init     cab.json --mode whole_line --slots 5 \
+       --routes-doc routes.json --universes-doc universes.json
+python -m extcontract paper contract cab.json c1.json
+python -m extcontract paper station  cab.json materials/paper/D-BASE.json
+python -m extcontract paper settle   cab.json
+python -m extcontract paper account  cab.json C1
+python -m extcontract paper sign     cab.json C1 --route L
+python -m extcontract paper seal     cab.json mk-1
+python -m extcontract paper readback cab.json C1 --receipt D-BASE
+```
+
+State is one JSON document per cabinet; accepted station files are stored and replayed
+through the real ingest path on reload, preserving revision and replay semantics.
+
+---

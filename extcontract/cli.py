@@ -218,6 +218,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_ingest.add_argument("--state-dir", default=".extcontract-state")
     p_ingest.add_argument("--publish", default=None)
     p_ingest.set_defaults(func=cmd_ingest)
+
+    from .paper.cli import build_paper_parser
+
+    build_paper_parser(sub)
     return parser
 
 
