@@ -15,9 +15,10 @@
 ## 快速开始
 
 ```bash
-python3 -m unittest discover -s tests -v     # 46 个测试
+python3 -m unittest discover -s tests -v     # 70 个测试（过磅 46 + 返券 24）
 python3 -m demo.run_demo                     # 合成案例
 python3 -m demo.run_demo --json              # 另写 demo/out/*.json
+python3 -m rebate.cli scenario --db demo/out/center.db   # 返券题面全判定
 ```
 
 ```python
@@ -125,13 +126,86 @@ w.evaluation_history(re.trip_id)  # 旧（CONFIRMED）与新（REVIEW）都在�
 目录 100 实体（`define_mass` 时强制）；仓库 1000 张票、200 次运输。同一车同一秒
 可有多张不同 `ticket_id` 的票。
 
+## 社区废纸返券柜台（`rebate/`）
+
+在过磅事实仓之上叠了一层 *返券柜台*：社区按住户一整期的废纸净重返券，但一车
+只过一次磅，住户重量要把箱号、封箱转交、允许袋重与自愿出示的局部称量接起来
+推断。同样坚持只追加、不覆盖、按回执快照可重算。
+
+* **收集网络 + 约束求解** (`rebate/network.py`)：纯数据、不落盘。袋有毛重与
+  允许袋重（皮重区间），可选离散纸重档位；箱在车次上首次归集；`add_transfer`
+  做封箱转车（两侧纸重相等、源箱在原车净重只计一次）；车次净重是可回查版本。
+  在袋纸重整数域上回溯枚举 *全部可行世界*——无法区分的两种情况都留下，某户在
+  所有世界里取同值才算 *证实*（`proven`），否则只能挂起。
+* **柜台事实仓** (`rebate/counter.py`)：SQLite 落盘核算期（减量线、领券期限）、
+  预算（统一池或拆到各期/各站）、领券权状态机、带证据快照的回执与 `reconcile`。
+* **过磅适配器** (`rebate/warehouse_adapter.py`)：只导入 Warehouse 的
+  `CONFIRMED` 车次；`reopen` 产生的 REVIEW 评估链展开成同一车次的多净重版本，
+  草稿不导入。
+
+### 两种经营办法
+
+| | 统一封账 `UNIFIED` | 分站断网 `STATION` |
+| --- | --- | --- |
+| 谁能看局部称量 | 中心可见凑成同车总数的全部凭条 | 分站只见本站/中心/住户本人凭条 |
+| 预算 | 中心池统一调度，签券即锁 | 必须显式拆到各站，分站看不到别站池 |
+| 证据不足 | 全局反推可证实即可签 | 留单，等住户本人凭条到达再办 |
+| 封账后 | 只能开 *差额争议*，不在原券旁另兑 | 同左 |
+
+**领券权（跨站令牌）**：`HELD -> HANDED_OVER -> RECEIVED -> SPENT`。跨站时原站
+先 `hand_over`，收件未到两站都不能花；`receive_right` 后接收站可办，原站补送
+同一 `msg_id` 幂等、不会恢复。签券成功才核销为 `SPENT` 并等额锁预算。
+
+**回执与隐私**：每次申请都有回执号，封存经办方 *当时有权看见* 的证据、全部
+可行世界、证实重量、签发/挂起原因、扣到哪期哪户哪站。按 `CENTER`/`STATION`/
+`HOUSEHOLD` 角色查询时自动剔除别户私重与别站流水；公开车次总量任何角色可见。
+
+```python
+from rebate import Counter, PartialWeigh, NODE_BAG, ORIGIN_CENTER, MODE_STATION
+
+c = Counter(mode="UNIFIED")
+c.open_period("P1", reduction_line=4, claim_deadline=100, central_budget=2)
+c.add_box("BX", "TRIP1")
+c.add_bag("B甲", "甲", "BX", gross=6, allowed_paper=(4, 6))
+c.add_bag("B乙", "乙", "BX", gross=6, allowed_paper=(4, 6))
+c.add_trip_version("TRIP1", 10, 10)          # 一车一次磅：车净重精确 10
+c.apply("P1", "甲")                           # 无个人称量 -> SUSPENDED/WEIGHT_UNPROVEN
+c.add_partial(PartialWeigh("W甲", NODE_BAG, "B甲", 4, 4,
+                           ORIGIN_CENTER, household_id="甲"))
+d = c.apply("P1", "甲")                       # 甲出示 4 -> ISSUED，预算等额锁定
+c.receipt(d.receipt_id)                      # 按回执号回查原因与已兑额度
+c.reconcile()                                 # [] 表示在回执快照上可重算
+```
+
+### 本机入口（可办新申请，可模拟两站）
+
+```bash
+python3 -m rebate.cli init --db demo/out/station.db --mode STATION --budget 3
+python3 -m rebate.cli scenario --db demo/out/center.db   # 演完题面全部判定
+python3 -m rebate.cli apply --db demo/out/station.db \
+        --period P1 --household 甲 --station S1 \
+        --weigh-node B甲 --weigh-value 4 --weigh-origin STATION
+python3 -m rebate.cli receipt --db demo/out/station.db --receipt 2 --role HOUSEHOLD
+python3 -m rebate.cli reconcile --db demo/out/station.db
+```
+
+`scenario` 依次复演：仅总量两户均挂起 → 甲出示 4 可签 / 预算归零不签 →
+仅乙向中心出示 6 时统一封账反推签给甲、分站则留单 → 跨站交出在途两站不能花、
+接收后原站补送不恢复 → 最后额度签出后第二户挂起 → 封账后称量纠正只开差额争议
+（含净重与凭条版本链，从原车次复演）。容量：最多 3 户、2 站。
+
 ## 文件
 
 ```
 weighbridge/catalog.py      独立车辆组合目录
 weighbridge/warehouse.py    过磅事实仓 + 精确整数求解
 weighbridge/__init__.py     公共 API
+rebate/network.py           废纸收集网络 + 住户重量整数约束求解
+rebate/counter.py           返券柜台事实仓（核算期/预算/领券权/回执）
+rebate/warehouse_adapter.py 导入确认车次与净重版本链
+rebate/cli.py               本机办理入口与两站模拟
 tests/test_weighbridge.py   46 个测试（含小整数区间暴力核对极值）
+tests/test_rebate.py        24 个返券柜台测试
 demo/run_demo.py            可复跑合成案例
 demo/out/                   演示输出（--json 时生成）
 ```
