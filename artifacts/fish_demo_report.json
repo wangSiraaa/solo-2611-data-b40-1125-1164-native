@@ -1,0 +1,382 @@
+{
+  "title": "SOLO duty-book ornamental-fish boarding desk",
+  "limits": {
+    "max_fish": 4,
+    "max_tanks": 3,
+    "max_transfers": 6
+  },
+  "canonical": {
+    "question": "After merge/split, which original household can be completed this weekend?",
+    "identity": {
+      "viable": true,
+      "world_count": 1,
+      "certain_locations": {
+        "F1": "OPEN:A",
+        "F2": "OPEN:B"
+      },
+      "possible_locations": {
+        "F1": [
+          "OPEN:A"
+        ],
+        "F2": [
+          "OPEN:B"
+        ]
+      },
+      "fog_groups": [],
+      "households": [
+        {
+          "owner": "JIA",
+          "fish": [
+            "F1"
+          ],
+          "status": "located",
+          "deliverable_lots": [
+            "A"
+          ],
+          "mixed_with": []
+        },
+        {
+          "owner": "YI",
+          "fish": [
+            "F2"
+          ],
+          "status": "located",
+          "deliverable_lots": [
+            "B"
+          ],
+          "mixed_with": []
+        }
+      ]
+    },
+    "original_record": {
+      "version": 0,
+      "surviving_histories": 1,
+      "decision": {
+        "allowed": true,
+        "case_id": "ORDER-JIA-A",
+        "reason_code": "WRITTEN_OFF",
+        "reason": "sealed opaque box handed over and receipt written off",
+        "owner": "JIA",
+        "fish_ids": [
+          "F1"
+        ],
+        "target": "A",
+        "box_id": "BOX-01-ORDER-JIA-A",
+        "household": "JIA"
+      },
+      "sealed_box": {
+        "box_id": "BOX-01-ORDER-JIA-A",
+        "sealed": true,
+        "fish_ids": [
+          "F1"
+        ]
+      },
+      "answer": "可交甲户（JIA）：具名记录证明白尾 F1 入 A；受托人凭 A 委托和已交回回单封遮光盒交付并销账。"
+    },
+    "erratum_unseen_a": {
+      "new_version": 1,
+      "replaced_char_span": [
+        260,
+        309
+      ],
+      "replaced_byte_span": [
+        267,
+        316
+      ],
+      "surviving_histories": 2,
+      "fog": [
+        {
+          "fish": [
+            "F1",
+            "F2"
+          ],
+          "lots": [
+            "A:",
+            "B:"
+          ]
+        }
+      ],
+      "decision": {
+        "allowed": false,
+        "case_id": "ORDER-JIA-A",
+        "reason_code": "IDENTITY_MIXED",
+        "reason": "identity in A remains mixed; possible fish union=['F1', 'F2']",
+        "owner": "JIA",
+        "fish_ids": [],
+        "target": "A",
+        "box_id": null,
+        "household": null
+      },
+      "answer": "暂缓：A 可能是 F1 或 F2；又无独立隔位记录，前台不能在提领时开盒分辨。"
+    },
+    "restored_but_mandate_revoked": {
+      "surviving_histories": 1,
+      "decision": {
+        "allowed": false,
+        "case_id": "ORDER-JIA-A",
+        "reason_code": "MANDATE_REVOKED",
+        "reason": "mandate M-A has been revoked",
+        "owner": "JIA",
+        "fish_ids": [],
+        "target": "A",
+        "box_id": null,
+        "household": null
+      },
+      "answer": "暂缓：身份虽已重新确定，但受托人提 A 的委托已撤销。"
+    }
+  },
+  "slot_pressure_new_boarding": {
+    "tight_two_slots_in_C": {
+      "surviving_histories": 1,
+      "slot_use": [
+        {
+          "tank": "A",
+          "capacity": 4,
+          "final_nets": [
+            "N1"
+          ],
+          "peak": 1,
+          "peak_free": 3,
+          "violations": []
+        },
+        {
+          "tank": "B",
+          "capacity": 4,
+          "final_nets": [
+            "N2"
+          ],
+          "peak": 1,
+          "peak_free": 3,
+          "violations": []
+        },
+        {
+          "tank": "C",
+          "capacity": 2,
+          "final_nets": [],
+          "peak": 2,
+          "peak_free": 0,
+          "violations": []
+        }
+      ],
+      "decisions": [
+        {
+          "allowed": true,
+          "case_id": "SLOT-tight_two_slots_in_C-1",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "JIA",
+          "fish_ids": [
+            "F1"
+          ],
+          "target": "N1",
+          "box_id": "PLANNED-BOX-SLOT-tight_two_slots_in_C-1",
+          "household": "JIA"
+        },
+        {
+          "allowed": true,
+          "case_id": "SLOT-tight_two_slots_in_C-2",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "YI",
+          "fish_ids": [
+            "F2"
+          ],
+          "target": "N2",
+          "box_id": "PLANNED-BOX-SLOT-tight_two_slots_in_C-2",
+          "household": "YI"
+        },
+        {
+          "allowed": false,
+          "case_id": "SLOT-tight_two_slots_in_C-3",
+          "reason_code": "IDENTITY_MIXED",
+          "reason": "sealed lot OPEN:C is shared by households ['BING', 'DING']; it contains ['F3', 'F4'], receipts name ['F3'] and the desk cannot open the opaque box to separate tail spots",
+          "owner": "BING",
+          "fish_ids": [],
+          "target": "OPEN:C",
+          "box_id": null,
+          "household": null
+        },
+        {
+          "allowed": false,
+          "case_id": "SLOT-tight_two_slots_in_C-4",
+          "reason_code": "IDENTITY_MIXED",
+          "reason": "sealed lot OPEN:C is shared by households ['BING', 'DING']; it contains ['F3', 'F4'], receipts name ['F4'] and the desk cannot open the opaque box to separate tail spots",
+          "owner": "DING",
+          "fish_ids": [],
+          "target": "OPEN:C",
+          "box_id": null,
+          "household": null
+        }
+      ],
+      "accepted_orders": [
+        "SLOT-tight_two_slots_in_C-1",
+        "SLOT-tight_two_slots_in_C-2"
+      ],
+      "held_orders": [
+        {
+          "case_id": "SLOT-tight_two_slots_in_C-3",
+          "reason_code": "IDENTITY_MIXED"
+        },
+        {
+          "case_id": "SLOT-tight_two_slots_in_C-4",
+          "reason_code": "IDENTITY_MIXED"
+        }
+      ]
+    },
+    "relief_four_private_nets": {
+      "surviving_histories": 1,
+      "slot_use": [
+        {
+          "tank": "A",
+          "capacity": 4,
+          "final_nets": [
+            "N1"
+          ],
+          "peak": 1,
+          "peak_free": 3,
+          "violations": []
+        },
+        {
+          "tank": "B",
+          "capacity": 4,
+          "final_nets": [
+            "N2"
+          ],
+          "peak": 1,
+          "peak_free": 3,
+          "violations": []
+        },
+        {
+          "tank": "C",
+          "capacity": 4,
+          "final_nets": [
+            "N3",
+            "N4"
+          ],
+          "peak": 4,
+          "peak_free": 0,
+          "violations": []
+        }
+      ],
+      "decisions": [
+        {
+          "allowed": true,
+          "case_id": "SLOT-relief_four_private_nets-1",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "JIA",
+          "fish_ids": [
+            "F1"
+          ],
+          "target": "N1",
+          "box_id": "PLANNED-BOX-SLOT-relief_four_private_nets-1",
+          "household": "JIA"
+        },
+        {
+          "allowed": true,
+          "case_id": "SLOT-relief_four_private_nets-2",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "YI",
+          "fish_ids": [
+            "F2"
+          ],
+          "target": "N2",
+          "box_id": "PLANNED-BOX-SLOT-relief_four_private_nets-2",
+          "household": "YI"
+        },
+        {
+          "allowed": true,
+          "case_id": "SLOT-relief_four_private_nets-3",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "BING",
+          "fish_ids": [
+            "F3"
+          ],
+          "target": "N3",
+          "box_id": "PLANNED-BOX-SLOT-relief_four_private_nets-3",
+          "household": "BING"
+        },
+        {
+          "allowed": true,
+          "case_id": "SLOT-relief_four_private_nets-4",
+          "reason_code": "OK",
+          "reason": "identity, mandate, receipt and compartment all match",
+          "owner": "DING",
+          "fish_ids": [
+            "F4"
+          ],
+          "target": "N4",
+          "box_id": "PLANNED-BOX-SLOT-relief_four_private_nets-4",
+          "household": "DING"
+        }
+      ],
+      "accepted_orders": [
+        "SLOT-relief_four_private_nets-1",
+        "SLOT-relief_four_private_nets-2",
+        "SLOT-relief_four_private_nets-3",
+        "SLOT-relief_four_private_nets-4"
+      ],
+      "held_orders": []
+    },
+    "lesson": "A whole-net transfer keeps household identity even when slots are tight; without the last two slots, BING and DING stay as a same-spot shared pair and their separate orders disappear from the acceptable pickup list."
+  },
+  "window_gap_new_boarding": {
+    "complete_window": {
+      "surviving_histories": 1,
+      "fog": [],
+      "decision": {
+        "allowed": true,
+        "case_id": "WINDOW-JIA",
+        "reason_code": "OK",
+        "reason": "identity, mandate, receipt and compartment all match",
+        "owner": "JIA",
+        "fish_ids": [
+          "F1"
+        ],
+        "target": "A",
+        "box_id": "PLANNED-BOX-WINDOW-JIA",
+        "household": "JIA"
+      }
+    },
+    "missed_one_window_segment": {
+      "surviving_histories": 3,
+      "fog": [
+        {
+          "fish": [
+            "F1",
+            "F2",
+            "F3"
+          ],
+          "lots": [
+            "A:",
+            "B:"
+          ]
+        }
+      ],
+      "decision": {
+        "allowed": false,
+        "case_id": "WINDOW-JIA",
+        "reason_code": "IDENTITY_MIXED",
+        "reason": "identity in A remains mixed; possible fish union=['F1', 'F2', 'F3']",
+        "owner": "JIA",
+        "fish_ids": [],
+        "target": "A",
+        "box_id": null,
+        "household": null
+      }
+    }
+  },
+  "ambiguous_group_transfers": {
+    "surviving_group_histories": 3,
+    "transfer_traces_per_history": [
+      2
+    ],
+    "possible_F1_locations": [
+      "OPEN:A",
+      "OPEN:C"
+    ],
+    "rule": "All combinations remain until a count or clearly read fish ID excludes them."
+  }
+}

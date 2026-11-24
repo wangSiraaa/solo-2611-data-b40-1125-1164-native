@@ -103,6 +103,13 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_fish_demo(args: argparse.Namespace) -> int:
+    from .fish_demo import main as fish_main
+
+    fish_main()
+    return 0
+
+
 def cmd_check(args: argparse.Namespace) -> int:
     body = _load(args.file)
     try:
@@ -138,6 +145,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("demo", help="write a demo and artifacts")
     p.set_defaults(func=cmd_demo)
+
+    p = sub.add_parser("fish-demo", help="run the ornamental-fish boarding scenario")
+    p.set_defaults(func=cmd_fish_demo)
 
     p = sub.add_parser("check", help="validate a body")
     p.add_argument("file")

@@ -40,6 +40,8 @@ from .revision import (
     preserve,
     replace,
 )
+from . import fishdesk as _fishdesk
+from .fishdesk import *
 
 __all__ = [
     "MODE_SINGLE",
@@ -75,3 +77,5 @@ __all__ = [
     "preserve",
     "replace",
 ]
+
+__all__.extend(_fishdesk.__all__)
