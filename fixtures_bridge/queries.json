@@ -1,0 +1,36 @@
+[
+  {
+    "id": "seg_nan",
+    "where": {
+      "eq": [
+        "segment",
+        "南桥段"
+      ]
+    },
+    "columns": [
+      "segment",
+      "beam_id",
+      "fragment",
+      "start_pos",
+      "widths",
+      "bark_edge"
+    ]
+  },
+  {
+    "id": "seg_bei",
+    "where": {
+      "eq": [
+        "segment",
+        "北桥段"
+      ]
+    },
+    "columns": [
+      "segment",
+      "beam_id",
+      "fragment",
+      "start_pos",
+      "widths",
+      "bark_edge"
+    ]
+  }
+]

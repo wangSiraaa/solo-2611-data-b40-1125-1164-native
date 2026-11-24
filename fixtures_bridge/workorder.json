@@ -1,0 +1,55 @@
+{
+  "events": [
+    "初建",
+    "重装"
+  ],
+  "beams": {
+    "甲": {
+      "material": "现砍现装",
+      "events": [
+        "初建",
+        "重装"
+      ]
+    },
+    "乙": {
+      "material": "库存旧材",
+      "events": [
+        "初建"
+      ]
+    },
+    "丙": {
+      "material": "现砍现装",
+      "events": [
+        "重装"
+      ]
+    },
+    "丁": {
+      "material": "库存旧材",
+      "events": [
+        "初建"
+      ]
+    }
+  },
+  "joints": [
+    {
+      "id": "J1",
+      "mortise_beam": "丁",
+      "tenon_beam": "甲",
+      "covers": {
+        "甲": [
+          8,
+          9
+        ]
+      },
+      "sealed_after": "初建"
+    }
+  ],
+  "permits": {
+    "view": {
+      "J1": true
+    },
+    "sample": {
+      "J1": false
+    }
+  }
+}

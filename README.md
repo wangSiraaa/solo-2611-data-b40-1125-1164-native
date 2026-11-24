@@ -91,3 +91,65 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 null_count 推理、NOT 的 UNKNOWN 处理与可证明 FALSE、OR 跨列不关联极值、
 无统计全保留、3VL 真值表、无命中不读投影列、过滤列复用、端到端与无剪枝
 全扫描一致、有/无统计结果相同而计划保守度不同、空结果 schema 与输出顺序。
+
+# 旧木桥展牌签发（bridgeplaque）
+
+在 pqscan 之上实现馆员可反复调用的展牌签发：馆员交来带桥段、梁号的署年
+申请，程序用 `pqscan.runner.run` 按桥段查地方案卷，读 results 中真正命中
+的 Parquet，把梁号、读数和来源行串成梁片证据，与随题自造的逐年宽窄参照带
+交叉对齐，再同工单的安装先后相核，按所选工艺签出标年或暂缓，并登记台账
+供凭展牌单号查回。
+
+```
+fixtures_bridge/         案卷 parquet（南/北桥段两个行组）、files/queries、
+                         逐年宽窄参照带 band.json、工单 workorder.json
+tools/make_bridge_fixtures.py  生成上述夹具（种子搜索 + 真实对齐代码验证）
+src/bridgeplaque/
+  band.py        参照带加载与对齐（漏读环 "?" 通配，输出仍成立的候选年）
+  beams.py       读命中 Parquet：断口两边接回同一根树（同树两片只算一份佐证）、
+                 被榫盖住的外圈从可引用读数中剔除
+  workorder.py   工单：安装事件、现砍现装/库存旧材、榫序、封榫、查看权/取样许可
+  solve.py       枚举 (梁->事件, 事件->年份)，输出全部仍成立的解
+  plaque.py      签发编排 + 台账（只增不改，凭单号查回）
+  demo.py        演示矩阵：单项证据/许可改动如何翻转同一次署年
+  cli.py         issue / lookup / demo
+docs/plaque_format.md    展牌单与台账格式
+tests/test_bridgeplaque.py（16 用例）
+```
+
+## 运行
+
+```bash
+PYTHONPATH=src .venv/bin/python tools/make_bridge_fixtures.py   # 重新生成夹具（可选，仓库已带）
+PYTHONPATH=src .venv/bin/python -m bridgeplaque.cli issue \
+    --fixtures fixtures_bridge --out out --segment 南桥段 --beam 甲 --craft noninvasive
+PYTHONPATH=src .venv/bin/python -m bridgeplaque.cli issue \
+    --fixtures fixtures_bridge --out out --segment 南桥段 --beam 乙   # 换一根梁再办一次
+PYTHONPATH=src .venv/bin/python -m bridgeplaque.cli lookup \
+    --ledger out/plaque_ledger.json --plaque-id PB-0001
+PYTHONPATH=src .venv/bin/python -m bridgeplaque.cli demo \
+    --fixtures fixtures_bridge --out out_demo
+```
+
+## 证据与签发规则
+
+- 同一片段断口两边的读数接回同一根树：相邻片段恰好空一环视为一处漏读，
+  以 `?` 占位；空超过一环或环位重叠则案卷矛盾、拒绝签发。同树两块碎片
+  只算一份佐证。
+- 带皮末轮在且可引用：砍伐年 = 末轮候选年之一（精确）；缺最外圈（或外圈
+  被榫盖住且无查看权/未取芯）：只能给砍伐年下界。
+- 现砍现装：安装年 = 砍伐年；库存旧材：安装年 ≥ 砍伐年——旧材末轮更早
+  也不能把安装提前（乙末轮 39 年与甲同次装入，桥不因此提前三年）。
+- 榫孔谁切穿谁定就位先后（卯先榫后）；封榫记录（J1 初建后封存）证明该梁
+  未在其后拆装，用来从候选年中排除另一次重装（甲的候选 42/54，54 即重装）。
+- 不动实物工艺不得引用被榫盖住的外圈，除非有查看权；或改微芯取样工艺，
+  在许可部位取一枚跨外圈的微芯定稿——该处榫痕后续观察机会永久损失，
+  全桥只许可开一处（台账登记后不得再开）。
+- 目标梁的 (事件, 年份) 唯一才签标年，否则暂缓并写明待补条件。
+
+## 演示矩阵（demo）
+
+基准（四梁、初建 42 年 -> 重装 54 年，恰十二年）签发“初建 42 年”；随后
+每次只改一项：甲-2 带皮末轮改缺（单片证据）、J1 改重装后封存（封榫年代）、
+收回 J1 查看权、微芯工艺下无/有取样许可、微芯再开第二处——前三项与无许可
+都翻转成暂缓，放开取样许可签回 42 年，再开第二处被“只可开一处”拒绝。
