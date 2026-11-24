@@ -265,6 +265,81 @@ No arbitrary type inference, no Arrow Union, no online database migration.
 
 ---
 
+## 4. Loose-piece box assembly (`extcontract.puzzle`)
+
+A second business on the same contract machinery: a small puzzle factory that
+receives loose pieces from different plate editions and must decide whether a
+station can hand over a complete box. Nothing here bypasses the three layers
+above — the workstation's photo interpretation records are ordinary writer
+rows ingested into an ordinary `IngestionLibrary`, and the packing desk only
+ever reads `publish()`.
+
+### Contracts and the piece-number rule
+
+`extcontract/puzzle/contracts.py` (with mirrored JSON in
+`materials/puzzle/`) declares the workstation writer contract `pw1` and the
+loose-piece ledger reader contract `pr1`, both over `TEXT` fields:
+
+`piece_id`, `face_zone`, `edge_n/s/e/w` (`T` tab / `B` blank / `F` flat),
+`orientations`, `photo_edition` (`X`, `Y`, or `X/Y` when the photograph can
+only establish "one of the two plates"), `back_code` (`X`/`Y`/`UNREAD`), plus
+reader-only `photo_id` / `note` with in-domain defaults. Re-photographing the
+*same physical piece* reuses its `piece_id` and arrives as a higher revision,
+so a back-code correction keeps the original piece number and the revision
+history / `sources` provenance stays attached.
+
+### Reasoning: exclusions and surviving whole-plate interpretations
+
+`reason(board, pieces, allow_rotation=...)` keeps, per physical piece, the
+cells it can occupy in each edition it could still be. Each candidate passes
+four exclusion rules: **face zone**, **rotation policy**, **flat-edges-on-
+borders**, and **adjacent tab/blank mating** (optionally seeded with
+already-recognised neighbour evidence via `known_neighbors`). An
+*interpretation* is one board edition plus a complete bijection tiling; a box
+is only promised when the buyer's named edition itself survives, and the
+no-peel cover below works for every still-possible physical outcome.
+
+### The one implemented delivery strategy: no peel, minimal spares
+
+The factory does **not** spend inspection quota reading back codes. Instead
+`minimum_cover` enumerates the joint outcomes of every back-paper-on piece and
+takes the union of the smallest ordered-edition tiling across outcomes: pieces
+that only rescue an alternative outcome ride in the same box as spares, with
+per-cell edge-mark selection notes, and every piece (spares included) counts
+against `weight_limit_pieces`. If no cover exists, or it exceeds the weight
+limit, `take_order` returns `SHORT` with an executable reason.
+
+### Order entry, contention and reconciliation
+
+```python
+from extcontract import IngestionLibrary
+from extcontract.puzzle import (
+    PackingDesk, OrderRequest, IngestionLibrary,
+    photo_writer_contract, photo_reader_contract, photo_file, photo_row,
+)
+
+library = IngestionLibrary(photo_reader_contract())
+library.ingest(photo_writer_contract(), photo_file("batch", [ ... rows ... ]))
+desk = PackingDesk(library)
+result = desk.take_order(OrderRequest.parse({
+    "order_id": "O1", "board": {...}, "edition": "X",
+    "allow_rotation": False, "weight_limit_pieces": 2,
+}))
+result.status            # "PROMISED" | "SHORT"
+desk.seal_box(result.box.box_no)
+desk.box(box_no).piece_basis   # per packed piece: revision + full sources
+desk.physical_ledger()         # sealed/reserved/available piece account
+```
+
+One physical piece cannot appear in two boxes: promised (and sealed) boxes
+reserve their pieces, so a competing order that needs the same piece numbers is
+decided against the remaining stock and comes back `SHORT`. Bounded to six
+cells and twelve physical pieces. The mandated two-cell scenarios and a
+rotation-required 2×2 board are covered by `tests/test_puzzle_*.py`; run the
+story with `python3.11 examples/run_puzzle_demo.py`.
+
+---
+
 ## Templates for the mandated scenario
 
 `fixtures/bootstrap.json`, `fixtures/F-BAD.json`, `fixtures/F-NEW.json` are the
@@ -289,7 +364,12 @@ extcontract/
   adapter.py    per-row validation + plan application -> reader-records/v1
   ingest.py     revision-aware, atomic, idempotent target state
   cli.py        compat / adapt / ingest commands
-examples/run_745_demo.py   end-to-end scenario against the real client
-fixtures/                  bootstrap, F-BAD, F-NEW documents
-tests/                     compat, adapter, ingest, fixtures, scale
+  puzzle/       loose-piece box-assembly service (contracts, board, pieces,
+                reasoning, packing desk, workstation ingest helpers)
+examples/run_745_demo.py     end-to-end scenario against the real client
+examples/run_puzzle_demo.py  loose-piece order, contention, correction story
+fixtures/                    bootstrap, F-BAD, F-NEW documents
+materials/745/               original 745 contracts, input and reader client
+materials/puzzle/            pw1/pr1 photo-interpretation contracts
+tests/                       compat, adapter, ingest, fixtures, scale, puzzle
 ```

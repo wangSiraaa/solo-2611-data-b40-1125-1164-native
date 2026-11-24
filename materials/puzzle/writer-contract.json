@@ -1,0 +1,14 @@
+{
+  "version": "pw1",
+  "fields": [
+    {"field_id": "piece_id", "name": "piece number", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "face_zone", "name": "face pattern zone", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "edge_n", "name": "north edge mark", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "edge_s", "name": "south edge mark", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "edge_e", "name": "east edge mark", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "edge_w", "name": "west edge mark", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "orientations", "name": "allowed orientations", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "photo_edition", "name": "edition established by the photograph", "type": {"kind": "TEXT"}, "nullable": false},
+    {"field_id": "back_code", "name": "back paper code", "type": {"kind": "TEXT"}, "nullable": false}
+  ]
+}
