@@ -1,0 +1,2669 @@
+{
+  "witness": {
+    "ok": {
+      "order_id": "SR-见证",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 7,
+      "title": "甲段清晨腾街单（装车见证分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "executable method: NONE"
+      ],
+      "evaluation": {
+        "selected_method": "NONE",
+        "methods": {
+          "NONE": {
+            "method": "NONE",
+            "guaranteed": true,
+            "worlds": [
+              {
+                "label": "W0",
+                "landing": {},
+                "feasible": true,
+                "pass": true,
+                "remaining_range": {
+                  "甲": [
+                    0,
+                    0
+                  ],
+                  "乙": [
+                    4,
+                    4
+                  ],
+                  "丙": [
+                    0,
+                    0
+                  ]
+                },
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "final": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 0
+                    },
+                    "pass": true
+                  }
+                ]
+              }
+            ],
+            "blocker": null,
+            "safe_segments": [
+              "甲",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "甲"
+              ],
+              [
+                "丙"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "甲"
+        ],
+        "deliverable_stalls": [
+          "摊-甲"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "NONE",
+        "permit_ids": null,
+        "no_dump_order_id": null,
+        "final_trip_id": null,
+        "planned_trip_id": null,
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": null,
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": []
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [],
+      "deliverable_segments": [
+        "甲"
+      ],
+      "deliverable_stalls": [
+        "摊-甲"
+      ],
+      "critical_actions": []
+    },
+    "replaced": {
+      "order_id": "SR-见证",
+      "kind": "RELEASE",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 7,
+      "title": "甲段清晨腾街单（装车见证分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "NONE: REMAINING_ABOVE_LINE"
+      ],
+      "evaluation": {
+        "selected_method": null,
+        "methods": {
+          "NONE": {
+            "method": "NONE",
+            "guaranteed": false,
+            "worlds": [
+              {
+                "label": "W0",
+                "landing": {},
+                "feasible": true,
+                "pass": false,
+                "remaining_range": {
+                  "甲": [
+                    4,
+                    4
+                  ],
+                  "乙": [
+                    0,
+                    0
+                  ],
+                  "丙": [
+                    0,
+                    0
+                  ]
+                },
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "final": {
+                      "甲": 4,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": false
+                  }
+                ]
+              }
+            ],
+            "blocker": "REMAINING_ABOVE_LINE",
+            "safe_segments": [
+              "乙",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "乙",
+                "丙"
+              ]
+            ]
+          }
+        },
+        "partial_candidates": [
+          {
+            "method": "NONE",
+            "segments": [
+              "乙",
+              "丙"
+            ],
+            "stalls": [
+              "摊-乙",
+              "摊-丙"
+            ],
+            "length": 2
+          }
+        ],
+        "recommended_partial": {
+          "method": "NONE",
+          "segments": [
+            "乙",
+            "丙"
+          ],
+          "stalls": [
+            "摊-乙",
+            "摊-丙"
+          ],
+          "length": 2
+        },
+        "robust_safe_segments": [
+          "乙",
+          "丙"
+        ],
+        "robust_safe_blocks": [
+          [
+            "乙",
+            "丙"
+          ]
+        ],
+        "robust_safe_stalls": [
+          "摊-乙",
+          "摊-丙"
+        ],
+        "deliverable_segments": [
+          "乙",
+          "丙"
+        ],
+        "deliverable_stalls": [
+          "摊-乙",
+          "摊-丙"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "NONE",
+        "permit_ids": null,
+        "no_dump_order_id": null,
+        "final_trip_id": null,
+        "planned_trip_id": null,
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": null,
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": []
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                1,
+                1
+              ],
+              "乙": [
+                5,
+                5
+              ]
+            }
+          }
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [],
+      "deliverable_segments": [
+        "乙",
+        "丙"
+      ],
+      "deliverable_stalls": [
+        "摊-乙",
+        "摊-丙"
+      ],
+      "recommended_partial": {
+        "method": "NONE",
+        "segments": [
+          "乙",
+          "丙"
+        ],
+        "stalls": [
+          "摊-乙",
+          "摊-丙"
+        ],
+        "length": 2
+      },
+      "critical_actions": []
+    }
+  },
+  "ban": {
+    "signed": {
+      "order_id": "SR-禁倒",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 13,
+      "title": "甲段清晨腾街单（禁倒改道分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [
+        "丙位-1kg"
+      ],
+      "reasons": [
+        "executable method: BAN_REDIRECT"
+      ],
+      "evaluation": {
+        "selected_method": "BAN_REDIRECT",
+        "methods": {
+          "BAN_REDIRECT": {
+            "method": "BAN_REDIRECT",
+            "guaranteed": true,
+            "slot_ids": [
+              "丙位-1kg"
+            ],
+            "worlds": [
+              {
+                "label": "W0.ST-暂存=丙",
+                "landing": {
+                  "ST-暂存": "丙"
+                },
+                "feasible": true,
+                "pass": true,
+                "remaining_range": {
+                  "甲": [
+                    0,
+                    0
+                  ],
+                  "乙": [
+                    4,
+                    4
+                  ],
+                  "丙": [
+                    1,
+                    1
+                  ]
+                },
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "final": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 1
+                    },
+                    "pass": true
+                  }
+                ]
+              }
+            ],
+            "blocker": null,
+            "safe_segments": [
+              "甲"
+            ],
+            "safe_blocks": [
+              [
+                "甲"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "甲"
+        ],
+        "deliverable_stalls": [
+          "摊-甲"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "BAN_REDIRECT",
+        "permit_ids": [
+          "ST-暂存"
+        ],
+        "no_dump_order_id": "ND-禁倒甲",
+        "final_trip_id": null,
+        "planned_trip_id": null,
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": null,
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-暂存"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        }
+      ],
+      "granted_slot_details": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "VCH-ND-禁倒甲",
+              "slot_id": "丙位-1kg",
+              "holder": "邻队",
+              "amount": 1,
+              "order_id": "ND-禁倒甲",
+              "prior": false,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-ND-禁倒甲",
+              "note": "alternative slot delivered with no-dump order"
+            }
+          ]
+        }
+      ],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "VCH-ND-禁倒甲",
+              "slot_id": "丙位-1kg",
+              "holder": "邻队",
+              "amount": 1,
+              "order_id": "ND-禁倒甲",
+              "prior": false,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-ND-禁倒甲",
+              "note": "alternative slot delivered with no-dump order"
+            }
+          ]
+        }
+      ],
+      "deliverable_segments": [
+        "甲"
+      ],
+      "deliverable_stalls": [
+        "摊-甲"
+      ],
+      "critical_actions": [
+        {
+          "type": "NO_DUMP",
+          "order_id": "ND-禁倒甲",
+          "active": true,
+          "protected_segments": [
+            "甲"
+          ],
+          "destination_segment": "丙",
+          "slot_id": "丙位-1kg"
+        }
+      ]
+    },
+    "revoked": {
+      "order_id": "SR-禁倒",
+      "kind": "RELEASE",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 14,
+      "title": "甲段清晨腾街单（禁倒改道分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [
+        "丙位-1kg"
+      ],
+      "reasons": [
+        "BAN_REDIRECT: NO_ACTIVE_NO_DUMP_OR_SLOT"
+      ],
+      "evaluation": {
+        "selected_method": null,
+        "methods": {
+          "BAN_REDIRECT": {
+            "method": "BAN_REDIRECT",
+            "guaranteed": false,
+            "blocker": "NO_ACTIVE_NO_DUMP_OR_SLOT",
+            "slot_ids": [
+              "丙位-1kg"
+            ],
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          }
+        },
+        "partial_candidates": [],
+        "recommended_partial": null,
+        "robust_safe_segments": [],
+        "robust_safe_blocks": [],
+        "robust_safe_stalls": []
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "BAN_REDIRECT",
+        "permit_ids": [
+          "ST-暂存"
+        ],
+        "no_dump_order_id": "ND-禁倒甲",
+        "final_trip_id": null,
+        "planned_trip_id": null,
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": null,
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-暂存"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        }
+      ],
+      "granted_slot_details": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "VCH-ND-禁倒甲",
+              "slot_id": "丙位-1kg",
+              "holder": "邻队",
+              "amount": 1,
+              "order_id": "ND-禁倒甲",
+              "prior": false,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-ND-禁倒甲",
+              "note": "alternative slot delivered with no-dump order"
+            }
+          ]
+        }
+      ],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "VCH-ND-禁倒甲",
+              "slot_id": "丙位-1kg",
+              "holder": "邻队",
+              "amount": 1,
+              "order_id": "ND-禁倒甲",
+              "prior": false,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-ND-禁倒甲",
+              "note": "alternative slot delivered with no-dump order"
+            }
+          ]
+        }
+      ],
+      "deliverable_segments": [],
+      "deliverable_stalls": [],
+      "recommended_partial": null,
+      "critical_actions": [
+        {
+          "type": "NO_DUMP",
+          "order_id": "ND-禁倒甲",
+          "active": false,
+          "protected_segments": [
+            "甲"
+          ],
+          "destination_segment": "丙",
+          "slot_id": "丙位-1kg"
+        }
+      ]
+    }
+  },
+  "route": {
+    "ok": {
+      "order_id": "SR-岔口",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 11,
+      "title": "甲段清晨腾街单（现场观测分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001",
+        "TRIP0002"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "executable method: OBSERVED_FORK"
+      ],
+      "evaluation": {
+        "selected_method": "OBSERVED_FORK",
+        "methods": {
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": true,
+            "blocker": null,
+            "trip_ids": [],
+            "planned_trip_id": "TRIP0002",
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-暂存=甲",
+                "landing": {
+                  "ST-暂存": "甲"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "甲",
+                "point": {
+                  "point_id": "LP-甲",
+                  "segment": "甲",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 4,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "甲": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-甲",
+                    "destination_segment": "甲",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-暂存=丙",
+                "landing": {
+                  "ST-暂存": "丙"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "丙",
+                "point": null,
+                "point_reachable": false,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 1
+                    },
+                    "loaded": {},
+                    "final": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 1
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": null,
+                    "destination_segment": null,
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [
+              "甲"
+            ],
+            "safe_blocks": [
+              [
+                "甲"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "甲"
+        ],
+        "deliverable_stalls": [
+          "摊-甲"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "OBSERVED_FORK",
+        "permit_ids": [
+          "ST-暂存"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0002",
+        "planned_trip_id": "TRIP0002",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-岔口",
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-暂存"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "trip_id": "TRIP0002",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [],
+      "deliverable_segments": [
+        "甲"
+      ],
+      "deliverable_stalls": [
+        "摊-甲"
+      ],
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-岔口",
+          "before_fork": true,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0002",
+          "capacity": 1,
+          "forecast_segment": null,
+          "one_way_no_return": true
+        }
+      ]
+    },
+    "point_removed": {
+      "order_id": "SR-岔口",
+      "kind": "RELEASE",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 12,
+      "title": "甲段清晨腾街单（现场观测分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001",
+        "TRIP0002"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "OBSERVED_FORK: ROUTE_CANNOT_COVER_EVERY_WORLD"
+      ],
+      "evaluation": {
+        "selected_method": null,
+        "methods": {
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": false,
+            "blocker": "ROUTE_CANNOT_COVER_EVERY_WORLD",
+            "trip_ids": [],
+            "planned_trip_id": "TRIP0002",
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-暂存=甲",
+                "landing": {
+                  "ST-暂存": "甲"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "甲",
+                "point": {
+                  "point_id": "LP-甲",
+                  "segment": "甲",
+                  "fork_id": "F1",
+                  "reachable": false,
+                  "explicit_reachable": false,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": false,
+                "pass": false,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 4,
+                      "丙": 0
+                    },
+                    "loaded": {},
+                    "final": {
+                      "甲": 1,
+                      "乙": 4,
+                      "丙": 0
+                    },
+                    "pass": false,
+                    "blocker": "LOADING_POINT_UNREACHABLE",
+                    "destination_point": "LP-甲",
+                    "destination_segment": "甲",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-暂存=丙",
+                "landing": {
+                  "ST-暂存": "丙"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "丙",
+                "point": null,
+                "point_reachable": false,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 1
+                    },
+                    "loaded": {},
+                    "final": {
+                      "甲": 0,
+                      "乙": 4,
+                      "丙": 1
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": null,
+                    "destination_segment": null,
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [],
+            "safe_blocks": []
+          }
+        },
+        "partial_candidates": [],
+        "recommended_partial": null,
+        "robust_safe_segments": [],
+        "robust_safe_blocks": [],
+        "robust_safe_stalls": []
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "OBSERVED_FORK",
+        "permit_ids": [
+          "ST-暂存"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0002",
+        "planned_trip_id": "TRIP0002",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-岔口",
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-暂存"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "trip_id": "TRIP0002",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [],
+      "deliverable_segments": [],
+      "deliverable_stalls": [],
+      "recommended_partial": null,
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-岔口",
+          "before_fork": true,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0002",
+          "capacity": 1,
+          "forecast_segment": null,
+          "one_way_no_return": true
+        }
+      ]
+    },
+    "observation_late": {
+      "order_id": "SR-岔口",
+      "kind": "RELEASE",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 11,
+      "title": "甲段清晨腾街单（现场观测分支）",
+      "segments": [
+        "甲"
+      ],
+      "stalls": [
+        "摊-甲"
+      ],
+      "snow_lines": {
+        "甲": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001",
+        "TRIP0002"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "OBSERVED_FORK: OBSERVATION_AFTER_FORK"
+      ],
+      "evaluation": {
+        "selected_method": null,
+        "methods": {
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": false,
+            "blocker": "OBSERVATION_AFTER_FORK",
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          }
+        },
+        "partial_candidates": [],
+        "recommended_partial": null,
+        "robust_safe_segments": [],
+        "robust_safe_blocks": [],
+        "robust_safe_stalls": []
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "OBSERVED_FORK",
+        "permit_ids": [
+          "ST-暂存"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0002",
+        "planned_trip_id": "TRIP0002",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-岔口",
+        "observation_before_fork": true,
+        "forecast_segment": null,
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-暂存"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "net_lo": 6,
+          "net_hi": 6,
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "stops": [],
+          "net": [
+            6,
+            6
+          ],
+          "accounting": {
+            "net": [
+              6,
+              6
+            ],
+            "segments": {
+              "甲": [
+                5,
+                5
+              ],
+              "乙": [
+                1,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "trip_id": "TRIP0002",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [],
+      "deliverable_segments": [],
+      "deliverable_stalls": [],
+      "recommended_partial": null,
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-岔口",
+          "before_fork": false,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0002",
+          "capacity": 1,
+          "forecast_segment": null,
+          "one_way_no_return": true
+        }
+      ]
+    }
+  },
+  "fork_base": {
+    "order": {
+      "order_id": "SR-早市",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 10,
+      "title": "甲乙两段同时无雪早市单",
+      "segments": [
+        "甲",
+        "乙"
+      ],
+      "stalls": [
+        "摊-甲",
+        "摊-乙"
+      ],
+      "snow_lines": {
+        "甲": 1.0,
+        "乙": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "executable method: OBSERVED_FORK"
+      ],
+      "evaluation": {
+        "selected_method": "OBSERVED_FORK",
+        "methods": {
+          "BAN_REDIRECT": {
+            "method": "BAN_REDIRECT",
+            "guaranteed": false,
+            "blocker": "NO_ACTIVE_NO_DUMP_OR_SLOT",
+            "slot_ids": [],
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          },
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": true,
+            "blocker": null,
+            "trip_ids": [],
+            "planned_trip_id": "TRIP0001",
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-邻队=甲",
+                "landing": {
+                  "ST-邻队": "甲"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "甲",
+                "point": {
+                  "point_id": "LP-甲",
+                  "segment": "甲",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 3,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "甲": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-甲",
+                    "destination_segment": "甲",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-邻队=乙",
+                "landing": {
+                  "ST-邻队": "乙"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 1,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "乙": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [
+              "甲",
+              "乙",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "甲",
+                "乙",
+                "丙"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "甲",
+          "乙"
+        ],
+        "deliverable_stalls": [
+          "摊-甲",
+          "摊-乙"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "AUTO",
+        "permit_ids": [
+          "ST-邻队"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0001",
+        "planned_trip_id": "TRIP0001",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-落堆",
+        "observation_before_fork": true,
+        "forecast_segment": "乙",
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-邻队"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 0,
+          "available": 1,
+          "leases": []
+        }
+      ],
+      "deliverable_segments": [
+        "甲",
+        "乙"
+      ],
+      "deliverable_stalls": [
+        "摊-甲",
+        "摊-乙"
+      ],
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-落堆",
+          "before_fork": true,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0001",
+          "capacity": 1,
+          "forecast_segment": "乙",
+          "one_way_no_return": true
+        }
+      ]
+    },
+    "replays": [
+      {
+        "邻队落点": "甲",
+        "决策依据": "FIELD_OBSERVATION_BEFORE_FORK",
+        "末车去向": "甲",
+        "装车": {
+          "甲": 1
+        },
+        "最终雪量": {
+          "甲": 0,
+          "乙": 0,
+          "丙": 0
+        },
+        "甲乙可同时开市": true,
+        "可开市连续块": [
+          [
+            "甲",
+            "乙",
+            "丙"
+          ]
+        ]
+      },
+      {
+        "邻队落点": "乙",
+        "决策依据": "FIELD_OBSERVATION_BEFORE_FORK",
+        "末车去向": "乙",
+        "装车": {
+          "乙": 1
+        },
+        "最终雪量": {
+          "甲": 0,
+          "乙": 0,
+          "丙": 0
+        },
+        "甲乙可同时开市": true,
+        "可开市连续块": [
+          [
+            "甲",
+            "乙",
+            "丙"
+          ]
+        ]
+      }
+    ]
+  },
+  "c_rented": {
+    "ban": {
+      "order_id": "ND-前夜",
+      "kind": "NO_DUMP",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 10,
+      "title": "前夜禁倒单",
+      "segments": [
+        "甲",
+        "乙"
+      ],
+      "stalls": [],
+      "snow_lines": {},
+      "referenced_trips": [],
+      "granted_slots": [
+        "丙位-1kg"
+      ],
+      "reasons": [
+        "slot 丙位-1kg has 0kg available, cannot sign 1kg for 邻队"
+      ],
+      "evaluation": {},
+      "payload": {
+        "permit_id": "ST-邻队",
+        "protected_segments": [
+          "甲",
+          "乙"
+        ],
+        "destination_segment": "丙",
+        "slot_id": "丙位-1kg",
+        "amount": 1,
+        "holder": "邻队"
+      },
+      "trip_details": [],
+      "granted_slot_details": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "LSE-别人",
+              "slot_id": "丙位-1kg",
+              "holder": "别人的先租凭据",
+              "amount": 1,
+              "order_id": null,
+              "prior": true,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-先租",
+              "note": "already rented before tonight"
+            }
+          ]
+        }
+      ],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "LSE-别人",
+              "slot_id": "丙位-1kg",
+              "holder": "别人的先租凭据",
+              "amount": 1,
+              "order_id": null,
+              "prior": true,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-先租",
+              "note": "already rented before tonight"
+            }
+          ]
+        }
+      ]
+    },
+    "release": {
+      "order_id": "SR-早市",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 12,
+      "title": "甲乙两段同时无雪早市单",
+      "segments": [
+        "甲",
+        "乙"
+      ],
+      "stalls": [
+        "摊-甲",
+        "摊-乙"
+      ],
+      "snow_lines": {
+        "甲": 1.0,
+        "乙": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "executable method: OBSERVED_FORK"
+      ],
+      "evaluation": {
+        "selected_method": "OBSERVED_FORK",
+        "methods": {
+          "BAN_REDIRECT": {
+            "method": "BAN_REDIRECT",
+            "guaranteed": false,
+            "blocker": "NO_ACTIVE_NO_DUMP_OR_SLOT",
+            "slot_ids": [],
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          },
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": true,
+            "blocker": null,
+            "trip_ids": [],
+            "planned_trip_id": "TRIP0001",
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-邻队=甲",
+                "landing": {
+                  "ST-邻队": "甲"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "甲",
+                "point": {
+                  "point_id": "LP-甲",
+                  "segment": "甲",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 3,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "甲": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-甲",
+                    "destination_segment": "甲",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-邻队=乙",
+                "landing": {
+                  "ST-邻队": "乙"
+                },
+                "feasible": true,
+                "observed": true,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 1,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "乙": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [
+              "甲",
+              "乙",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "甲",
+                "乙",
+                "丙"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "甲",
+          "乙"
+        ],
+        "deliverable_stalls": [
+          "摊-甲",
+          "摊-乙"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "AUTO",
+        "permit_ids": [
+          "ST-邻队"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0001",
+        "planned_trip_id": "TRIP0001",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-落堆",
+        "observation_before_fork": true,
+        "forecast_segment": "乙",
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-邻队"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 1,
+          "available": 0,
+          "leases": [
+            {
+              "lease_id": "LSE-别人",
+              "slot_id": "丙位-1kg",
+              "holder": "别人的先租凭据",
+              "amount": 1,
+              "order_id": null,
+              "prior": true,
+              "active": true,
+              "signed": true,
+              "receipt_id": "RCV-先租",
+              "note": "already rented before tonight"
+            }
+          ]
+        }
+      ],
+      "deliverable_segments": [
+        "甲",
+        "乙"
+      ],
+      "deliverable_stalls": [
+        "摊-甲",
+        "摊-乙"
+      ],
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-落堆",
+          "before_fork": true,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0001",
+          "capacity": 1,
+          "forecast_segment": "乙",
+          "one_way_no_return": true
+        }
+      ]
+    },
+    "replays": [
+      {
+        "邻队落点": "甲",
+        "末车去向": "甲",
+        "甲乙可同时开市": true,
+        "连续块": [
+          [
+            "甲",
+            "乙",
+            "丙"
+          ]
+        ]
+      },
+      {
+        "邻队落点": "乙",
+        "末车去向": "乙",
+        "甲乙可同时开市": true,
+        "连续块": [
+          [
+            "甲",
+            "乙",
+            "丙"
+          ]
+        ]
+      }
+    ]
+  },
+  "late_observation": {
+    "original": {
+      "order_id": "SR-早市",
+      "kind": "RELEASE",
+      "status": "REJECTED",
+      "accepted": false,
+      "created_step": 10,
+      "title": "甲乙两段同时无雪早市单",
+      "segments": [
+        "甲",
+        "乙"
+      ],
+      "stalls": [
+        "摊-甲",
+        "摊-乙"
+      ],
+      "snow_lines": {
+        "甲": 1.0,
+        "乙": 1.0
+      },
+      "referenced_trips": [
+        "TRIP0001"
+      ],
+      "granted_slots": [],
+      "reasons": [
+        "BAN_REDIRECT: NO_ACTIVE_NO_DUMP_OR_SLOT",
+        "OBSERVED_FORK: OBSERVATION_AFTER_FORK",
+        "FIXED_ROUTE: ROUTE_CANNOT_COVER_EVERY_WORLD",
+        "NONE: REMAINING_ABOVE_LINE"
+      ],
+      "evaluation": {
+        "selected_method": null,
+        "methods": {
+          "BAN_REDIRECT": {
+            "method": "BAN_REDIRECT",
+            "guaranteed": false,
+            "blocker": "NO_ACTIVE_NO_DUMP_OR_SLOT",
+            "slot_ids": [],
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          },
+          "OBSERVED_FORK": {
+            "method": "OBSERVED_FORK",
+            "guaranteed": false,
+            "blocker": "OBSERVATION_AFTER_FORK",
+            "worlds": [],
+            "safe_segments": [],
+            "safe_blocks": []
+          },
+          "FIXED_ROUTE": {
+            "method": "FIXED_ROUTE",
+            "guaranteed": false,
+            "blocker": "ROUTE_CANNOT_COVER_EVERY_WORLD",
+            "trip_ids": [],
+            "planned_trip_id": "TRIP0001",
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-邻队=甲",
+                "landing": {
+                  "ST-邻队": "甲"
+                },
+                "feasible": true,
+                "observed": false,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": false,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "loaded": {},
+                    "final": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": false,
+                    "blocker": "WRONG_FORK_SIDE",
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-邻队=乙",
+                "landing": {
+                  "ST-邻队": "乙"
+                },
+                "feasible": true,
+                "observed": false,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 1,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "乙": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [
+              "乙",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "乙",
+                "丙"
+              ]
+            ]
+          },
+          "NONE": {
+            "method": "NONE",
+            "guaranteed": false,
+            "worlds": [
+              {
+                "label": "W0.ST-邻队=甲",
+                "landing": {
+                  "ST-邻队": "甲"
+                },
+                "feasible": true,
+                "pass": false,
+                "remaining_range": {
+                  "甲": [
+                    1,
+                    1
+                  ],
+                  "乙": [
+                    0,
+                    0
+                  ],
+                  "丙": [
+                    0,
+                    0
+                  ]
+                },
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "final": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": false
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-邻队=乙",
+                "landing": {
+                  "ST-邻队": "乙"
+                },
+                "feasible": true,
+                "pass": false,
+                "remaining_range": {
+                  "甲": [
+                    0,
+                    0
+                  ],
+                  "乙": [
+                    1,
+                    1
+                  ],
+                  "丙": [
+                    0,
+                    0
+                  ]
+                },
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "final": {
+                      "甲": 0,
+                      "乙": 1,
+                      "丙": 0
+                    },
+                    "pass": false
+                  }
+                ]
+              }
+            ],
+            "blocker": "REMAINING_ABOVE_LINE",
+            "safe_segments": [
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "丙"
+              ]
+            ]
+          }
+        },
+        "partial_candidates": [
+          {
+            "method": "FIXED_ROUTE",
+            "segments": [
+              "乙",
+              "丙"
+            ],
+            "stalls": [
+              "摊-乙",
+              "摊-丙"
+            ],
+            "length": 2
+          },
+          {
+            "method": "NONE",
+            "segments": [
+              "丙"
+            ],
+            "stalls": [
+              "摊-丙"
+            ],
+            "length": 1
+          }
+        ],
+        "recommended_partial": {
+          "method": "FIXED_ROUTE",
+          "segments": [
+            "乙",
+            "丙"
+          ],
+          "stalls": [
+            "摊-乙",
+            "摊-丙"
+          ],
+          "length": 2
+        },
+        "robust_safe_segments": [
+          "丙"
+        ],
+        "robust_safe_blocks": [
+          [
+            "丙"
+          ]
+        ],
+        "robust_safe_stalls": [
+          "摊-丙"
+        ],
+        "deliverable_segments": [
+          "乙",
+          "丙"
+        ],
+        "deliverable_stalls": [
+          "摊-乙",
+          "摊-丙"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "AUTO",
+        "permit_ids": [
+          "ST-邻队"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": "TRIP0001",
+        "planned_trip_id": "TRIP0001",
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": "OBS-落堆",
+        "observation_before_fork": true,
+        "forecast_segment": "乙",
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-邻队"
+        ]
+      },
+      "trip_details": [
+        {
+          "trip_id": "TRIP0001",
+          "status": "CONFIRMED",
+          "kind": "UNLOAD",
+          "source": "Warehouse",
+          "net": [
+            1,
+            1
+          ],
+          "accounting_status": "quoted_before_segment_allocation"
+        }
+      ],
+      "granted_slot_details": [],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 0,
+          "available": 1,
+          "leases": []
+        }
+      ],
+      "deliverable_segments": [
+        "乙",
+        "丙"
+      ],
+      "deliverable_stalls": [
+        "摊-乙",
+        "摊-丙"
+      ],
+      "recommended_partial": {
+        "method": "FIXED_ROUTE",
+        "segments": [
+          "乙",
+          "丙"
+        ],
+        "stalls": [
+          "摊-乙",
+          "摊-丙"
+        ],
+        "length": 2
+      },
+      "critical_actions": [
+        {
+          "type": "FIELD_OBSERVATION_BEFORE_FORK",
+          "observation_id": "OBS-落堆",
+          "before_fork": false,
+          "authoritative": true
+        },
+        {
+          "type": "ONE_WAY_FORK_DISPATCH",
+          "trip_id": "TRIP0001",
+          "capacity": 1,
+          "forecast_segment": "乙",
+          "one_way_no_return": true
+        }
+      ]
+    },
+    "reduced": {
+      "order_id": "SR-乙丙",
+      "kind": "RELEASE",
+      "status": "ACCEPTED",
+      "accepted": true,
+      "created_step": 11,
+      "title": "接班人按固定乙侧路线改开乙丙两段",
+      "segments": [
+        "乙",
+        "丙"
+      ],
+      "stalls": [
+        "摊-乙",
+        "摊-丙"
+      ],
+      "snow_lines": {
+        "乙": 1.0,
+        "丙": 1.0
+      },
+      "referenced_trips": [],
+      "granted_slots": [],
+      "reasons": [
+        "executable method: FIXED_ROUTE"
+      ],
+      "evaluation": {
+        "selected_method": "FIXED_ROUTE",
+        "methods": {
+          "FIXED_ROUTE": {
+            "method": "FIXED_ROUTE",
+            "guaranteed": true,
+            "blocker": null,
+            "trip_ids": [],
+            "planned_trip_id": null,
+            "slot_ids": [],
+            "worlds": [
+              {
+                "label": "W0.ST-邻队=甲",
+                "landing": {
+                  "ST-邻队": "甲"
+                },
+                "feasible": true,
+                "observed": false,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "loaded": {},
+                    "final": {
+                      "甲": 1,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              },
+              {
+                "label": "W0.ST-邻队=乙",
+                "landing": {
+                  "ST-邻队": "乙"
+                },
+                "feasible": true,
+                "observed": false,
+                "target_segment": "乙",
+                "point": {
+                  "point_id": "LP-乙",
+                  "segment": "乙",
+                  "fork_id": "F1",
+                  "reachable": true,
+                  "explicit_reachable": true,
+                  "arrival_time": 4,
+                  "closure_time": 5,
+                  "one_way_no_return": true,
+                  "note": ""
+                },
+                "point_reachable": true,
+                "pass": true,
+                "atomic_worlds": [
+                  {
+                    "world_id": 0,
+                    "before": {
+                      "甲": 0,
+                      "乙": 1,
+                      "丙": 0
+                    },
+                    "loaded": {
+                      "乙": 1
+                    },
+                    "final": {
+                      "甲": 0,
+                      "乙": 0,
+                      "丙": 0
+                    },
+                    "pass": true,
+                    "blocker": null,
+                    "destination_point": "LP-乙",
+                    "destination_segment": "乙",
+                    "one_way_no_return": true
+                  }
+                ]
+              }
+            ],
+            "safe_segments": [
+              "乙",
+              "丙"
+            ],
+            "safe_blocks": [
+              [
+                "乙",
+                "丙"
+              ]
+            ]
+          }
+        },
+        "deliverable_segments": [
+          "乙",
+          "丙"
+        ],
+        "deliverable_stalls": [
+          "摊-乙",
+          "摊-丙"
+        ]
+      },
+      "payload": {
+        "vendor_id": null,
+        "method": "FIXED_ROUTE",
+        "permit_ids": [
+          "ST-邻队"
+        ],
+        "no_dump_order_id": null,
+        "final_trip_id": null,
+        "planned_trip_id": null,
+        "capacity": 1,
+        "fork_id": "F1",
+        "observation_id": null,
+        "observation_before_fork": true,
+        "forecast_segment": "乙",
+        "point_map": {},
+        "resolved_permit_ids": [
+          "ST-邻队"
+        ]
+      },
+      "trip_details": [],
+      "granted_slot_details": [],
+      "slot_ledger": [
+        {
+          "slot_id": "丙位-1kg",
+          "segment_id": "丙",
+          "capacity": 1,
+          "reserved": 0,
+          "available": 1,
+          "leases": []
+        }
+      ],
+      "deliverable_segments": [
+        "乙",
+        "丙"
+      ],
+      "deliverable_stalls": [
+        "摊-乙",
+        "摊-丙"
+      ],
+      "critical_actions": []
+    },
+    "replays": [
+      {
+        "实况": "旧预计表碰巧正确",
+        "邻队落点": "乙",
+        "末车去向": "乙",
+        "甲乙同时开市": true,
+        "连续块": [
+          [
+            "甲",
+            "乙",
+            "丙"
+          ]
+        ]
+      },
+      {
+        "实况": "预计表错误且无法返回",
+        "邻队落点": "甲",
+        "末车去向": "乙",
+        "甲乙同时开市": false,
+        "阻滞": "WRONG_FORK_SIDE",
+        "最终雪量": {
+          "甲": 1,
+          "乙": 0,
+          "丙": 0
+        },
+        "可开市连续块": [
+          [
+            "乙",
+            "丙"
+          ]
+        ]
+      }
+    ]
+  },
+  "signed_ban": {
+    "order_id": "SR-早市",
+    "kind": "RELEASE",
+    "status": "ACCEPTED",
+    "accepted": true,
+    "created_step": 13,
+    "title": "甲乙两段同时无雪早市单",
+    "segments": [
+      "甲",
+      "乙"
+    ],
+    "stalls": [
+      "摊-甲",
+      "摊-乙"
+    ],
+    "snow_lines": {
+      "甲": 1.0,
+      "乙": 1.0
+    },
+    "referenced_trips": [
+      "TRIP0001"
+    ],
+    "granted_slots": [
+      "丙位-1kg"
+    ],
+    "reasons": [
+      "executable method: BAN_REDIRECT"
+    ],
+    "evaluation": {
+      "selected_method": "BAN_REDIRECT",
+      "methods": {
+        "BAN_REDIRECT": {
+          "method": "BAN_REDIRECT",
+          "guaranteed": true,
+          "slot_ids": [
+            "丙位-1kg"
+          ],
+          "worlds": [
+            {
+              "label": "W0.ST-邻队=丙",
+              "landing": {
+                "ST-邻队": "丙"
+              },
+              "feasible": true,
+              "pass": true,
+              "remaining_range": {
+                "甲": [
+                  0,
+                  0
+                ],
+                "乙": [
+                  0,
+                  0
+                ],
+                "丙": [
+                  1,
+                  1
+                ]
+              },
+              "atomic_worlds": [
+                {
+                  "world_id": 0,
+                  "final": {
+                    "甲": 0,
+                    "乙": 0,
+                    "丙": 1
+                  },
+                  "pass": true
+                }
+              ]
+            }
+          ],
+          "blocker": null,
+          "safe_segments": [
+            "甲",
+            "乙"
+          ],
+          "safe_blocks": [
+            [
+              "甲",
+              "乙"
+            ]
+          ]
+        }
+      },
+      "deliverable_segments": [
+        "甲",
+        "乙"
+      ],
+      "deliverable_stalls": [
+        "摊-甲",
+        "摊-乙"
+      ]
+    },
+    "payload": {
+      "vendor_id": null,
+      "method": "AUTO",
+      "permit_ids": [
+        "ST-邻队"
+      ],
+      "no_dump_order_id": "ND-前夜",
+      "final_trip_id": "TRIP0001",
+      "planned_trip_id": "TRIP0001",
+      "capacity": 1,
+      "fork_id": "F1",
+      "observation_id": "OBS-落堆",
+      "observation_before_fork": true,
+      "forecast_segment": "乙",
+      "point_map": {},
+      "resolved_permit_ids": [
+        "ST-邻队"
+      ]
+    },
+    "trip_details": [
+      {
+        "trip_id": "TRIP0001",
+        "status": "CONFIRMED",
+        "kind": "UNLOAD",
+        "source": "Warehouse",
+        "net": [
+          1,
+          1
+        ],
+        "accounting_status": "quoted_before_segment_allocation"
+      }
+    ],
+    "granted_slot_details": [
+      {
+        "slot_id": "丙位-1kg",
+        "segment_id": "丙",
+        "capacity": 1,
+        "reserved": 1,
+        "available": 0,
+        "leases": [
+          {
+            "lease_id": "VCH-ND-前夜",
+            "slot_id": "丙位-1kg",
+            "holder": "邻队",
+            "amount": 1,
+            "order_id": "ND-前夜",
+            "prior": false,
+            "active": true,
+            "signed": true,
+            "receipt_id": "RCV-ND-前夜",
+            "note": "alternative slot delivered with no-dump order"
+          }
+        ]
+      }
+    ],
+    "slot_ledger": [
+      {
+        "slot_id": "丙位-1kg",
+        "segment_id": "丙",
+        "capacity": 1,
+        "reserved": 1,
+        "available": 0,
+        "leases": [
+          {
+            "lease_id": "VCH-ND-前夜",
+            "slot_id": "丙位-1kg",
+            "holder": "邻队",
+            "amount": 1,
+            "order_id": "ND-前夜",
+            "prior": false,
+            "active": true,
+            "signed": true,
+            "receipt_id": "RCV-ND-前夜",
+            "note": "alternative slot delivered with no-dump order"
+          }
+        ]
+      }
+    ],
+    "deliverable_segments": [
+      "甲",
+      "乙"
+    ],
+    "deliverable_stalls": [
+      "摊-甲",
+      "摊-乙"
+    ],
+    "critical_actions": [
+      {
+        "type": "NO_DUMP",
+        "order_id": "ND-前夜",
+        "active": true,
+        "protected_segments": [
+          "甲",
+          "乙"
+        ],
+        "destination_segment": "丙",
+        "slot_id": "丙位-1kg"
+      },
+      {
+        "type": "FIELD_OBSERVATION_BEFORE_FORK",
+        "observation_id": "OBS-落堆",
+        "before_fork": false,
+        "authoritative": true
+      },
+      {
+        "type": "ONE_WAY_FORK_DISPATCH",
+        "trip_id": "TRIP0001",
+        "capacity": 1,
+        "forecast_segment": "乙",
+        "one_way_no_return": true
+      }
+    ]
+  }
+}

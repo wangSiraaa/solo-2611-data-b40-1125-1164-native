@@ -449,6 +449,17 @@ class Warehouse:
     def __exit__(self, *exc: object) -> None:
         self.close()
 
+    def street_office(self) -> "StreetOffice":  # type: ignore[name-defined]
+        """返回绑定本过磅仓的腾街单受理台（同一实例内缓存）。"""
+
+        cached = getattr(self, "_street_office", None)
+        if cached is None:
+            from .street import StreetOffice
+
+            cached = StreetOffice(self)
+            self._street_office = cached
+        return cached
+
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
         self.conn.execute("BEGIN IMMEDIATE")

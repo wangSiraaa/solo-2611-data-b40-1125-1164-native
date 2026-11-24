@@ -15,9 +15,10 @@
 ## 快速开始
 
 ```bash
-python3 -m unittest discover -s tests -v     # 46 个测试
-python3 -m demo.run_demo                     # 合成案例
-python3 -m demo.run_demo --json              # 另写 demo/out/*.json
+python3 -m unittest discover -s tests -v     # 67 个测试
+python3 -m demo.run_demo                     # 合成过磅案例
+python3 -m demo.run_street_demo              # 腾街单桌面回放
+python3 -m demo.run_street_demo --json       # 另写 demo/out/street_report.json
 ```
 
 ```python
@@ -120,6 +121,54 @@ w.evaluation_history(re.trip_id)  # 旧（CONFIRMED）与新（REVIEW）都在�
 确认运输的两票方向/同车/时间序与可行性、确认占票唯一、每条评估在存下的快照
 上可重算、同身份精确抵消、重评前序存在。
 
+## 腾街单（街道清雪交接）
+
+`weighbridge/street.py` 在过磅仓之上增加可复核的 `StreetOffice`。它通过
+`Warehouse.trip()` / `evaluation()` 只引用 `CONFIRMED` 车次的
+`[net_lo, net_hi]`，再把确认净重与分段装车、转堆、落堆、清扫前后堆量界连接起来。
+
+```python
+from weighbridge import StreetOffice
+
+office = StreetOffice(w)          # 也可用 w.street_office()
+office.add_segments("甲", "乙", "丙")
+office.set_initial_snow("甲", 5)
+office.set_initial_snow("乙", 5)
+office.reference_confirmed_trip("TRIP0001")
+office.add_pickup("P-甲", "TRIP0001", "甲", lo=0, hi=6)
+office.record_loading_witness("W-乙", "TRIP0001", "乙", 1)
+
+recon = office.reconstruct()
+assert recon.remaining_range == {"甲": [0, 0], "乙": [4, 4], "丙": [0, 0]}
+```
+
+语义要点：
+
+* **物料守恒**：转堆签条同时做源段减、目标段加；没有装车动作时，搬移后的雪仍
+  计入街上剩余量，不会变成外运。
+* **一车净重只分一次**：同一车次全部分段装车量之和必须落在确认净重区间内；两段
+  各认整车六公斤会得到 `feasible=False`。
+* **按最坏世界受理**：区间证据会枚举小整数可行世界；只有每个世界交场段都严格
+  低于各自余雪线，腾街单才是 `ACCEPTED`。零雪要求可写 `snow_line=1`。
+* **连续摊位**：申请段必须在 `add_segments()` 声明的道路顺序上连续；查询返回可交
+  路段、摊位、引用车次/净重、许出堆位和失败原因。
+* **禁倒改道**：`sign_no_dump_order()` 必须同时在替代段为邻队签下可用堆位凭证；
+  堆位已先租给别人时留下 `REJECTED` 禁倒单并抛 `SlotUnavailable`。有效禁倒单会
+  拒绝之后向保护段落堆/转堆。
+* **岔口观测**：`record_observation(..., timing=BEFORE_FORK)` 才能让末车按实际落点
+  选可达装车点；`AFTER_FORK` 的旧预计表不能充当观测。单行路线一旦选错边不能返回，
+  整单被拒时会给出在该固定动作下仍可保守交出的连续缩段。
+
+`weighbridge/scenarios.py` 与 `demo/run_street_demo.py` 固化了题面两个三段街、
+不超过两趟车的例子：
+
+1. 甲乙各 5kg、一车净重 6kg：无见证时甲可能剩 `0..4kg`；乙见证 1kg 后才唯一得到
+   甲 0、乙 4。随后分别重放“替换乙装车见证为 5kg”“撤掉甲段禁倒权”“撤掉甲侧可达
+   装车点”三个单点反事实。
+2. 甲乙同时无雪：邻队 1kg 暂存可能落甲或乙，现场在岔口前看见后派末车跟进，两种
+   实况都能交甲乙；丙位已租时禁倒单不能签但观测方案仍可执行；观测迟到且旧预计表
+   错指乙侧时，甲留下 1kg，原甲乙单不能交，固定乙侧动作可保守改交乙丙两段。
+
 ## 容量
 
 目录 100 实体（`define_mass` 时强制）；仓库 1000 张票、200 次运输。同一车同一秒
@@ -128,12 +177,16 @@ w.evaluation_history(re.trip_id)  # 旧（CONFIRMED）与新（REVIEW）都在�
 ## 文件
 
 ```
-weighbridge/catalog.py      独立车辆组合目录
-weighbridge/warehouse.py    过磅事实仓 + 精确整数求解
-weighbridge/__init__.py     公共 API
-tests/test_weighbridge.py   46 个测试（含小整数区间暴力核对极值）
-demo/run_demo.py            可复跑合成案例
-demo/out/                   演示输出（--json 时生成）
+weighbridge/catalog.py        独立车辆组合目录
+weighbridge/warehouse.py      过磅事实仓 + 精确整数求解
+weighbridge/street.py         腾街单、物料重建、堆位/禁倒与岔口回放
+weighbridge/scenarios.py      三段街/两趟车的题面桌面案例
+weighbridge/__init__.py       公共 API
+tests/test_weighbridge.py     过磅仓测试（含小整数区间暴力核对极值）
+tests/test_street.py          腾街单场景与反事实测试
+demo/run_demo.py              可复跑合成过磅案例
+demo/run_street_demo.py       可复跑腾街单桌面回放
+demo/out/                     演示输出（--json 时生成）
 ```
 
 ## 覆盖的案例
