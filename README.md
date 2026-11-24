@@ -9,10 +9,13 @@
 | --- | --- |
 | `solo/codec.py` | 流式解码器 `Decoder`、检查点 `Checkpoint`、整件解码 `decode_document` / `decode_all` / `iter_decode`、独立编码入口 `encode_text` / `encode_document`，错误类型与路径记录 |
 | `solo/revision.py` | 修订库 `RevisionLibrary`、`replace` / `preserve` 补丁、版本与批次记录、边界模式调整、字节保真校验 |
+| `solo/workshop.py` | 假发工坊定型柜台：梳样解析、正/背面可见性复原、染色与租片两种上色经营方式、改梳（走 `RevisionLibrary.apply`）、试戴/确认/复核/归还 |
+| `solo/workshop_demo.py` | 柜台端到端演示：题面三个验收场景（原样试戴、改梳失色、获准染/夹后次日换分缝） |
 | `solo/sample.py` | 确定性合成原件生成器（ESC/PAIR 故意跨 128 KiB 块，含模式切换、空替换、连续补丁与非法尾部所需素材） |
 | `solo/demo.py` | 演示：真实原件、两批修订、未修改字节核对、错误报告、较大语料，写出 `artifacts/` |
 | `solo/__main__.py` | CLI：`decode/check/encode/revise/demo` |
 | `tests/test_solo.py` | 独立参考状态机、差分测试、跨块、检查点、修订、规模测试 |
+| `tests/test_workshop.py` | 定型柜台测试：三个验收场景、PAIR 旁注、保真归还、跨格染色、发片独占、卸妆日 |
 | `artifacts/` | 运行 `python3 -m solo.demo` 生成的真实原件、各版本字节与 `manifest.json` |
 
 ## SOLO 编码（题面定义）
@@ -67,6 +70,55 @@ SHA-256**；`Checkpoint.resume(body)` / `Decoder.from_checkpoint()` 只在给定
 前后模式和切换字节；`kept_runs` 与 `dropped_switch_spans` 记录原样复制和未保留的
 纯切换跨度。
 
+## 假发工坊定型柜台（`solo/workshop.py`）
+
+在修订库之上实现的隐喻层，每顶假发是一份 SOLO 编码的梳样文档，最多 6 束、4 格、
+两顶假发。
+
+### 梳样文字（ASCII 行，旁注可走 PAIR）
+
+```
+WIG <id>                     文档头
+K <root> <colour>            发束本发色
+S <root> <slot> <length>     发束上的一个夹位及固定覆盖长度
+B <root> L|R <cell> <order>  一处摆放；order 从 0 起，0 是最外层（正面可见）
+# <note>                     旁注；PAIR 码位旁注以 PAIR 模式存储，永不参与解析
+```
+
+同一束可在多格摆放；给一束染色会影响它露出的每一格，柜台不会把同一束在两处当成
+两件。
+
+### 域映射与经营规则
+
+- **改梳**：`StylingCounter.recomb()` 对摆放行发 `replace` 文字补丁，经
+  `RevisionLibrary.apply` 发布新版本；`RecombChange` 同时给出被改写的文字跨度和
+  原件字节跨度，指出哪一束改了走向。
+- **必须原样交回**：订单的 `protected_roots` 在每批改梳里转成 `preserve` 字节补丁，
+  受护发束的改梳直接拒绝；归还时逐字节复核原始跨度。
+- **正面/背面**：`front_view()` 按每格 order 复原外→里堆叠，最外层是正面可见色，
+  其余只在 `back_only` 里从背面翻看。
+- **工坊染色**：获准原束可整束染一个工坊色，固定到卸妆日（`until_day`），压在别人
+  下面也退不回原色；到期归还时才解除。
+- **租带色发片**：每片有固定覆盖长度，只能夹在一个获准且当前露出的夹位上（长度必须
+  放得下）；还回前库存标记借出，不能借给另一顶。
+- **试戴/确认/复核/归还**：`fit()` 只规划不落库（先夹后染，并模拟全部命名格的结果），
+  `confirm()` 才真正租片/染色；`recomb()` 后用 `review()` 复核，`return_wig()` 在
+  卸妆日当天或之后收片、褪色并核对保真。
+
+### 三个验收场景
+
+1. 两格外层 A 红、B 黑，顾客要左红右黑且只许原样试戴 → `fit` 可交。
+2. 仅改梳让 B 压在左格 A 上面 → 左格正面变黑、红只能背面翻看；还原梳样后把订单改成
+   两格都红、且无染/夹批准 → 仍不可交。
+3. 同一单获准在 A 上染或夹：先试戴看到真实结果，第二天换分缝后复核——夹片被埋即从
+   正面消失，整束染色则固定不褪、只可从背面看到。
+
+运行：
+
+```bash
+python3 -m solo.workshop_demo
+```
+
 ## 运行
 
 ```bash
@@ -94,4 +146,7 @@ python3 -m solo revise artifacts/original.bin patches.json > new.bin
   连续/相邻补丁、非法尾部均有专项测试。
 - 修订：未修改区间字节等同、每版本可重开解码、失败批次不发布、preserve 逐字节
   保留、新文本等于同批替换、无悬空模式。
+- 柜台：三个验收场景端到端、PAIR 旁注不参与解析、正/背面分层、6 束/4 格/2 顶上限、
+  非法堆垛拒绝、改梳跨度同时指向文字与原件字节、受护发束改梳被拒且库不变化、整束染色
+  跨格只算一次且固定到卸妆日、发片长度/夹位/跨顶独占、归还逐字节保真。
 - 规模：10 MiB 原件、一批 100 个补丁（`ScaleTests`），未修改运行按原字节复制。
