@@ -1,0 +1,97 @@
+# 触读地图展布展输入（六个展位；每边至多四格）。
+# 牌与底座只引用两份归一任务产物的 id；格数、改刻许可、可用底座均为展方输入。
+# inventory 给出可用底座型号，inventory_counts 给出各型号件数（默认 1）。
+exhibition:
+  name: tactile-map-show
+  max_cells: 4
+  reengrave_allowed: false
+  marker:
+    policy: anchor-end
+    anchor_end: "R"
+  inventory:
+    - B-LOCK-L
+    - B-LOCK-R
+    - B-SWIVEL
+  inventory_counts:
+    B-LOCK-L: 6
+    B-LOCK-R: 6
+    B-SWIVEL: 6
+  booths:
+    - booth_id: B1
+      note: "出口/楼梯两正向锁死座，可分"
+      entrances:
+        - entrance_id: B1-E1
+          plate_id: P-EXIT
+          base_id: B-LOCK-L
+          destination: 出口
+          approach: "L"
+        - entrance_id: B1-E2
+          plate_id: P-STAIR
+          base_id: B-LOCK-R
+          destination: 楼梯
+          approach: "L"
+    - booth_id: B2
+      note: "出口改刻到右端点，两牌撞形，无改刻许可 -> 无法开放"
+      entrances:
+        - entrance_id: B2-E1
+          plate_id: P-EXIT-R
+          base_id: B-LOCK-L
+          destination: 出口
+          approach: "L"
+        - entrance_id: B2-E2
+          plate_id: P-STAIR
+          base_id: B-SWIVEL
+          destination: 楼梯
+          approach: "L"
+    - booth_id: B3
+      note: "三格端点牌换普通座；无标记策略下翻转后出口被摸成楼梯"
+      entrances:
+        - entrance_id: B3-E1
+          plate_id: P-EXIT
+          base_id: B-SWIVEL
+          destination: 出口
+          approach: "L"
+        - entrance_id: B3-E2
+          plate_id: P-STAIR
+          base_id: B-SWIVEL
+          destination: 楼梯
+          approach: "L"
+    - booth_id: B4
+      note: "遮住端点但仍可摸边，凸点信息全失，供下一位布展员复验"
+      entrances:
+        - entrance_id: B4-E1
+          plate_id: P-OCC-L
+          base_id: B-SWIVEL
+          destination: 出口
+          approach: "L"
+        - entrance_id: B4-E2
+          plate_id: P-OCC-R
+          base_id: B-LOCK-L
+          destination: 楼梯
+          approach: "L"
+    - booth_id: B5
+      note: "四格牌右端留空锚点，普通座下靠方向标记可分"
+      entrances:
+        - entrance_id: B5-E1
+          plate_id: P-4A
+          base_id: B-SWIVEL
+          destination: 出口
+          approach: "L"
+        - entrance_id: B5-E2
+          plate_id: P-4B
+          base_id: B-SWIVEL
+          destination: 楼梯
+          approach: "L"
+    - booth_id: B6
+      note: "对侧走近的入口，验证入口方向镜像"
+      entrances:
+        - entrance_id: B6-E1
+          plate_id: P-EXIT
+          base_id: B-LOCK-L
+          destination: 出口
+          approach: "R"
+        - entrance_id: B6-E2
+          plate_id: P-STAIR
+          base_id: B-LOCK-R
+          destination: 楼梯
+          approach: "R"

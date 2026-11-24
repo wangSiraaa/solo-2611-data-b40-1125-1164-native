@@ -1,0 +1,5 @@
+seat_row,seat_type,lock_edge,note
+B-LOCK-L,locked,L,正向锁死座，锁左边
+B-LOCK-R,locked,R,正向锁死座，锁右边
+B-SWIVEL,swivel,,普通座，允许转半周
+B-LOCK-L-TIGHT,locked,L,锁死座（仅一件，用于库存耗尽演示）

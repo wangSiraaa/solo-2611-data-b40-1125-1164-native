@@ -1,0 +1,15 @@
+# 归档产品 tactile-dot 的 v1：点阵刻样归一任务配置。
+# 列映射为 目标列 -> 实际任务行 CSV 的原列；发布后不可变，任务按版本快照运行。
+tactile:
+  source_uri: file:///data/tactile/dot_tasks.csv
+  column_mapping:
+    plate_id: plate_row
+    n: n_cells
+    dot_cells: convex_cells
+    occluded_cells: masked_cells
+    edges: touchable_sides
+  missing_value:
+    token: "NA"
+    default: ""
+  partition_by:
+    - plate_id

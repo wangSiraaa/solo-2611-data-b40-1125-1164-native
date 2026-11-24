@@ -1,0 +1,8 @@
+plate_row,n_cells,convex_cells,masked_cells,touchable_sides,note
+P-EXIT,3,0,,L|R,三格出口牌：左端一点
+P-STAIR,3,2,,L|R,三格楼梯牌：右端一点
+P-EXIT-R,3,2,,L|R,改刻版出口牌：右端一点（与楼梯撞形）
+P-4A,4,0,,L|R,四格牌 A：左端一点，右端留空给方向锚点
+P-4B,4,3,,L|R,四格牌 B：右端一点，右端占用、锚点打不上
+P-OCC-L,3,0,0,L|R,遮住左端点但两边仍可摸
+P-OCC-R,3,2,2,L|R,遮住右端点但两边仍可摸

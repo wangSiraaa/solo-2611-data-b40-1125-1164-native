@@ -1,0 +1,12 @@
+# 归档产品 tactile-base 的 v1：底座允许朝向归一任务配置。
+tactile:
+  source_uri: file:///data/tactile/base_tasks.csv
+  column_mapping:
+    base_id: seat_row
+    kind: seat_type
+    locked_side: lock_edge
+  missing_value:
+    token: "NA"
+    default: ""
+  partition_by:
+    - base_id
