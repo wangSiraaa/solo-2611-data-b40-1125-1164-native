@@ -1,0 +1,246 @@
+{
+  "planting": {
+    "version": "garden-planting-r1",
+    "fields": [
+      {
+        "field_id": "source_id",
+        "name": "土批稳定号",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "season_rank",
+        "name": "相对季序(-1上季,-2上上季)",
+        "type": {
+          "kind": "INT",
+          "bits": 16
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "crop_family",
+        "name": "作物族",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "crop_name",
+        "name": "作物名称",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      }
+    ]
+  },
+  "map": {
+    "version": "garden-map-r1",
+    "fields": [
+      {
+        "field_id": "record_kind",
+        "name": "图记录种类",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "lot_id",
+        "name": "格或箱稳定号",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "related_id",
+        "name": "相邻或连接对象",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "display_name",
+        "name": "可改地名",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "lot_kind",
+        "name": "cell/box/stand",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "position_id",
+        "name": "当前位置节点",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "x",
+        "name": "横坐标",
+        "type": {
+          "kind": "INT",
+          "bits": 16
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "y",
+        "name": "纵坐标",
+        "type": {
+          "kind": "INT",
+          "bits": 16
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "width_units",
+        "name": "可容纳宽度",
+        "type": {
+          "kind": "INT",
+          "bits": 16
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "sealed_bottom",
+        "name": "箱是否封底",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "allowed",
+        "name": "是否准许",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "handoff_capacity",
+        "name": "过道本班交位数量",
+        "type": {
+          "kind": "INT",
+          "bits": 16
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "serves_text",
+        "name": "收窄后服务点分号列表",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "source_id",
+        "name": "旧土来源稳定号",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "fraction_text",
+        "name": "实际覆盖比例",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      }
+    ]
+  },
+  "soil": {
+    "version": "garden-soil-r1",
+    "fields": [
+      {
+        "field_id": "record_kind",
+        "name": "batch/movement",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "source_id",
+        "name": "出土格及土批号",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": false
+      },
+      {
+        "field_id": "source_amount",
+        "name": "该批土总量",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "origin_lot",
+        "name": "取出格",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "amount",
+        "name": "本次去向数量",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "destination_kind",
+        "name": "retained/box/mixed",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "destination_id",
+        "name": "留田格或真实箱号",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "sealed_bottom",
+        "name": "是否封底",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      },
+      {
+        "field_id": "box_name",
+        "name": "箱的显示名",
+        "type": {
+          "kind": "TEXT"
+        },
+        "nullable": true
+      }
+    ]
+  }
+}

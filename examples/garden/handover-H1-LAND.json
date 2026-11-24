@@ -1,0 +1,89 @@
+{
+  "order_id": "HO-H1-LAND",
+  "household_id": "H1",
+  "crop_family": "豆",
+  "mode": "land",
+  "status": "SIGNED",
+  "shift": 1,
+  "fulfillment_shift": 2,
+  "boundary": [
+    "A",
+    "B"
+  ],
+  "box_ids": [],
+  "lot_ids": [
+    "A",
+    "B"
+  ],
+  "adjacent": true,
+  "aisle_id": "LB",
+  "routes": {
+    "A": [
+      "A",
+      "A",
+      "LA",
+      "LB"
+    ]
+  },
+  "moves_required": 0,
+  "source_ids": {
+    "A": [
+      "SOIL-A"
+    ],
+    "B": [
+      "SOIL-B"
+    ]
+  },
+  "eligibility": {
+    "A": true,
+    "B": true
+  },
+  "revisions": {
+    "planting": {
+      "reader_version": "garden-planting-r1",
+      "rows": {
+        "P-A-before_last": 1,
+        "P-A-last": 1,
+        "P-B-before_last": 1,
+        "P-B-last": 1
+      }
+    },
+    "map": {
+      "reader_version": "garden-map-r1",
+      "rows": {
+        "AISLE-LANE": 1,
+        "AISLE-NODE-LB": 1,
+        "EDGE-A-LA": 1,
+        "EDGE-B-LB": 1,
+        "EDGE-BOX1-EX": 1,
+        "EDGE-BOX2-LB": 1,
+        "EDGE-EX-PB": 1,
+        "EDGE-LA-LB": 1,
+        "EDGE-LB-PB": 1,
+        "LOT-A": 1,
+        "LOT-B": 1,
+        "LOT-BOX1": 1,
+        "LOT-BOX2": 1,
+        "POS-EX": 1,
+        "POS-LA": 1,
+        "POS-LB": 1,
+        "POS-P1": 1,
+        "POS-P2": 1,
+        "POS-PB": 1
+      }
+    },
+    "soil": {
+      "reader_version": "garden-soil-r1",
+      "rows": {
+        "BATCH-A": 1,
+        "BATCH-B": 1,
+        "M-A-BOX1": 1,
+        "M-A-STAY": 1,
+        "M-B-BOX2": 1,
+        "M-B-STAY": 1
+      }
+    }
+  },
+  "handed_shift": null,
+  "notes": []
+}

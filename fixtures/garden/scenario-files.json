@@ -1,0 +1,411 @@
+{
+  "planting": {
+    "file_id": "garden-planting-initial",
+    "writer_version": "garden-planting-r1",
+    "reader_version": "garden-planting-r1",
+    "rows": [
+      {
+        "row_id": "P-A-last",
+        "revision": 1,
+        "values": {
+          "source_id": "SOIL-A",
+          "season_rank": -1,
+          "crop_family": "禾",
+          "crop_name": "水稻"
+        }
+      },
+      {
+        "row_id": "P-A-before_last",
+        "revision": 1,
+        "values": {
+          "source_id": "SOIL-A",
+          "season_rank": -2,
+          "crop_family": "禾",
+          "crop_name": "谷子"
+        }
+      },
+      {
+        "row_id": "P-B-last",
+        "revision": 1,
+        "values": {
+          "source_id": "SOIL-B",
+          "season_rank": -1,
+          "crop_family": "禾",
+          "crop_name": "水稻"
+        }
+      },
+      {
+        "row_id": "P-B-before_last",
+        "revision": 1,
+        "values": {
+          "source_id": "SOIL-B",
+          "season_rank": -2,
+          "crop_family": "禾",
+          "crop_name": "谷子"
+        }
+      }
+    ]
+  },
+  "map": {
+    "file_id": "garden-map-initial",
+    "writer_version": "garden-map-r1",
+    "reader_version": "garden-map-r1",
+    "rows": [
+      {
+        "row_id": "POS-LA",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "LA",
+          "x": 0,
+          "y": 1
+        }
+      },
+      {
+        "row_id": "POS-LB",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "LB",
+          "x": 1,
+          "y": 1
+        }
+      },
+      {
+        "row_id": "POS-P2",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "P2",
+          "x": 2,
+          "y": 1
+        }
+      },
+      {
+        "row_id": "POS-PB",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "PB",
+          "x": 2,
+          "y": 0
+        }
+      },
+      {
+        "row_id": "POS-EX",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "EX",
+          "x": 3,
+          "y": 0
+        }
+      },
+      {
+        "row_id": "POS-P1",
+        "revision": 1,
+        "values": {
+          "record_kind": "position",
+          "lot_id": "P1",
+          "x": 3,
+          "y": 1
+        }
+      },
+      {
+        "row_id": "LOT-A",
+        "revision": 1,
+        "values": {
+          "record_kind": "lot",
+          "lot_id": "A",
+          "lot_kind": "cell",
+          "display_name": "甲格",
+          "position_id": null,
+          "x": 0,
+          "y": 0,
+          "width_units": 1,
+          "sealed_bottom": null
+        }
+      },
+      {
+        "row_id": "LOT-B",
+        "revision": 1,
+        "values": {
+          "record_kind": "lot",
+          "lot_id": "B",
+          "lot_kind": "cell",
+          "display_name": "乙格",
+          "position_id": null,
+          "x": 1,
+          "y": 0,
+          "width_units": 1,
+          "sealed_bottom": null
+        }
+      },
+      {
+        "row_id": "LOT-BOX1",
+        "revision": 1,
+        "values": {
+          "record_kind": "lot",
+          "lot_id": "BOX-1",
+          "lot_kind": "box",
+          "display_name": "一号箱",
+          "position_id": "P1",
+          "x": 3,
+          "y": 1,
+          "width_units": 1,
+          "sealed_bottom": "yes"
+        }
+      },
+      {
+        "row_id": "LOT-BOX2",
+        "revision": 1,
+        "values": {
+          "record_kind": "lot",
+          "lot_id": "BOX-2",
+          "lot_kind": "box",
+          "display_name": "二号箱",
+          "position_id": "P2",
+          "x": 2,
+          "y": 1,
+          "width_units": 1,
+          "sealed_bottom": "yes"
+        }
+      },
+      {
+        "row_id": "EDGE-A-LA",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "A",
+          "related_id": "LA",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-B-LB",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "B",
+          "related_id": "LB",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-LA-LB",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "LA",
+          "related_id": "LB",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-BOX2-LB",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "P2",
+          "related_id": "LB",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-BOX1-EX",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "P1",
+          "related_id": "EX",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-EX-PB",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "EX",
+          "related_id": "PB",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "EDGE-LB-PB",
+        "revision": 1,
+        "values": {
+          "record_kind": "edge",
+          "lot_id": "LB",
+          "related_id": "PB",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "AISLE-LANE",
+        "revision": 1,
+        "values": {
+          "record_kind": "aisle",
+          "lot_id": "LANE",
+          "display_name": "总过道",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      },
+      {
+        "row_id": "AISLE-NODE-LB",
+        "revision": 1,
+        "values": {
+          "record_kind": "aisle",
+          "lot_id": "LB",
+          "display_name": "总过道西段",
+          "allowed": "yes",
+          "width_units": 2
+        }
+      }
+    ]
+  },
+  "soil": {
+    "file_id": "garden-soil-initial",
+    "writer_version": "garden-soil-r1",
+    "reader_version": "garden-soil-r1",
+    "rows": [
+      {
+        "row_id": "BATCH-A",
+        "revision": 1,
+        "values": {
+          "record_kind": "batch",
+          "source_id": "SOIL-A",
+          "origin_lot": "A",
+          "source_amount": "1"
+        }
+      },
+      {
+        "row_id": "BATCH-B",
+        "revision": 1,
+        "values": {
+          "record_kind": "batch",
+          "source_id": "SOIL-B",
+          "origin_lot": "B",
+          "source_amount": "1"
+        }
+      },
+      {
+        "row_id": "M-A-STAY",
+        "revision": 1,
+        "values": {
+          "record_kind": "movement",
+          "source_id": "SOIL-A",
+          "origin_lot": "A",
+          "amount": "1/2",
+          "destination_kind": "retained",
+          "destination_id": "A",
+          "sealed_bottom": "yes",
+          "box_name": null
+        }
+      },
+      {
+        "row_id": "M-A-BOX1",
+        "revision": 1,
+        "values": {
+          "record_kind": "movement",
+          "source_id": "SOIL-A",
+          "origin_lot": "A",
+          "amount": "1/2",
+          "destination_kind": "box",
+          "destination_id": "BOX-1",
+          "sealed_bottom": "yes",
+          "box_name": "一号箱"
+        }
+      },
+      {
+        "row_id": "M-B-STAY",
+        "revision": 1,
+        "values": {
+          "record_kind": "movement",
+          "source_id": "SOIL-B",
+          "origin_lot": "B",
+          "amount": "1/2",
+          "destination_kind": "retained",
+          "destination_id": "B",
+          "sealed_bottom": "yes",
+          "box_name": null
+        }
+      },
+      {
+        "row_id": "M-B-BOX2",
+        "revision": 1,
+        "values": {
+          "record_kind": "movement",
+          "source_id": "SOIL-B",
+          "origin_lot": "B",
+          "amount": "1/2",
+          "destination_kind": "box",
+          "destination_id": "BOX-2",
+          "sealed_bottom": "yes",
+          "box_name": "二号箱"
+        }
+      }
+    ]
+  },
+  "planting_correction": {
+    "file_id": "garden-correct-b-before-last",
+    "writer_version": "garden-planting-r1",
+    "reader_version": "garden-planting-r1",
+    "rows": [
+      {
+        "row_id": "P-B-before_last",
+        "revision": 2,
+        "values": {
+          "source_id": "SOIL-B",
+          "season_rank": -2,
+          "crop_family": "豆",
+          "crop_name": "大豆"
+        }
+      }
+    ]
+  },
+  "planting_restore": {
+    "file_id": "garden-restore-b-grain",
+    "writer_version": "garden-planting-r1",
+    "reader_version": "garden-planting-r1",
+    "rows": [
+      {
+        "row_id": "P-B-before_last",
+        "revision": 3,
+        "values": {
+          "source_id": "SOIL-B",
+          "season_rank": -2,
+          "crop_family": "禾",
+          "crop_name": "大豆"
+        }
+      }
+    ]
+  },
+  "aisle_narrow": {
+    "file_id": "garden-narrow-aisle-to-one",
+    "writer_version": "garden-map-r1",
+    "reader_version": "garden-map-r1",
+    "rows": [
+      {
+        "row_id": "AISLE-NODE-LB",
+        "revision": 2,
+        "values": {
+          "record_kind": "aisle",
+          "lot_id": "LB",
+          "display_name": "收窄后的过道交位",
+          "allowed": "yes",
+          "width_units": 1,
+          "handoff_capacity": 1
+        }
+      }
+    ]
+  }
+}

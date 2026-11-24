@@ -278,6 +278,21 @@ exact documents from the brief:
 
 ---
 
+## Spring garden hand-over
+
+The Chinese scenario from the task is implemented under
+[`extcontract/garden/`](extcontract/garden/) and documented in
+[`GARDEN.md`](GARDEN.md). It uses three real `IngestionLibrary` contracts
+(planting rows, division map and soil movements), rebuilds soil lineage from
+`publish()` snapshots, checks the two-season crop-family rule, and produces
+next-shift hand-over orders for stable land boundaries or real box IDs.
+
+```bash
+PYTHONPATH=. python3 -m extcontract.garden \
+  --json examples/garden/report.json \
+  --order examples/garden/handover-H2-BOXES.json
+```
+
 ## Package layout
 
 ```

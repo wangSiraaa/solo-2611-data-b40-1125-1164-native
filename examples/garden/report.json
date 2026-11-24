@@ -1,0 +1,2025 @@
+{
+  "title": "菜园分畦春季交接",
+  "answer": "旧茬不按新地名落账，而按稳定土批来源继承；乙格更正为豆后，乙格留田土与二号箱同时失格。首户按相邻甲乙格签地，次班可凭真实箱号接一号、二号箱，第三户没有相邻两处可签。",
+  "baseline": {
+    "plan": {
+      "status": "SIGNABLE",
+      "accepted": true,
+      "applicant": {
+        "household_id": "H1",
+        "crop_family": "豆",
+        "places": 2,
+        "mode": null,
+        "shift": 1
+      },
+      "fulfillment_shift": 2,
+      "selected": {
+        "household_id": "H1",
+        "crop_family": "豆",
+        "mode": "land",
+        "lot_ids": [
+          "A",
+          "B"
+        ],
+        "adjacent": true,
+        "access": {
+          "ok": true,
+          "aisle_id": "LB",
+          "routes": {
+            "A": [
+              "A",
+              "A",
+              "LA",
+              "LB"
+            ]
+          },
+          "errors": []
+        },
+        "moves_required": 0,
+        "move_slots_available": 2,
+        "capacity_ok": true,
+        "source_ids": {
+          "A": [
+            "SOIL-A"
+          ],
+          "B": [
+            "SOIL-B"
+          ]
+        },
+        "eligible": {
+          "A": {
+            "lot_id": "A",
+            "household_id": "H1",
+            "crop_family": "豆",
+            "eligible": true,
+            "sources": [
+              "SOIL-A"
+            ],
+            "histories": {
+              "SOIL-A": {
+                "-1": "禾",
+                "-2": "禾"
+              }
+            },
+            "missing_seasons": [],
+            "conflicts": [],
+            "reasons": [],
+            "evidence": {
+              "SOIL-A": {
+                "-1": {
+                  "row_id": "P-A-last",
+                  "revision": 1,
+                  "sources": {
+                    "source_id": {
+                      "field_id": "source_id",
+                      "writer_field_id": "source_id",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "SOIL-A"
+                    },
+                    "season_rank": {
+                      "field_id": "season_rank",
+                      "writer_field_id": "season_rank",
+                      "writer_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "reader_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "conversion": "int_identity",
+                      "input": -1
+                    },
+                    "crop_family": {
+                      "field_id": "crop_family",
+                      "writer_field_id": "crop_family",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "禾"
+                    },
+                    "crop_name": {
+                      "field_id": "crop_name",
+                      "writer_field_id": "crop_name",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "水稻"
+                    }
+                  }
+                },
+                "-2": {
+                  "row_id": "P-A-before_last",
+                  "revision": 1,
+                  "sources": {
+                    "source_id": {
+                      "field_id": "source_id",
+                      "writer_field_id": "source_id",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "SOIL-A"
+                    },
+                    "season_rank": {
+                      "field_id": "season_rank",
+                      "writer_field_id": "season_rank",
+                      "writer_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "reader_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "conversion": "int_identity",
+                      "input": -2
+                    },
+                    "crop_family": {
+                      "field_id": "crop_family",
+                      "writer_field_id": "crop_family",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "禾"
+                    },
+                    "crop_name": {
+                      "field_id": "crop_name",
+                      "writer_field_id": "crop_name",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "谷子"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "B": {
+            "lot_id": "B",
+            "household_id": "H1",
+            "crop_family": "豆",
+            "eligible": true,
+            "sources": [
+              "SOIL-B"
+            ],
+            "histories": {
+              "SOIL-B": {
+                "-1": "禾",
+                "-2": "禾"
+              }
+            },
+            "missing_seasons": [],
+            "conflicts": [],
+            "reasons": [],
+            "evidence": {
+              "SOIL-B": {
+                "-1": {
+                  "row_id": "P-B-last",
+                  "revision": 1,
+                  "sources": {
+                    "source_id": {
+                      "field_id": "source_id",
+                      "writer_field_id": "source_id",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "SOIL-B"
+                    },
+                    "season_rank": {
+                      "field_id": "season_rank",
+                      "writer_field_id": "season_rank",
+                      "writer_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "reader_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "conversion": "int_identity",
+                      "input": -1
+                    },
+                    "crop_family": {
+                      "field_id": "crop_family",
+                      "writer_field_id": "crop_family",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "禾"
+                    },
+                    "crop_name": {
+                      "field_id": "crop_name",
+                      "writer_field_id": "crop_name",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "水稻"
+                    }
+                  }
+                },
+                "-2": {
+                  "row_id": "P-B-before_last",
+                  "revision": 1,
+                  "sources": {
+                    "source_id": {
+                      "field_id": "source_id",
+                      "writer_field_id": "source_id",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "SOIL-B"
+                    },
+                    "season_rank": {
+                      "field_id": "season_rank",
+                      "writer_field_id": "season_rank",
+                      "writer_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "reader_type": {
+                        "kind": "INT",
+                        "bits": 16
+                      },
+                      "conversion": "int_identity",
+                      "input": -2
+                    },
+                    "crop_family": {
+                      "field_id": "crop_family",
+                      "writer_field_id": "crop_family",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "禾"
+                    },
+                    "crop_name": {
+                      "field_id": "crop_name",
+                      "writer_field_id": "crop_name",
+                      "writer_type": {
+                        "kind": "TEXT"
+                      },
+                      "reader_type": {
+                        "kind": "TEXT"
+                      },
+                      "conversion": "text_identity",
+                      "input": "谷子"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "feasible": [
+        {
+          "household_id": "H1",
+          "crop_family": "豆",
+          "mode": "land",
+          "lot_ids": [
+            "A",
+            "B"
+          ],
+          "adjacent": true,
+          "access": {
+            "ok": true,
+            "aisle_id": "LB",
+            "routes": {
+              "A": [
+                "A",
+                "A",
+                "LA",
+                "LB"
+              ]
+            },
+            "errors": []
+          },
+          "moves_required": 0,
+          "move_slots_available": 2,
+          "capacity_ok": true,
+          "source_ids": {
+            "A": [
+              "SOIL-A"
+            ],
+            "B": [
+              "SOIL-B"
+            ]
+          },
+          "eligible": {
+            "A": {
+              "lot_id": "A",
+              "household_id": "H1",
+              "crop_family": "豆",
+              "eligible": true,
+              "sources": [
+                "SOIL-A"
+              ],
+              "histories": {
+                "SOIL-A": {
+                  "-1": "禾",
+                  "-2": "禾"
+                }
+              },
+              "missing_seasons": [],
+              "conflicts": [],
+              "reasons": [],
+              "evidence": {
+                "SOIL-A": {
+                  "-1": {
+                    "row_id": "P-A-last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-A"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -1
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "水稻"
+                      }
+                    }
+                  },
+                  "-2": {
+                    "row_id": "P-A-before_last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-A"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -2
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "谷子"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "B": {
+              "lot_id": "B",
+              "household_id": "H1",
+              "crop_family": "豆",
+              "eligible": true,
+              "sources": [
+                "SOIL-B"
+              ],
+              "histories": {
+                "SOIL-B": {
+                  "-1": "禾",
+                  "-2": "禾"
+                }
+              },
+              "missing_seasons": [],
+              "conflicts": [],
+              "reasons": [],
+              "evidence": {
+                "SOIL-B": {
+                  "-1": {
+                    "row_id": "P-B-last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-B"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -1
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "水稻"
+                      }
+                    }
+                  },
+                  "-2": {
+                    "row_id": "P-B-before_last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-B"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -2
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "谷子"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "household_id": "H1",
+          "crop_family": "豆",
+          "mode": "box",
+          "lot_ids": [
+            "BOX-1",
+            "BOX-2"
+          ],
+          "adjacent": true,
+          "access": {
+            "ok": true,
+            "aisle_id": "LB",
+            "routes": {
+              "BOX-1": [
+                "BOX-1",
+                "P1",
+                "EX",
+                "PB",
+                "LB"
+              ],
+              "BOX-2": [
+                "BOX-2",
+                "P2",
+                "LB"
+              ]
+            },
+            "errors": []
+          },
+          "moves_required": 2,
+          "move_slots_available": 2,
+          "capacity_ok": true,
+          "source_ids": {
+            "BOX-1": [
+              "SOIL-A"
+            ],
+            "BOX-2": [
+              "SOIL-B"
+            ]
+          },
+          "eligible": {
+            "BOX-1": {
+              "lot_id": "BOX-1",
+              "household_id": "H1",
+              "crop_family": "豆",
+              "eligible": true,
+              "sources": [
+                "SOIL-A"
+              ],
+              "histories": {
+                "SOIL-A": {
+                  "-1": "禾",
+                  "-2": "禾"
+                }
+              },
+              "missing_seasons": [],
+              "conflicts": [],
+              "reasons": [],
+              "evidence": {
+                "SOIL-A": {
+                  "-1": {
+                    "row_id": "P-A-last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-A"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -1
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "水稻"
+                      }
+                    }
+                  },
+                  "-2": {
+                    "row_id": "P-A-before_last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-A"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -2
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "谷子"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "BOX-2": {
+              "lot_id": "BOX-2",
+              "household_id": "H1",
+              "crop_family": "豆",
+              "eligible": true,
+              "sources": [
+                "SOIL-B"
+              ],
+              "histories": {
+                "SOIL-B": {
+                  "-1": "禾",
+                  "-2": "禾"
+                }
+              },
+              "missing_seasons": [],
+              "conflicts": [],
+              "reasons": [],
+              "evidence": {
+                "SOIL-B": {
+                  "-1": {
+                    "row_id": "P-B-last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-B"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -1
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "水稻"
+                      }
+                    }
+                  },
+                  "-2": {
+                    "row_id": "P-B-before_last",
+                    "revision": 1,
+                    "sources": {
+                      "source_id": {
+                        "field_id": "source_id",
+                        "writer_field_id": "source_id",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "SOIL-B"
+                      },
+                      "season_rank": {
+                        "field_id": "season_rank",
+                        "writer_field_id": "season_rank",
+                        "writer_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "reader_type": {
+                          "kind": "INT",
+                          "bits": 16
+                        },
+                        "conversion": "int_identity",
+                        "input": -2
+                      },
+                      "crop_family": {
+                        "field_id": "crop_family",
+                        "writer_field_id": "crop_family",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "禾"
+                      },
+                      "crop_name": {
+                        "field_id": "crop_name",
+                        "writer_field_id": "crop_name",
+                        "writer_type": {
+                          "kind": "TEXT"
+                        },
+                        "reader_type": {
+                          "kind": "TEXT"
+                        },
+                        "conversion": "text_identity",
+                        "input": "谷子"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "diagnostics": [],
+      "reasons": []
+    },
+    "signed_order": {
+      "order_id": "HO-H1-LAND",
+      "household_id": "H1",
+      "crop_family": "豆",
+      "mode": "land",
+      "status": "SIGNED",
+      "shift": 1,
+      "fulfillment_shift": 2,
+      "boundary": [
+        "A",
+        "B"
+      ],
+      "box_ids": [],
+      "lot_ids": [
+        "A",
+        "B"
+      ],
+      "adjacent": true,
+      "aisle_id": "LB",
+      "routes": {
+        "A": [
+          "A",
+          "A",
+          "LA",
+          "LB"
+        ]
+      },
+      "moves_required": 0,
+      "source_ids": {
+        "A": [
+          "SOIL-A"
+        ],
+        "B": [
+          "SOIL-B"
+        ]
+      },
+      "eligibility": {
+        "A": true,
+        "B": true
+      },
+      "revisions": {
+        "planting": {
+          "reader_version": "garden-planting-r1",
+          "rows": {
+            "P-A-before_last": 1,
+            "P-A-last": 1,
+            "P-B-before_last": 1,
+            "P-B-last": 1
+          }
+        },
+        "map": {
+          "reader_version": "garden-map-r1",
+          "rows": {
+            "AISLE-LANE": 1,
+            "AISLE-NODE-LB": 1,
+            "EDGE-A-LA": 1,
+            "EDGE-B-LB": 1,
+            "EDGE-BOX1-EX": 1,
+            "EDGE-BOX2-LB": 1,
+            "EDGE-EX-PB": 1,
+            "EDGE-LA-LB": 1,
+            "EDGE-LB-PB": 1,
+            "LOT-A": 1,
+            "LOT-B": 1,
+            "LOT-BOX1": 1,
+            "LOT-BOX2": 1,
+            "POS-EX": 1,
+            "POS-LA": 1,
+            "POS-LB": 1,
+            "POS-P1": 1,
+            "POS-P2": 1,
+            "POS-PB": 1
+          }
+        },
+        "soil": {
+          "reader_version": "garden-soil-r1",
+          "rows": {
+            "BATCH-A": 1,
+            "BATCH-B": 1,
+            "M-A-BOX1": 1,
+            "M-A-STAY": 1,
+            "M-B-BOX2": 1,
+            "M-B-STAY": 1
+          }
+        }
+      },
+      "handed_shift": null,
+      "notes": []
+    }
+  },
+  "corrected_B": {
+    "publish_revisions": {
+      "planting": {
+        "reader_version": "garden-planting-r1",
+        "rows": {
+          "P-A-before_last": 1,
+          "P-A-last": 1,
+          "P-B-before_last": 2,
+          "P-B-last": 1
+        }
+      },
+      "map": {
+        "reader_version": "garden-map-r1",
+        "rows": {
+          "AISLE-LANE": 1,
+          "AISLE-NODE-LB": 1,
+          "EDGE-A-LA": 1,
+          "EDGE-B-LB": 1,
+          "EDGE-BOX1-EX": 1,
+          "EDGE-BOX2-LB": 1,
+          "EDGE-EX-PB": 1,
+          "EDGE-LA-LB": 1,
+          "EDGE-LB-PB": 1,
+          "LOT-A": 1,
+          "LOT-B": 1,
+          "LOT-BOX1": 1,
+          "LOT-BOX2": 1,
+          "POS-EX": 1,
+          "POS-LA": 1,
+          "POS-LB": 1,
+          "POS-P1": 1,
+          "POS-P2": 1,
+          "POS-PB": 1
+        }
+      },
+      "soil": {
+        "reader_version": "garden-soil-r1",
+        "rows": {
+          "BATCH-A": 1,
+          "BATCH-B": 1,
+          "M-A-BOX1": 1,
+          "M-A-STAY": 1,
+          "M-B-BOX2": 1,
+          "M-B-STAY": 1
+        }
+      }
+    },
+    "eligibility": {
+      "A": {
+        "lot_id": "A",
+        "household_id": null,
+        "crop_family": "豆",
+        "eligible": true,
+        "sources": [
+          "SOIL-A"
+        ],
+        "histories": {
+          "SOIL-A": {
+            "-1": "禾",
+            "-2": "禾"
+          }
+        },
+        "missing_seasons": [],
+        "conflicts": [],
+        "reasons": [],
+        "evidence": {
+          "SOIL-A": {
+            "-1": {
+              "row_id": "P-A-last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-A"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -1
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "水稻"
+                }
+              }
+            },
+            "-2": {
+              "row_id": "P-A-before_last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-A"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -2
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "谷子"
+                }
+              }
+            }
+          }
+        }
+      },
+      "B": {
+        "lot_id": "B",
+        "household_id": null,
+        "crop_family": "豆",
+        "eligible": false,
+        "sources": [
+          "SOIL-B"
+        ],
+        "histories": {
+          "SOIL-B": {
+            "-1": "禾",
+            "-2": "豆"
+          }
+        },
+        "missing_seasons": [],
+        "conflicts": [
+          {
+            "source_id": "SOIL-B",
+            "season_rank": -2,
+            "planted_family": "豆",
+            "reported_family": "豆"
+          }
+        ],
+        "reasons": [
+          "source 'SOIL-B' planted '豆' in season -2"
+        ],
+        "evidence": {
+          "SOIL-B": {
+            "-1": {
+              "row_id": "P-B-last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-B"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -1
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "水稻"
+                }
+              }
+            },
+            "-2": {
+              "row_id": "P-B-before_last",
+              "revision": 2,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-B"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -2
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "豆"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "大豆"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BOX-1": {
+        "lot_id": "BOX-1",
+        "household_id": null,
+        "crop_family": "豆",
+        "eligible": true,
+        "sources": [
+          "SOIL-A"
+        ],
+        "histories": {
+          "SOIL-A": {
+            "-1": "禾",
+            "-2": "禾"
+          }
+        },
+        "missing_seasons": [],
+        "conflicts": [],
+        "reasons": [],
+        "evidence": {
+          "SOIL-A": {
+            "-1": {
+              "row_id": "P-A-last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-A"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -1
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "水稻"
+                }
+              }
+            },
+            "-2": {
+              "row_id": "P-A-before_last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-A"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -2
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "谷子"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BOX-2": {
+        "lot_id": "BOX-2",
+        "household_id": null,
+        "crop_family": "豆",
+        "eligible": false,
+        "sources": [
+          "SOIL-B"
+        ],
+        "histories": {
+          "SOIL-B": {
+            "-1": "禾",
+            "-2": "豆"
+          }
+        },
+        "missing_seasons": [],
+        "conflicts": [
+          {
+            "source_id": "SOIL-B",
+            "season_rank": -2,
+            "planted_family": "豆",
+            "reported_family": "豆"
+          }
+        ],
+        "reasons": [
+          "source 'SOIL-B' planted '豆' in season -2"
+        ],
+        "evidence": {
+          "SOIL-B": {
+            "-1": {
+              "row_id": "P-B-last",
+              "revision": 1,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-B"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -1
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "禾"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "水稻"
+                }
+              }
+            },
+            "-2": {
+              "row_id": "P-B-before_last",
+              "revision": 2,
+              "sources": {
+                "source_id": {
+                  "field_id": "source_id",
+                  "writer_field_id": "source_id",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "SOIL-B"
+                },
+                "season_rank": {
+                  "field_id": "season_rank",
+                  "writer_field_id": "season_rank",
+                  "writer_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "reader_type": {
+                    "kind": "INT",
+                    "bits": 16
+                  },
+                  "conversion": "int_identity",
+                  "input": -2
+                },
+                "crop_family": {
+                  "field_id": "crop_family",
+                  "writer_field_id": "crop_family",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "豆"
+                },
+                "crop_name": {
+                  "field_id": "crop_name",
+                  "writer_field_id": "crop_name",
+                  "writer_type": {
+                    "kind": "TEXT"
+                  },
+                  "reader_type": {
+                    "kind": "TEXT"
+                  },
+                  "conversion": "text_identity",
+                  "input": "大豆"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "two_place_plan": {
+      "status": "NO_FEASIBLE_ALLOCATION",
+      "accepted": false,
+      "reasons": [
+        "land: only 1 eligible unbooked place(s) ['A']; need 2",
+        "box: only 1 eligible unbooked place(s) ['BOX-1']; need 2"
+      ]
+    }
+  },
+  "restored_and_narrowed": {
+    "two_place_plan": {
+      "status": "NO_FEASIBLE_ALLOCATION",
+      "accepted": false,
+      "reasons": [
+        "aisle 'LB' can hand 1 place(s); 0 already used and 2 requested"
+      ]
+    }
+  },
+  "next_shift": {
+    "move_box1": {
+      "status": "MOVED",
+      "accepted": true,
+      "move": {
+        "box_id": "BOX-1",
+        "real_box_id": "BOX-1",
+        "from": "P1",
+        "to": "PB",
+        "path": [
+          "P1",
+          "EX",
+          "PB"
+        ],
+        "shift": 2,
+        "slots_consumed": 1,
+        "slots_remaining": 1
+      }
+    },
+    "who_can_apply_before_signing": {
+      "max_households": 3,
+      "household_count": 1,
+      "results": [
+        {
+          "household_id": "H2",
+          "crop_family": "豆",
+          "can_sign": true,
+          "status": "SIGNABLE",
+          "selected": [
+            "BOX-1",
+            "BOX-2"
+          ],
+          "mode": "box",
+          "aisle_id": "LB",
+          "moves_required": 2,
+          "reasons": []
+        }
+      ],
+      "boundary_occupancy": {
+        "A": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        },
+        "B": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_occupancy": {}
+    },
+    "h2_same_shift_carry_preview": {
+      "status": "NO_FEASIBLE_ALLOCATION",
+      "accepted": false,
+      "reasons": [
+        "needs 2 carry slot(s), only 1 remain in shift 2"
+      ],
+      "moves_required": 2,
+      "move_slots_available": 1
+    },
+    "h2_sign": {
+      "status": "SIGNED",
+      "order": {
+        "order_id": "HO-H2-BOXES",
+        "household_id": "H2",
+        "crop_family": "豆",
+        "mode": "box",
+        "status": "SIGNED",
+        "shift": 2,
+        "fulfillment_shift": 3,
+        "boundary": [],
+        "box_ids": [
+          "BOX-1",
+          "BOX-2"
+        ],
+        "lot_ids": [
+          "BOX-1",
+          "BOX-2"
+        ],
+        "adjacent": true,
+        "aisle_id": "LB",
+        "routes": {
+          "BOX-1": [
+            "BOX-1",
+            "PB",
+            "LB"
+          ],
+          "BOX-2": [
+            "BOX-2",
+            "P2",
+            "LB"
+          ]
+        },
+        "moves_required": 2,
+        "source_ids": {
+          "BOX-1": [
+            "SOIL-A"
+          ],
+          "BOX-2": [
+            "SOIL-B"
+          ]
+        },
+        "eligibility": {
+          "BOX-1": true,
+          "BOX-2": true
+        },
+        "revisions": {
+          "planting": {
+            "reader_version": "garden-planting-r1",
+            "rows": {
+              "P-A-before_last": 1,
+              "P-A-last": 1,
+              "P-B-before_last": 1,
+              "P-B-last": 1
+            }
+          },
+          "map": {
+            "reader_version": "garden-map-r1",
+            "rows": {
+              "AISLE-LANE": 1,
+              "AISLE-NODE-LB": 1,
+              "EDGE-A-LA": 1,
+              "EDGE-B-LB": 1,
+              "EDGE-BOX1-EX": 1,
+              "EDGE-BOX2-LB": 1,
+              "EDGE-EX-PB": 1,
+              "EDGE-LA-LB": 1,
+              "EDGE-LB-PB": 1,
+              "LOT-A": 1,
+              "LOT-B": 1,
+              "LOT-BOX1": 1,
+              "LOT-BOX2": 1,
+              "POS-EX": 1,
+              "POS-LA": 1,
+              "POS-LB": 1,
+              "POS-P1": 1,
+              "POS-P2": 1,
+              "POS-PB": 1
+            }
+          },
+          "soil": {
+            "reader_version": "garden-soil-r1",
+            "rows": {
+              "BATCH-A": 1,
+              "BATCH-B": 1,
+              "M-A-BOX1": 1,
+              "M-A-STAY": 1,
+              "M-B-BOX2": 1,
+              "M-B-STAY": 1
+            }
+          }
+        },
+        "handed_shift": null,
+        "notes": []
+      },
+      "reasons": null
+    },
+    "h2_shift3_handover": {
+      "status": "HANDED_OVER"
+    },
+    "h3_sign": {
+      "status": "REJECTED",
+      "reasons": [
+        "land: only 0 eligible unbooked place(s) []; need 2",
+        "box: only 0 eligible unbooked place(s) []; need 2"
+      ]
+    },
+    "h3_query": {
+      "max_households": 3,
+      "household_count": 2,
+      "results": [
+        {
+          "household_id": "H3",
+          "crop_family": "豆",
+          "can_sign": false,
+          "status": "NO_FEASIBLE_ALLOCATION",
+          "selected": null,
+          "mode": null,
+          "aisle_id": null,
+          "moves_required": null,
+          "reasons": [
+            "land: only 0 eligible unbooked place(s) []; need 2",
+            "box: only 0 eligible unbooked place(s) []; need 2"
+          ]
+        }
+      ],
+      "boundary_occupancy": {
+        "A": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        },
+        "B": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_occupancy": {
+        "BOX-1": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-1",
+          "status": "HANDED_OVER"
+        },
+        "BOX-2": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-2",
+          "status": "HANDED_OVER"
+        }
+      }
+    },
+    "query_before_h3": {
+      "max_households": 3,
+      "household_count": 2,
+      "results": [
+        {
+          "household_id": "H3",
+          "crop_family": "豆",
+          "can_sign": false,
+          "status": "NO_FEASIBLE_ALLOCATION",
+          "selected": null,
+          "mode": null,
+          "aisle_id": null,
+          "moves_required": null,
+          "reasons": [
+            "land: only 0 eligible unbooked place(s) []; need 2",
+            "box: only 0 eligible unbooked place(s) []; need 2"
+          ]
+        }
+      ],
+      "boundary_occupancy": {
+        "A": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        },
+        "B": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_occupancy": {
+        "BOX-1": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-1",
+          "status": "HANDED_OVER"
+        },
+        "BOX-2": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-2",
+          "status": "HANDED_OVER"
+        }
+      }
+    },
+    "shift2_report": {
+      "shift": 2,
+      "move_capacity": 2,
+      "moves_used": 1,
+      "moves_reserved": 0,
+      "moves_available": 1,
+      "outstanding_orders": [],
+      "boundary_occupancy": {
+        "A": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        },
+        "B": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_occupancy": {
+        "BOX-1": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-1",
+          "status": "HANDED_OVER"
+        },
+        "BOX-2": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-2",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_positions": {
+        "BOX-1": "PB",
+        "BOX-2": "P2"
+      }
+    },
+    "shift3_report": {
+      "shift": 3,
+      "move_capacity": 2,
+      "moves_used": 2,
+      "moves_reserved": 0,
+      "moves_available": 0,
+      "outstanding_orders": [],
+      "boundary_occupancy": {
+        "A": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        },
+        "B": {
+          "order_id": "HO-H1-LAND",
+          "household_id": "H1",
+          "boundary": "A;B",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_occupancy": {
+        "BOX-1": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-1",
+          "status": "HANDED_OVER"
+        },
+        "BOX-2": {
+          "order_id": "HO-H2-BOXES",
+          "household_id": "H2",
+          "real_box_id": "BOX-2",
+          "status": "HANDED_OVER"
+        }
+      },
+      "box_positions": {
+        "BOX-1": "PB",
+        "BOX-2": "P2"
+      }
+    },
+    "boundary_occupancy": {
+      "A": {
+        "order_id": "HO-H1-LAND",
+        "household_id": "H1",
+        "boundary": "A;B",
+        "status": "HANDED_OVER"
+      },
+      "B": {
+        "order_id": "HO-H1-LAND",
+        "household_id": "H1",
+        "boundary": "A;B",
+        "status": "HANDED_OVER"
+      }
+    },
+    "box_occupancy": {
+      "BOX-1": {
+        "order_id": "HO-H2-BOXES",
+        "household_id": "H2",
+        "real_box_id": "BOX-1",
+        "status": "HANDED_OVER"
+      },
+      "BOX-2": {
+        "order_id": "HO-H2-BOXES",
+        "household_id": "H2",
+        "real_box_id": "BOX-2",
+        "status": "HANDED_OVER"
+      }
+    }
+  }
+}
