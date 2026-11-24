@@ -1,0 +1,119 @@
+{
+  "edit": {
+    "edited_char_span": [
+      410,
+      411
+    ],
+    "original_byte_span": [
+      416,
+      417
+    ],
+    "new_byte_span": [
+      416,
+      417
+    ],
+    "decoded_at_span": "<",
+    "old_at_span": ">"
+  },
+  "sheets": [
+    {
+      "version": 0,
+      "path": "/workspace/artifacts/comics/proof_v0_margin_order-margin-1.txt",
+      "readback": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "version": 1,
+      "path": "/workspace/artifacts/comics/proof_v1_margin_order-margin-1.txt",
+      "readback": [
+        "B",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "version": 0,
+      "path": "/workspace/artifacts/comics/proof_v0_relayout_order-relayout-1.txt",
+      "readback": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "version": 1,
+      "path": "/workspace/artifacts/comics/proof_v1_relayout_order-relayout-1.txt",
+      "readback": [
+        "B",
+        "A",
+        "C"
+      ]
+    }
+  ],
+  "rejections": [
+    {
+      "scenario": "margin-strip-sold",
+      "stage": "press",
+      "code": "MARGIN_STRIP_SOLD",
+      "reason": "the only strip reaching group ['A', 'B'] is already sold to another page of this volume",
+      "page": "p1",
+      "bubble": "B",
+      "line": null,
+      "char_span": null,
+      "byte_span": null,
+      "blocked_by_page": "p2"
+    },
+    {
+      "scenario": "panels-sealed",
+      "stage": "press",
+      "code": "PANEL_SEALED",
+      "reason": "panel p1b holding bubble B is painter-signed; its artwork is frozen in place and cannot be redrawn",
+      "page": "p1",
+      "bubble": "B",
+      "line": null,
+      "char_span": null,
+      "byte_span": null,
+      "blocked_by_page": "p1"
+    },
+    {
+      "scenario": "self-loop",
+      "stage": "proofing",
+      "code": "SELF_LOOP",
+      "reason": "REPLY B>B makes B answer itself",
+      "page": "p1",
+      "bubble": "B",
+      "line": 17,
+      "char_span": [
+        403,
+        412
+      ],
+      "byte_span": [
+        409,
+        418
+      ],
+      "blocked_by_page": null
+    },
+    {
+      "scenario": "dialogue-right-withdrawn",
+      "stage": "press",
+      "code": "DIALOGUE_NOT_LICENSED",
+      "reason": "dialogue print right for bubble B has been withdrawn",
+      "page": "p1",
+      "bubble": "B",
+      "line": 10,
+      "char_span": [
+        216,
+        245
+      ],
+      "byte_span": [
+        216,
+        245
+      ],
+      "blocked_by_page": null
+    }
+  ],
+  "elapsed_seconds": 0.005
+}

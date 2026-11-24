@@ -1,0 +1,35 @@
+==============================================================================
+PROOF SHEET  order=order-relayout-1 version=v1 page=p1 craft=relayout
+intended reading order: B A C
+------------------------------------------------------------------------------
+PAPER (read each row left to right, rows top to bottom):
+  VISUAL LAYOUT AFTER REDRAW (row-major order is the reading order):
+  [B] box=(2, 2, 16, 10) speaker=bob home-panel=p1b
+      SAY: wo zhi dao  TAIL -> (24, 18)
+  [A] box=(24, 2, 38, 10) speaker=alice home-panel=p1a
+      SAY: ni shi 个人 hao ren  TAIL -> (2, 18)
+  [C] box=(46, 2, 60, 10) OFFPAGE
+      SAY: (narration) jiu zhe yang  TAIL -> (70, 18)
+------------------------------------------------------------------------------
+  +-- PANEL p1a (0,0)-(20,20) --------------------
+  | BUBBLE A box=(24, 2, 38, 10) speaker=alice RELOCATED
+  |   SAY: ni shi 个人 hao ren
+  |   TAIL -> (2, 18)
+  +--------------------------------------------------------------------------
+  +-- PANEL p1b (22,0)-(42,20) --------------------
+  | BUBBLE B box=(2, 2, 16, 10) speaker=bob RELOCATED
+  |   SAY: wo zhi dao
+  |   TAIL -> (24, 18)
+  +--------------------------------------------------------------------------
+  +-- PANEL p1c (44,0)-(64,20) --------------------
+  | BUBBLE C box=(46, 2, 60, 10) OFFPAGE
+  |   SAY: (narration) jiu zhe yang
+  |   TAIL -> (70, 18)
+  +--------------------------------------------------------------------------
+------------------------------------------------------------------------------
+REDRAW MOVES (tails reconnected to the original speakers):
+  bubble B: panel p1b -> p1a box (24, 2, 38, 10) -> (2, 2, 16, 10); tail -> (24, 18) (bob)
+  bubble A: panel p1a -> p1b box (2, 2, 16, 10) -> (24, 2, 38, 10); tail -> (2, 18) (alice)
+------------------------------------------------------------------------------
+COLOPHON readback=B A C sha256=dea94fa783ba
+==============================================================================
