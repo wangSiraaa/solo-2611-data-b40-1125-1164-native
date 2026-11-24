@@ -449,6 +449,29 @@ class Warehouse:
     def __exit__(self, *exc: object) -> None:
         self.close()
 
+    def mold_writeoffs(self) -> "MoldWriteOffLedger":
+        """返回挂在本磅单仓连接上的销模核销入口（同一实例内复用）。"""
+        from .molds import MoldWriteOffLedger
+
+        ledger = getattr(self, "_mold_writeoff_ledger", None)
+        if ledger is None:
+            ledger = MoldWriteOffLedger(self)
+            self._mold_writeoff_ledger = ledger
+        return ledger
+
+    def mold_writeoff(self) -> "MoldWriteOffLedger":
+        """``mold_writeoffs`` 的单数别名。"""
+        return self.mold_writeoffs()
+
+    def writeoffs(self) -> "MoldWriteOffLedger":
+        """销模/销毁核销入口的短别名。"""
+        return self.mold_writeoffs()
+
+    @property
+    def mold_ledger(self) -> "MoldWriteOffLedger":
+        """属性形式的销模账本入口。"""
+        return self.mold_writeoffs()
+
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
         self.conn.execute("BEGIN IMMEDIATE")

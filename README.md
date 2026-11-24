@@ -15,7 +15,7 @@
 ## 快速开始
 
 ```bash
-python3 -m unittest discover -s tests -v     # 46 个测试
+python3 -m unittest discover -s tests -v     # 60 个测试
 python3 -m demo.run_demo                     # 合成案例
 python3 -m demo.run_demo --json              # 另写 demo/out/*.json
 ```
@@ -120,6 +120,42 @@ w.evaluation_history(re.trip_id)  # 旧（CONFIRMED）与新（REVIEW）都在�
 确认运输的两票方向/同车/时间序与可行性、确认占票唯一、每条评估在存下的快照
 上可重算、同身份精确抵消、重评前序存在。
 
+## 销模核销
+
+`w.mold_writeoffs()`（或独立的 `MoldWriteOffLedger()`）是销模回单入口。它把
+**已 CONFIRMED 的磅单车次净重区间**、箱/芯皮重、带封号的装箱见证、模瓣重量、
+破碎台出渣记录和现场见证时段放在同一条反查链上。
+
+判定不把“左瓣”这类标签当成序列号。身份只能来自：
+
+1. 装箱时记录的稳定 ID/序列号，且封号交接、车次重量和出渣重量都相容；或
+2. 见证人在破碎前、在其实际可见箱和有效时段内作出的现场指认。
+
+系统枚举所有满足证据的身份/重量世界。只有在 **每一个** 可行世界中，作品的
+每一副模都至少缺一个必需实体时，才签署 `ISSUED` 回单；否则返回 `WITHHELD`，
+并给出某个可行世界中仍能凑齐的 `mold_id + chosen_piece_ids`。同一实体不能被
+枚举进两个箱；车重已在磅单评估中扣除，只能在车次级扣一次，不能再作为两个箱
+的皮重引用。
+
+```bash
+python3 -m demo.mold_demo          # 基线 + 四种单变量反事实
+python3 -m demo.mold_demo --json
+```
+
+示例作品有唯一甲 `A1`、两个乙 `B1/B2` 和两副共用 `A1+BASE1` 的模。基线中
+`A1` 被封号发碎，故回单成立；装箱组合被反推为 `{A1,B1}` 或 `{A1,B2}`，但
+`A1` 在两个世界都碎。只确认一个身份不明的乙时，仍有另一个乙配 `A1`，不能销账。
+
+| 只改一项 | 原判定变化 |
+| --- | --- |
+| `BOX-A` 到破碎台的封号读成错号 | `ISSUED → WITHHELD`，指出 `M1/M2` 仍可配成 |
+| 一张 OUT 磅单毛重（或净重区间） | 重量世界为空，`ISSUED → WITHHELD` |
+| `A1.workshop_sealable=False` | 工场封箱枚举不到甲，`ISSUED → WITHHELD` |
+| 现场见证截止时间改到开箱前 | 指认失效，`ISSUED → WITHHELD` |
+
+`ledger.trace_receipt(receipt_id)` 可从回单反查车次、磅单解释、票号、封号、
+装箱条、见证人/签字、开箱记录、模瓣、破碎批次和出渣区间。
+
 ## 容量
 
 目录 100 实体（`define_mass` 时强制）；仓库 1000 张票、200 次运输。同一车同一秒
@@ -130,9 +166,12 @@ w.evaluation_history(re.trip_id)  # 旧（CONFIRMED）与新（REVIEW）都在�
 ```
 weighbridge/catalog.py      独立车辆组合目录
 weighbridge/warehouse.py    过磅事实仓 + 精确整数求解
+weighbridge/molds.py        销模核销、证据链与可能世界判定
 weighbridge/__init__.py     公共 API
-tests/test_weighbridge.py   46 个测试（含小整数区间暴力核对极值）
+tests/test_weighbridge.py   原有测试（含小整数区间暴力核对极值）
+tests/test_mold_writeoff.py 销模证据链与单变量改判测试
 demo/run_demo.py            可复跑合成案例
+demo/mold_demo.py           一甲两乙/共用底座与反事实案例
 demo/out/                   演示输出（--json 时生成）
 ```
 
