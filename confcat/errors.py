@@ -67,3 +67,19 @@ class TaskRejected(ConfCatError):
         self.reason = reason
         prefix = f"[{'/'.join(str(p) for p in self.path)}] " if self.path else ""
         super().__init__(f"{prefix}{message}")
+
+
+class WorkshopError(ConfCatError):
+    """布景工坊裁纸交接的合同级错误基类。"""
+
+
+class OrderRejected(WorkshopError):
+    """接单输入不合法（任务缺列、取值越界、规模超限等），整单不落库。"""
+
+    def __init__(self, message: str, reason: str = ""):
+        self.reason = reason
+        super().__init__(message)
+
+
+class WorkshopConflict(WorkshopError):
+    """工坊仓状态冲突（重复单号、任务行被修订后与旧快照不一致等）。"""

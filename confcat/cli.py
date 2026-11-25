@@ -9,7 +9,11 @@
     python -m confcat.cli show ./data/catalog.db orders-product doc-0
     python -m confcat.cli query ./data/catalog.db orders-product doc-0 ingest/column_mapping
     python -m confcat.cli verify ./data/catalog.db orders-product
-    python -m confcat.cli tasks ./data/tasks.db
+    python -m confcat.cli tasks ./data/tasks.db ./data/catalog.db
+    python -m confcat.cli cut-order ./data/shop.db ./data/tasks.db ./data/catalog.db 单号 卷料任务 墙面任务 A,B whole_roll
+    python -m confcat.cli cut-orders ./data/shop.db ./data/tasks.db ./data/catalog.db
+    python -m confcat.cli cut-review ./data/shop.db ./data/tasks.db ./data/catalog.db 单号
+    python -m confcat.cli cut-realize ./data/shop.db ./data/tasks.db ./data/catalog.db 单号 pin-A
 """
 
 from __future__ import annotations
@@ -22,6 +26,7 @@ from pathlib import Path
 from .catalog import Catalog
 from .codec import path_str
 from .ingest import TaskRepository
+from .workshop import WorkshopRepository
 
 
 def _print(obj) -> None:
@@ -82,6 +87,34 @@ def main(argv: list[str] | None = None) -> int:
     p_rows.add_argument("catalog_db")
     p_rows.add_argument("task_id")
 
+    p_cut = sub.add_parser("cut-order", help="布景工坊接单（生成裁装回单）")
+    p_cut.add_argument("shop_db")
+    p_cut.add_argument("task_db")
+    p_cut.add_argument("catalog_db")
+    p_cut.add_argument("order_id")
+    p_cut.add_argument("roll_task_id")
+    p_cut.add_argument("wall_task_id")
+    p_cut.add_argument("wall_order", help="转台墙序，逗号分隔，如 A,B")
+    p_cut.add_argument("mode", choices=["sealed", "whole_roll"])
+
+    p_orders = sub.add_parser("cut-orders", help="列出工坊裁装单")
+    p_orders.add_argument("shop_db")
+    p_orders.add_argument("task_db")
+    p_orders.add_argument("catalog_db")
+
+    p_review = sub.add_parser("cut-review", help="按单号复查裁装回单（实用段/卡点/快照）")
+    p_review.add_argument("shop_db")
+    p_review.add_argument("task_db")
+    p_review.add_argument("catalog_db")
+    p_review.add_argument("order_id")
+
+    p_realize = sub.add_parser("cut-realize", help="现场接班：实销揭晓后查某现场兑现与余量")
+    p_realize.add_argument("shop_db")
+    p_realize.add_argument("task_db")
+    p_realize.add_argument("catalog_db")
+    p_realize.add_argument("order_id")
+    p_realize.add_argument("scenario")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "publish":
@@ -98,7 +131,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     is_task_cmd = args.cmd in ("run-task", "tasks", "rows")
-    catalog_db = args.catalog_db if is_task_cmd else args.db
+    is_shop_cmd = args.cmd in ("cut-order", "cut-orders", "cut-review", "cut-realize")
+    catalog_db = args.catalog_db if (is_task_cmd or is_shop_cmd) else args.db
     with Catalog(catalog_db) as cat:
         if args.cmd == "products":
             _print(
@@ -150,6 +184,25 @@ def main(argv: list[str] | None = None) -> int:
                             "rows": repo.get_rows(args.task_id),
                         }
                     )
+        elif is_shop_cmd:
+            with TaskRepository(args.task_db, cat) as tasks, WorkshopRepository(
+                args.shop_db, tasks
+            ) as shop:
+                if args.cmd == "cut-order":
+                    receipt = shop.place_order(
+                        args.order_id,
+                        args.roll_task_id,
+                        args.wall_task_id,
+                        [w.strip() for w in args.wall_order.split(",") if w.strip()],
+                        args.mode,
+                    )
+                    _print(receipt.as_dict())
+                elif args.cmd == "cut-orders":
+                    _print(shop.list_orders())
+                elif args.cmd == "cut-review":
+                    _print(shop.get_order(args.order_id))
+                else:
+                    _print(shop.realize_scenario(args.order_id, args.scenario))
     return 0
 
 

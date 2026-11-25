@@ -1,0 +1,12 @@
+# 布景工坊卷料归一任务配置：CSV -> 卷事实（卷号/周期/正反方向/标记相位/可用连续区间）。
+# 一份产品下两篇文档，分别驱动卷料任务与墙面任务。
+
+ingest:
+  source_uri: file:///data/workshop_rolls.csv
+  column_mapping:
+    roll_id: rid
+    pattern_period: cycle
+    direction: side
+    marker_phase: mark
+    start_coord: c0
+    end_coord: c1

@@ -15,15 +15,19 @@ confcat/
   catalog.py        # 配置产品目录：版本化发布、路径查询、哈希校验（SQLite）
   csv_pipeline.py   # CSV 读取与按配置归一化（列映射/缺失值/分区/列血缘）
   ingest.py         # 消费仓：类型化取参、整次拒绝、任务结果持久化（SQLite）
+  workshop_model.py # 布景工坊：卷/可裁段/墙/接缝模型、接缝判花、回溯核花
+  workshop.py       # 工坊接单服务：读归一任务实际行、封签/整卷两工艺、占用与回单
   cli.py            # 人工检查命令行
 samples/            # 多文档同名锚点、merge 序列冲突、显式键前后等 YAML 样例
 data/               # 合成 CSV 与运行期 SQLite
 demo/run_demo.py    # 端到端演示（含断言）
-tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度
+demo/run_workshop_demo.py  # 布景工坊裁纸交接端到端演示（含断言）
+tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度、工坊裁装
 ```
 
 至少两个实质模块的分工：`yaml_parser`/`materialize`/`codec` 负责 YAML 目录与
-来源，`csv_pipeline`/`ingest` 负责 CSV 数据转换与消费。
+来源，`csv_pipeline`/`ingest` 负责 CSV 数据转换与消费；`workshop_model`/`workshop`
+在归一任务之上负责布景工坊的裁纸交接。
 
 ## 合同实现要点
 
@@ -73,6 +77,9 @@ tests/              # unittest：真值表、逐行关系表、隔离、重开�
 # 端到端演示（发布/检查/任务/拒绝/修订有效性/隔离/重开，含内置断言）
 python3 demo/run_demo.py
 
+# 布景工坊裁纸交接演示（三算例/双销位/封签整卷/占用再受理，含内置断言）
+python3 demo/run_workshop_demo.py
+
 # 全量测试（秒级）
 python3 -m unittest discover -s tests -v
 
@@ -84,6 +91,44 @@ python -m confcat.cli publish data/catalog.db orders-product samples/orders_conf
 python -m confcat.cli products data/catalog.db
 python -m confcat.cli query data/catalog.db orders-product doc-0 ingest/tier
 python -m confcat.cli verify data/catalog.db orders-product
+
+# 布景工坊 CLI（先 run-task 做出卷料/墙面两项归一任务，再接单）
+python -m confcat.cli cut-order data/shop.db data/tasks.db data/catalog.db \
+    单号 卷料任务 墙面任务 A,B sealed        # 或 whole_roll
+python -m confcat.cli cut-orders data/shop.db data/tasks.db data/catalog.db
+python -m confcat.cli cut-review data/shop.db data/tasks.db data/catalog.db 单号
+python -m confcat.cli cut-realize data/shop.db data/tasks.db data/catalog.db 单号 pin-A
 ```
 
 无第三方依赖，仅用 Python 3.11 标准库；SQLite 数据库文件为真实持久化产物。
+
+## 布景工坊裁纸交接
+
+戏台两面墙在转台上相邻，同一花纹按拍数纵向循环。工坊在两项归一任务的**实际行**
+之上接单：卷料任务记各卷正反方向、标记相位与可用连续区间；墙面任务记墙高、
+可选要求首拍与接缝两边应错开的拍数（多现场 = 台轴销位变体）。
+
+### 裁装数学
+
+* 卷上坐标 `c` 的拍号 `(marker_phase + c) mod period`；**取模只用于判拍，
+  卷号与原坐标在回单全过程保留**，已领原卷坐标随时能对回。
+* 正向卷装台自上而下坐标递增；反向卷不能翻头，装台首格取窗口右端坐标相位。
+* 接缝 X→Y 要求错 `d` 拍的判定（末墙回首墙的环闭合缝同样适用）：
+  `(first(Y) − last(X) − 1) mod period == d`。
+* 裁纸员从可用区间滑动窗口推导真正可裁段；装台员回溯指派，逐接缝增量核花，
+  并保证同一段纸（同卷坐标相交）不被两面墙重复领走。规模上限 6 面墙、4 卷纸。
+
+### 两种交货办法
+
+* **封签定向段 `sealed`**：库内按面裁好、封签随车，每面一段、上台不能翻头或
+  另开卷。所有现场必须共用同一份（墙 → 卷段）指派；任一现场合不上即整单不能担保。
+* **整卷上台 `whole_roll`**：立好第一面才看到实销，再从余卷下刀；各现场独立选段。
+  已剪掉的边头按卷坐标落为占用，后续订单只能按剩下的整段领取。
+
+### 回单、卡点与复看
+
+* 不能承诺的单不占任何卷料，卡点指到**具体接缝与卷段**（含 kind/detail/卷号/坐标）。
+* 接单即把两项归一任务的实际行与逐列映射来源快照进工坊库；墙面任务后来修订
+  相位/高度，旧裁单仍按当时行复看；同编号任务实际行变化则拒绝混用、提示另办新单。
+* 只有能担保的单才写 `workshop_occupancy`；重开库可按单号复查实用段、卡住的缝
+  与现场接班后的实卷余量（哪一端还在）。

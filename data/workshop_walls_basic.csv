@@ -1,0 +1,5 @@
+scene,wid,h,beat0,fixed,src,dst,shift
+default,A,3,0,,,
+default,B,3,,,,
+default,A,3,0,,A,B,1
+default,B,3,,,B,A,2

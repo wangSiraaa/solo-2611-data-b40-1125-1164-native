@@ -1,0 +1,9 @@
+scene,wid,h,beat0,fixed,src,dst,shift
+pin-A,A,3,0,是,,
+pin-A,B,3,,,,
+pin-A,A,3,0,是,A,B,1
+pin-A,B,3,,,B,A,2
+pin-B,A,3,0,是,,
+pin-B,B,3,,,,
+pin-B,A,3,0,是,A,B,2
+pin-B,B,3,,,B,A,1

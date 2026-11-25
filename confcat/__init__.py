@@ -5,7 +5,9 @@
 * ``yaml_parser`` / ``materialize`` / ``model`` / ``codec``
   —— 受限 YAML 解析、锚点别名与 merge 语义、来源证据、持久化编解码；
 * ``catalog`` —— 命名配置产品目录（可独立用于人工检查）；
-* ``csv_pipeline`` / ``ingest`` —— 消费仓任务、CSV 读取与按配置归一化。
+* ``csv_pipeline`` / ``ingest`` —— 消费仓任务、CSV 读取与按配置归一化；
+* ``workshop_model`` / ``workshop``
+  —— 布景工坊裁纸交接：可裁段推导、接缝核花、封签/整卷两工艺与回单持久化。
 """
 
 __all__ = ["__version__"]

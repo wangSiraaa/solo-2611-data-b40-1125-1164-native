@@ -1,0 +1,16 @@
+# 布景工坊墙面归一任务配置：CSV -> 墙高/首拍/接缝错拍（含多现场=台轴销位变体）。
+
+ingest:
+  source_uri: file:///data/workshop_walls.csv
+  column_mapping:
+    scenario: scene
+    wall_id: wid
+    height: h
+    first_beat: beat0
+    pre_mounted: fixed
+    from_wall: src
+    to_wall: dst
+    offset_beats: shift
+  missing_value:
+    token: ""
+    default: ""
