@@ -35,6 +35,28 @@ from .warehouse import (
     StoredFrame,
     StoredProduct,
 )
+from .lock import (
+    LedgerBook,
+    LedgerEntry,
+    LockError,
+    LockState,
+    LockTopology,
+    PulseObs,
+    ValveSpec,
+    GateSpec,
+    reconcile_pulses,
+    side_pool_topology,
+    straight_through_topology,
+)
+from .lock_schedule import (
+    DOWNBOUND,
+    UPBOUND,
+    BeatAction,
+    LockSchedule,
+    LockScheduler,
+    SchedulingError,
+    Ship,
+)
 
 __all__ = [
     "CatalogError",
@@ -56,6 +78,25 @@ __all__ = [
     "SignalAggregate",
     "StoredFrame",
     "StoredProduct",
+    # 缩尺船闸
+    "LedgerBook",
+    "LedgerEntry",
+    "LockError",
+    "LockState",
+    "LockTopology",
+    "PulseObs",
+    "ValveSpec",
+    "GateSpec",
+    "reconcile_pulses",
+    "side_pool_topology",
+    "straight_through_topology",
+    "DOWNBOUND",
+    "UPBOUND",
+    "BeatAction",
+    "LockSchedule",
+    "LockScheduler",
+    "SchedulingError",
+    "Ship",
 ]
 
 __version__ = "0.1.0"

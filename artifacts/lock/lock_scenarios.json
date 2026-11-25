@@ -1,0 +1,1544 @@
+{
+  "frame_ingestion": {
+    "accepted": 5,
+    "rejected_semantic": [
+      {
+        "code": "gate_level_mismatch",
+        "detail": {
+          "gate_id": 2,
+          "left_level": 3,
+          "right_level": 4
+        },
+        "frame_event_id": "lock-0004-bad",
+        "frame_id": 10,
+        "message": "开门帧两侧尺读数不平：left=3，right=4"
+      },
+      {
+        "code": "level_out_of_range",
+        "detail": {
+          "capacity": 4,
+          "level": 7,
+          "pool": "chamber"
+        },
+        "frame_event_id": "lock-0006-bad",
+        "frame_id": 12,
+        "message": "容器 chamber 尺读数 7 超出容量 4"
+      }
+    ],
+    "warehouse_counts": {
+      "observations": 16,
+      "ok": 5,
+      "rejected": 0,
+      "total": 5
+    }
+  },
+  "scenarios": [
+    {
+      "detail": {
+        "conclusion": "四笔脉冲全部入闸，第 4 拍闸室 4 格与上游标尺 4 平，第 5 拍准开上门。",
+        "level_at_beat_4": 4,
+        "pulse_ledger": {
+          "entries": [
+            {
+              "ambiguous_pulse": false,
+              "amount": 1,
+              "beat": 1,
+              "from": "upstream",
+              "to": "chamber",
+              "valve": "valve_up"
+            },
+            {
+              "ambiguous_pulse": false,
+              "amount": 1,
+              "beat": 2,
+              "from": "upstream",
+              "to": "chamber",
+              "valve": "valve_up"
+            },
+            {
+              "ambiguous_pulse": false,
+              "amount": 1,
+              "beat": 3,
+              "from": "upstream",
+              "to": "chamber",
+              "valve": "valve_up"
+            },
+            {
+              "ambiguous_pulse": false,
+              "amount": 1,
+              "beat": 4,
+              "from": "upstream",
+              "to": "chamber",
+              "valve": "valve_up"
+            }
+          ],
+          "finite_total": 4,
+          "levels_by_beat": {
+            "1": {
+              "chamber": 1,
+              "downstream": 0,
+              "side": 0,
+              "upstream": 4
+            },
+            "2": {
+              "chamber": 2,
+              "downstream": 0,
+              "side": 0,
+              "upstream": 4
+            },
+            "3": {
+              "chamber": 3,
+              "downstream": 0,
+              "side": 0,
+              "upstream": 4
+            },
+            "4": {
+              "chamber": 4,
+              "downstream": 0,
+              "side": 0,
+              "upstream": 4
+            }
+          }
+        },
+        "schedule": {
+          "actions": [
+            {
+              "beat": 1,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 1/4 格）",
+              "ship_positions": {
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 2,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 2/4 格）",
+              "ship_positions": {
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 3,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 3/4 格）",
+              "ship_positions": {
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 4,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 4/4 格）",
+              "ship_positions": {
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 5,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_up"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_up"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_up 进闸，随即关门",
+              "ship_positions": {
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 6,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "side": 1,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 3 格）",
+              "ship_positions": {
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 7,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "side": 2,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 2 格）",
+              "ship_positions": {
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 8,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "side": 3,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 1 格）",
+              "ship_positions": {
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 9,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "side": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 0 格）",
+              "ship_positions": {
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 10,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_down"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_down"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "side": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_down 出闸，本闸结束",
+              "ship_positions": {
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            }
+          ],
+          "initial_levels": {
+            "chamber": 0,
+            "downstream": 0,
+            "side": 0,
+            "upstream": 4
+          },
+          "pass_beats": {
+            "甲(下行)": 10
+          },
+          "ships": [
+            {
+              "allowed_valves": [
+                "valve_down",
+                "valve_side",
+                "valve_up"
+              ],
+              "arrival_beat": 1,
+              "direction": "downbound",
+              "latest_pass_beat": 12,
+              "name": "甲(下行)",
+              "pass_beat": 10
+            }
+          ],
+          "valve_usage": {
+            "valve_side": 4,
+            "valve_up": 4
+          }
+        }
+      },
+      "feasible": true,
+      "reason": null,
+      "reason_code": null,
+      "scenario": "single_baseline"
+    },
+    {
+      "detail": {
+        "compatible_ledgers": [
+          {
+            "chamber_at_4": 4,
+            "enough_to_level": true,
+            "entries": [
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 1,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 2,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 3,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": true,
+                "amount": 1,
+                "beat": 4,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              }
+            ],
+            "ledger_no": 1,
+            "shortfall": 0,
+            "side_at_4": 0
+          },
+          {
+            "chamber_at_4": 3,
+            "enough_to_level": false,
+            "entries": [
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 1,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 2,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": false,
+                "amount": 1,
+                "beat": 3,
+                "from": "upstream",
+                "to": "chamber",
+                "valve": "valve_up"
+              },
+              {
+                "ambiguous_pulse": true,
+                "amount": 1,
+                "beat": 4,
+                "from": "upstream",
+                "to": "side",
+                "valve": "valve_up"
+              }
+            ],
+            "ledger_no": 2,
+            "shortfall": 1,
+            "side_at_4": 1
+          }
+        ],
+        "ledger_count": 2,
+        "note": "禁止把闸室与侧池的可能上限相加；逐套账独立回答放船可行性。"
+      },
+      "feasible": false,
+      "reason": "相容账 2 中末脉冲进了侧池，闸室只有 3 格，距平水差 1 格；两池上限不得相加，按该账必须闭闸。",
+      "reason_code": "ambiguous_shortfall",
+      "scenario": "ambiguous_pulse"
+    },
+    {
+      "detail": {
+        "beat": 1,
+        "detail": {
+          "beat": 1,
+          "earliest_pass": 10,
+          "latest_pass_beat": 3
+        },
+        "earliest_entry_gate_beat": 5,
+        "fill_pulses_required": 4,
+        "latest_entry_gate_beat": 3
+      },
+      "feasible": false,
+      "reason": "同一 4 格水账无法如期放船：船 甲(下行,急) 第 1 拍才能开始服务，本闸需 10 拍（进水 4 + 进闸 1 + 泄水 4 + 出闸 1），最早第 10 拍才能出闸，晚于最晚过闸拍 3",
+      "reason_code": "deadline_missed",
+      "scenario": "deadline_three"
+    },
+    {
+      "detail": {
+        "finite_total_by_beat": {
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 4,
+          "5": 4,
+          "6": 4,
+          "7": 4,
+          "8": 4,
+          "9": 4,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "13": 4,
+          "14": 4,
+          "15": 4,
+          "16": 4
+        },
+        "finite_total_expected": 4,
+        "pass_beats": {
+          "乙(上行)": 16,
+          "甲(下行)": 10
+        },
+        "recycle_rule": "回收水在第 9 拍才全部进入侧池，乙最早第 12 拍才能调用——未到账的水不得提前支配。",
+        "schedule": {
+          "actions": [
+            {
+              "beat": 1,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 1/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 2,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 2/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 3,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 3/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 4,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 4/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 5,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_up"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_up"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_up 进闸，随即关门",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 6,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "side": 1,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 3 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 7,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "side": 2,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 2 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 8,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "side": 3,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 1 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 9,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "side": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> side（闸室变至 0 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "side",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 10,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_down"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_down"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "side": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_down 出闸，本闸结束",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 11,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_down"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_down"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "side": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 平水开 gate_down 进闸，随即关门",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 12,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "side": 3,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：side -> chamber（闸室变至 1 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "side",
+                  "to": "chamber",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 13,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "side": 2,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：side -> chamber（闸室变至 2 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "side",
+                  "to": "chamber",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 14,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "side": 1,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：side -> chamber（闸室变至 3 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "side",
+                  "to": "chamber",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 15,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：side -> chamber（闸室变至 4 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "side",
+                  "to": "chamber",
+                  "valve": "valve_side"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 16,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_up"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_up"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "side": 0,
+                "upstream": 4
+              },
+              "note": "乙(上行) 平水开 gate_up 出闸，本闸结束",
+              "ship_positions": {
+                "乙(上行)": "passed",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            }
+          ],
+          "initial_levels": {
+            "chamber": 0,
+            "downstream": 0,
+            "side": 0,
+            "upstream": 4
+          },
+          "pass_beats": {
+            "乙(上行)": 16,
+            "甲(下行)": 10
+          },
+          "ships": [
+            {
+              "allowed_valves": [
+                "valve_down",
+                "valve_side",
+                "valve_up"
+              ],
+              "arrival_beat": 1,
+              "direction": "downbound",
+              "latest_pass_beat": 20,
+              "name": "甲(下行)",
+              "pass_beat": 10
+            },
+            {
+              "allowed_valves": [
+                "valve_down",
+                "valve_side",
+                "valve_up"
+              ],
+              "arrival_beat": 2,
+              "direction": "upbound",
+              "latest_pass_beat": 20,
+              "name": "乙(上行)",
+              "pass_beat": 16
+            }
+          ],
+          "valve_usage": {
+            "valve_side": 8,
+            "valve_up": 4
+          }
+        },
+        "side_capture_beats": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "side_reuse_beats": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "valve_usage": {
+          "valve_side": 8,
+          "valve_up": 4
+        }
+      },
+      "feasible": true,
+      "reason": null,
+      "reason_code": null,
+      "scenario": "two_ships_recycle"
+    },
+    {
+      "detail": {
+        "beat": null,
+        "detail": {
+          "beat": null
+        },
+        "side_capacity": 2
+      },
+      "feasible": false,
+      "reason": "侧池容量 2 格留不住一闸 4 格水：船 '甲(下行)' 侧池只能再收 2 格，余 2 格需泄下游，但 'valve_down' 不在本船允许支路内",
+      "reason_code": "branch_not_allowed",
+      "scenario": "side_too_small"
+    },
+    {
+      "detail": {
+        "chamber_bounds_ok": true,
+        "pass_beats": {
+          "乙(上行)": 16,
+          "甲(下行)": 10
+        },
+        "per_beat_capacity_proof": {
+          "capacity_ok": true,
+          "drain_per_beat": 1,
+          "makeup_per_beat": 1,
+          "max_external_pulses_in_one_beat": 1
+        },
+        "schedule": {
+          "actions": [
+            {
+              "beat": 1,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 1/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 2,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 2/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 3,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 3/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 4,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 进水：upstream -> chamber（闸室 4/4 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "wait_upstream"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "upstream",
+                  "to": "chamber",
+                  "valve": "valve_up"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 5,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_up"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_up"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_up 进闸，随即关门",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 6,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> downstream（闸室变至 3 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "downstream",
+                  "valve": "valve_down"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 7,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> downstream（闸室变至 2 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "downstream",
+                  "valve": "valve_down"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 8,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> downstream（闸室变至 1 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "downstream",
+                  "valve": "valve_down"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 9,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 在闸调水：chamber -> downstream（闸室变至 0 格）",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "in_chamber"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "chamber",
+                  "to": "downstream",
+                  "valve": "valve_down"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 10,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_down"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_down"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "甲(下行) 平水开 gate_down 出闸，本闸结束",
+              "ship_positions": {
+                "乙(上行)": "wait_downstream",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 11,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_down"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_down"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 0,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 平水开 gate_down 进闸，随即关门",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            },
+            {
+              "beat": 12,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 1,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：makeup_source -> chamber（闸室变至 1 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "makeup_source",
+                  "to": "chamber",
+                  "valve": "valve_makeup"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 13,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 2,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：makeup_source -> chamber（闸室变至 2 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "makeup_source",
+                  "to": "chamber",
+                  "valve": "valve_makeup"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 14,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 3,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：makeup_source -> chamber（闸室变至 3 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "makeup_source",
+                  "to": "chamber",
+                  "valve": "valve_makeup"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 15,
+              "gate_events": [],
+              "gates_open": [],
+              "kind": "transfer",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 在闸调水：makeup_source -> chamber（闸室变至 4 格）",
+              "ship_positions": {
+                "乙(上行)": "in_chamber",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [
+                {
+                  "amount": 1,
+                  "from": "makeup_source",
+                  "to": "chamber",
+                  "valve": "valve_makeup"
+                }
+              ],
+              "valves_open": []
+            },
+            {
+              "beat": 16,
+              "gate_events": [
+                {
+                  "event": "open",
+                  "gate": "gate_up"
+                },
+                {
+                  "event": "close",
+                  "gate": "gate_up"
+                }
+              ],
+              "gates_open": [],
+              "kind": "gate",
+              "levels": {
+                "chamber": 4,
+                "downstream": 0,
+                "drain_sink": 0,
+                "makeup_source": 4,
+                "upstream": 4
+              },
+              "note": "乙(上行) 平水开 gate_up 出闸，本闸结束",
+              "ship_positions": {
+                "乙(上行)": "passed",
+                "甲(下行)": "passed"
+              },
+              "valve_transfers": [],
+              "valves_open": []
+            }
+          ],
+          "initial_levels": {
+            "chamber": 0,
+            "downstream": 0,
+            "drain_sink": 0,
+            "makeup_source": 4,
+            "upstream": 4
+          },
+          "pass_beats": {
+            "乙(上行)": 16,
+            "甲(下行)": 10
+          },
+          "ships": [
+            {
+              "allowed_valves": [
+                "valve_down",
+                "valve_up"
+              ],
+              "arrival_beat": 1,
+              "direction": "downbound",
+              "latest_pass_beat": 20,
+              "name": "甲(下行)",
+              "pass_beat": 10
+            },
+            {
+              "allowed_valves": [
+                "valve_drain",
+                "valve_makeup"
+              ],
+              "arrival_beat": 2,
+              "direction": "upbound",
+              "latest_pass_beat": 20,
+              "name": "乙(上行)",
+              "pass_beat": 16
+            }
+          ],
+          "valve_usage": {
+            "valve_down": 4,
+            "valve_makeup": 4,
+            "valve_up": 4
+          }
+        },
+        "whole_game_water": {
+          "downstream_river_dump": 4,
+          "drain_to_lower_pool": 0,
+          "makeup_from_upper_pool": 4,
+          "upstream_river_draw": 4
+        }
+      },
+      "feasible": true,
+      "reason": null,
+      "reason_code": null,
+      "scenario": "straight_through"
+    }
+  ]
+}

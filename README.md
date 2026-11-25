@@ -86,3 +86,36 @@ python3.11 tools/verify.py --out /tmp/art_small --sample 200 --batch-sample 200
 * 非法 hex、奇数 nibble、错误长度、未知消息整帧拒绝并保留位置。
 * 半开窗口边界；不活动信号不进入分母；批大小 1/7/64/5000 结果逐帧一致。
 * 目录修订后同一原件可解释为不同信号；旧产品结果仍可复查；重开后从原始 hex 重建抽样结果一致。
+
+## 内河展厅缩尺船闸（`bitcatalog/lock*.py`）
+
+在同一套目录/观测仓协议上接的第二个域：闸室与水池都是等截面**整数格容器**，零渗漏。
+
+| 模块 | 职责 |
+| --- | --- |
+| `bitcatalog/lock.py` | 拓扑（容器容量、阀门、闸门）、`LockState` 物理状态机、脉冲观测与相容水账枚举 `reconcile_pulses` |
+| `bitcatalog/lock_schedule.py` | 放船调度器：抵达顺序、最晚过闸拍、允许支路下的可执行闸序 |
+| `bitcatalog/lock_frames.py` | `inland-lock` 总线小目录（闸门/阀门/水位尺/船阶段四消息）、门位控制活动字段校验、观测仓入库桥接 |
+| `bitcatalog/lock_scenarios.py` | 题面六场景的可重跑实现 |
+
+物理合同：阀门引水时其两侧闸门必须全关；闸门只在**两侧尺读数相等**时开启；一拍最多一格脉冲；穿过关闭阀的转移（`valve_closed`）、抽空（`source_dry`）、溢出（`level_out_of_range`）一律拒绝。外部河道是无限容量的恒定标尺，引水/排水后尺读数不动；有限容器（闸室、侧池）严格守恒。
+
+歧义脉冲（公共引水支管后去向不明）用 `PulseObs(manifold=...)` 建模，枚举**整套相容水账**逐套核算库存——绝不把两个候选池的可能上限相加；各套账库存不一致时 `pool_available` 返回 `None`，禁止凭预计库存开阀。已落账脉冲是追加账，回收水只有真正进入侧池之后的拍才可被下一闸调用。
+
+六场景（`python3.11 tools/lock_demo.py`）：
+
+1. `single_baseline` —— 下游 0/上游 4/闸室 0，四笔脉冲第 4 拍平水、第 5 拍开上门；
+2. `ambiguous_pulse` —— 末脉冲可去闸室或侧池，两套相容账中一套只到 3 格，整体闭闸（`ambiguous_shortfall`）；
+3. `deadline_three` —— 同一 4 格水账，最晚过闸拍 3，最早第 10 拍才能出闸（`deadline_missed`）；
+4. `two_ships_recycle` —— 甲下行、乙上行，侧池容量 4 全回收：甲第 6–9 拍蓄水、乙第 12–15 拍回用，第 16 拍出闸，16 拍逐拍水账附闭/启闸理由；
+5. `side_too_small` —— 侧池仅 2 格又要求全回收，支路不足闭闸（`branch_not_allowed`），物理层另证 `level_out_of_range`；
+6. `straight_through` —— 独立上池补水/下池排水直通方案，附每拍补排能力（均 1 格/拍）与整场水量证明。
+
+```bash
+# 船闸单元测试（32 项，含观测仓接入）
+python3.11 -m unittest tests.test_lock tests.test_lock_frames -v
+
+# 端到端演示；加 --out 落盘目录产品、SQLite 观测仓与逐拍水账 JSON
+python3.11 tools/lock_demo.py
+python3.11 tools/lock_demo.py --out artifacts/lock
+```
