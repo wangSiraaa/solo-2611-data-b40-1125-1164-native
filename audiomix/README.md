@@ -1,13 +1,20 @@
 # 多采样率剪辑时间轴与真实混音档案（audiomix）
 
 纯 Python 3.11 实现（NumPy/SciPy/标准 `wave`），无视频、无音频设备、无网页。
-两个独立服务：
+四部分：
 
 1. **可独立编辑的音频时间轴服务**（`audiomix/timeline.py`）：插入/移动/修改/删除/
    区间查询/发布，clip 身份独立于素材，有理数时间，不渲染即可点查询。
 2. **实际混音数据仓**（`audiomix/archive.py`）：只消费不可变发布产品与实际素材字节，
    固定 16kHz 输出，按固定样本块存档，内容寻址复用，支持范围读取与逐块追溯；
    不读取编辑器私有操作日志，也接受外部合法时间轴产品。
+3. **对板室与放映排片**（`clapper.py`/`film.py`/`sync.py`/`venue.py`）：把数据仓里
+   可重开的 16kHz 渲染当作录音原件，按短 PCM 模板读板响（带块/clip 来源），
+   在片卷次序、两档走片速度与卷内单调约束下发布所有仍相容的声画对应，并据
+   已锁片头、可换速卷界、可补无对白帧判定每条具名台词能否在**全部剩余解释**
+   下落在允许帧内；导出可按帧查询的放映单与逐帧对齐音轨。
+4. **两套对板制度**（`regimes.py`）：印死声画边条 vs 现场追板同步机，含一次
+   现场才出现的板响下“锁定边界如何影响补救”的对比。
 
 ## 目录
 
@@ -18,9 +25,15 @@ audiomix/
   timeline.py    时间轴编辑器（整笔校验、点查询、不可变发布产品）
   engine.py      混音引擎：逐样本参考解释器 + 等价的 NumPy 分块向量化渲染
   archive.py     混音数据仓：内容寻址块存储 + SQLite 依赖索引 + 增量渲染 + 读取/追溯
+  clapper.py     板响模板与录音格（十样本为一格）整格精确检测
+  film.py        胶片卷/帧号/场记板标/具名台词/锁帧工程（可整份存盘重开）
+  sync.py        对板求解（全部相容解释）+ 放映投影（可交付性）
+  recording.py   把 archive render 当录音原件，板响带块/clip 来源
+  venue.py       放映单（按帧查询）+ 逐帧音轨 + 回放（卷界换速/补帧）
+  regimes.py     印死声画边条 vs 现场追板同步机 + 补救方案
   cli.py         命令行入口
-tests/           手算案例、数据仓案例、边界语义测试
-demo/            30 素材/100 clip/120s 规模案例与 CLI 端到端走查
+tests/           手算案例、数据仓案例、边界语义、对板/放映测试
+demo/            规模案例、CLI 端到端走查、对板/放映走查
 run_all_checks.sh 一键全量验证
 ```
 
@@ -86,6 +99,57 @@ python3 -m audiomix.cli verify-integrity --archive-root DIR/archive
 
 完整端到端示例：`bash demo/cli_walkthrough.sh`；全量验证：`bash run_all_checks.sh`。
 
+## 对板与放映（录音原件、板响、排片、制度）
+
+**模型**：十个录音样本为一格（格宽 1/1600 秒）。录音原件就是数据仓里某条
+**可重开的 16kHz 渲染**（`render_id`），重开逐样本一致。板响来自事先给出的
+短 PCM 模板，只在**整格对齐**处精确匹配（见 `clapper.py`），不涉及视频编解码。
+
+**片卷与映射**：各卷按片卷次序首尾相接成全局帧与全局格。卷内局部帧 `f` 对到
+局部录音格 `offset + f·gear`；`gear` 即走片速度（每胶片帧推进几格，题面
+“每胶片帧推进一格”= 1），只能在卷界改档；`offset` 是待校起点（候选如 {0,1}）。
+卷内单调。视觉场记给出“第某帧有某花纹的板标”，板标必须对到同花纹的真实板响。
+
+**容差**：录音带拼接处最多漏一声、胶片同花纹最多跳一格，合并成“同花纹相邻板响
+之间可缺 2 个未见板响”的预算——但**不放宽板标本身**。题面试例：第 1 帧板标只
+可能对到唯一板响格 2 ⇒ 起点唯一为 1，格 3 的台词落第 2 帧。
+
+**发布**：`sync-project` 给出每卷全部相容解释，并对每条具名台词给出
+`possible_frames`（剩余解释下的可能帧）、`guaranteed_frames`（交集）与
+`deliverable`（可能帧全落在允许帧内，且非已锁片头/院方静音帧）。两个反例均
+复现：格 1、2 各一声同板 ⇒ 台词可为第 2 或第 3 帧，不能确保；原样带把该帧改为
+院方静音帧 ⇒ 同样交不了。
+
+```bash
+# 读板响（带块/clip/素材来源）-> 对板求解 -> 放映投影
+python3 -m audiomix.cli bang-detect  --archive-root DIR/archive --recording r1 --templates tpl.json
+python3 -m audiomix.cli bang-solve   --project proj.json --archive-root DIR/archive --recording r1 --templates tpl.json
+python3 -m audiomix.cli sync-project --project proj.json --archive-root DIR/archive --recording r1 --templates tpl.json
+
+# 两套制度：印死边条 vs 现场追板同步机（可追加一次现场才出现的板响）
+python3 -m audiomix.cli regime-assess --project proj.json --archive-root DIR/archive --recording r1 \
+    --templates tpl.json --regime edge_strip --lock "二卷:0:1" --new-bang "B:11"
+python3 -m audiomix.cli regime-remedy --project proj.json --archive-root DIR/archive --recording r1 \
+    --templates tpl.json --regime live_sync --new-bang "B:11"
+
+# 开单：放映单（按帧可查）+ 逐帧对齐音轨；回放（卷界换速/补无对白帧）
+python3 -m audiomix.cli sheet-export --project proj.json --archive-root DIR/archive --recording r1 \
+    --templates tpl.json --out sheet.json --track-out track.wav
+python3 -m audiomix.cli sheet-query  --project proj.json --archive-root DIR/archive --recording r1 \
+    --templates tpl.json --frame 2
+python3 -m audiomix.cli playback     --project proj.json --archive-root DIR/archive --recording r1 \
+    --templates tpl.json --play 0:6 --fill 10
+```
+
+**两套制度**（`regimes.py`）：
+- **印死声画边条**：卷的 `(gear, offset)` 一次性印死，不可卷内逐句挪；印错只能等
+  卷界重印（`regime-remedy` 报 `reprint_reels`）。
+- **现场追板同步机**：未验证卷界须真拿一帧标定可补的无对白帧做校正，随后才能
+  重锁（`regime-remedy` 报 `filler_frames`/`calibration_cost`）。已放帧保留，
+  换速只可在卷界进行（`venue.Playback`）。
+
+对板走查：`bash demo/sync_walkthrough.sh`（含一次现场才出现的板响下两种制度的补救对比）。
+
 ## 验证策略（不使用任何外部混音结果）
 
 - `tests/test_hand_calc.py`：短整数序列素材，10 个案例人工推导每个输出样本
@@ -96,6 +160,10 @@ python3 -m audiomix.cli verify-integrity --archive-root DIR/archive
   零误用、外部产品篡改拒绝、编辑器日志移走后旧 render 仍可读。
 - `tests/test_edge.py`：非整数 T、左闭右开边界、非法修改回滚、持久化重开、
   “先求和后单次舍入”与“逐片段先舍入”的语义区分。
+- `tests/test_sync.py`：逐条复现题面“试片”三情形（唯一板响⇒起点1/台词第2帧；
+  两声同板⇒不确定；院方静音帧⇒仍交不了）；板响整格检测与来源追溯；
+  可重开录音逐样本一致；放映单按帧查询与存盘重开逐条一致；卷界换速/已放帧
+  保留/补帧规则；两套制度在一次新板响下的补救差异；缺声预算。
 - `demo/scale_demo.py`：30 素材（每采样率 10 个）、100 clip、120 秒/192 万样本，
   含全部要求情形；窗口化逐样本交叉核对，输出 WAV、块峰值、削顶数与来源索引。
 

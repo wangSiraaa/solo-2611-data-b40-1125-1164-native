@@ -13,11 +13,20 @@ import numpy as np
 from . import assets as assets_mod
 from .archive import ArchiveStore
 from .assets import AssetRegistry
+from .clapper import TemplateBook, template as make_template
 from .engine import (
     OUTPUT_RATE, render_full_vectorized, render_reference, validate_product,
 )
+from .film import FilmProject
 from .rationals import as_r, dump_r
+from .recording import Recording
+from .regimes import (
+    EdgeStripRegime, LiveSyncRegime, LockBoundary, detect_with_new_bang,
+    plan_remedy,
+)
+from .sync import project as sync_project, solve as sync_solve
 from .timeline import TimelineEditor, ValidationError
+from .venue import Playback, ScreeningSheet
 
 
 def _print(obj) -> None:
@@ -232,6 +241,164 @@ def cmd_render_compare(p):
             "identical": bool(mismatch == 0)})
 
 
+# ----------------------------- 对板/放映命令 ----------------------------- #
+
+def _load_project(path: str) -> FilmProject:
+    return FilmProject.load(path)
+
+
+def _detect(p):
+    """从“录音原件”（archive render）重新读出板响检测。"""
+    store = ArchiveStore(p.archive_root)
+    rec = Recording(store, p.recording)
+    book = TemplateBook(_read_templates(p.templates))
+    dets = rec.detect(book)
+    store.close()
+    return dets, book
+
+
+def _read_templates(path: str) -> list:
+    """模板 JSON：``{"patterns": {"A": [..samples..], ...}}``。"""
+    with open(path, encoding="utf-8") as fh:
+        obj = json.load(fh)
+    pats = obj.get("patterns", obj)
+    return [make_template(name, vals) for name, vals in pats.items()]
+
+
+def _pick_explanation(solutions_by_reel, prefer_reel=None):
+    """确定性选取一套解释：每卷取 (gear_index, offset) 最小的相容解释。"""
+    chosen = {}
+    for rid, sols in solutions_by_reel.items():
+        if not sols:
+            raise SystemExit(f"卷 {rid} 无相容解释，无法给出声画对应")
+        chosen[rid] = sorted(sols, key=lambda s: (s.gear_index, s.offset))[0]
+    return chosen
+
+
+def cmd_bang_detect(p):
+    store = ArchiveStore(p.archive_root)
+    rec = Recording(store, p.recording)
+    book = TemplateBook(_read_templates(p.templates))
+    hits = rec.bangs_with_provenance(book)
+    _print({
+        "recording": p.recording,
+        "patterns": book.patterns,
+        "bangs": [h.to_json() for h in hits],
+        "detections": {pat: cells for pat, cells in rec.detect(book).items()},
+    })
+    store.close()
+
+
+def cmd_bang_solve(p):
+    proj = _load_project(p.project)
+    dets, _ = _detect(p)
+    per_reel = sync_solve(proj, dets)
+    result = {
+        "film_id": proj.film_id,
+        "detections": dets,
+        "consistent": all(len(v) > 0 for v in per_reel.values()),
+        "explanations": {rid: [s.to_json() for s in sols]
+                         for rid, sols in per_reel.items()},
+        "counts": {rid: len(sols) for rid, sols in per_reel.items()},
+    }
+    _print(result)
+
+
+def cmd_sync_project(p):
+    proj = _load_project(p.project)
+    dets, _ = _detect(p)
+    proj_res = sync_project(proj, dets)
+    _print(proj_res.to_json())
+
+
+def _lock_boundaries(p) -> dict[str, LockBoundary]:
+    out = {}
+    for spec in p.lock or []:
+        rid, gi, off = spec.split(":")
+        out[rid] = LockBoundary(rid, int(gi), int(off))
+    return out
+
+
+def _regime(p):
+    lb = _lock_boundaries(p)
+    if p.regime == "edge_strip":
+        return EdgeStripRegime(lb)
+    if p.regime == "live_sync":
+        return LiveSyncRegime(lb)
+    raise SystemExit(f"未知制度: {p.regime}")
+
+
+def cmd_regime_assess(p):
+    proj = _load_project(p.project)
+    dets, _ = _detect(p)
+    if p.new_bang:
+        pat, cell = p.new_bang.split(":")
+        dets = detect_with_new_bang(dets, pat, int(cell))
+    regime = _regime(p)
+    res = regime.assess(proj, dets)
+    _print(res)
+
+
+def cmd_regime_remedy(p):
+    proj = _load_project(p.project)
+    dets, _ = _detect(p)
+    if p.new_bang:
+        pat, cell = p.new_bang.split(":")
+        dets = detect_with_new_bang(dets, pat, int(cell))
+    regime = _regime(p)
+    res = regime.assess(proj, dets)
+    remedy = plan_remedy(proj, dets, regime, res)
+    _print({"assessment": res, "remedy": remedy})
+
+
+def _build_sheet(p) -> ScreeningSheet:
+    proj = _load_project(p.project)
+    dets, _ = _detect(p)
+    per_reel = sync_solve(proj, dets)
+    chosen = _pick_explanation(per_reel)
+    return ScreeningSheet(proj, chosen)
+
+
+def cmd_sheet_export(p):
+    sheet = _build_sheet(p)
+    sheet.save_manifest(p.out)
+    result = {"manifest": p.out, "frames": sheet.project.total_frames,
+              "reel_boundaries": sheet.reel_boundaries(),
+              "line_frames": dict(sorted(sheet.line_frame.items()))}
+    if p.track_out or p.track_archive_root:
+        archive_root = p.track_archive_root or p.archive_root
+        store = ArchiveStore(archive_root)
+        rec = Recording(store, p.recording)
+        path = p.track_out or (p.out + ".track.wav")
+        sheet.export_audio_track(rec.pcm(), path)
+        store.close()
+        result["audio_track"] = path
+    _print(result)
+
+
+def cmd_sheet_query(p):
+    sheet = _build_sheet(p)
+    if p.line:
+        _print(sheet.line_query(p.line))
+    elif p.frame is not None:
+        _print(sheet.frame_query(p.frame))
+    elif p.lo is not None and p.hi is not None:
+        _print(sheet.range_query(p.lo, p.hi))
+    else:
+        raise SystemExit("需要 --frame / --line / --lo+--hi 之一")
+
+
+def cmd_playback(p):
+    sheet = _build_sheet(p)
+    pb = Playback(sheet)
+    for spec in p.play or []:
+        lo, hi = spec.split(":")
+        pb.play(int(lo), int(hi))
+    for spec in p.fill or []:
+        pb.fill_frame(int(spec))
+    _print({"state": pb.state(), "manifest": pb.sheet.to_manifest()})
+
+
 # ----------------------------- 参数解析 ----------------------------- #
 
 def build_parser() -> argparse.ArgumentParser:
@@ -329,6 +496,76 @@ def build_parser() -> argparse.ArgumentParser:
     q = sub.add_parser("render-compare"); q.add_argument("--product", required=True)
     q.add_argument("--registry-root", required=True); q.add_argument("--T", required=True)
     q.set_defaults(fn=cmd_render_compare)
+
+    # ---- 对板 / 放映命令 ----
+    q = sub.add_parser("bang-detect")
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True, help="作为录音原件的 render_id")
+    q.add_argument("--templates", required=True, help="模板 JSON 文件")
+    q.set_defaults(fn=cmd_bang_detect)
+
+    q = sub.add_parser("bang-solve")
+    q.add_argument("--project", required=True)
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True)
+    q.add_argument("--templates", required=True)
+    q.set_defaults(fn=cmd_bang_solve)
+
+    q = sub.add_parser("sync-project")
+    q.add_argument("--project", required=True)
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True)
+    q.add_argument("--templates", required=True)
+    q.set_defaults(fn=cmd_sync_project)
+
+    def _regime_parser(name, fn):
+        q = sub.add_parser(name)
+        q.add_argument("--project", required=True)
+        q.add_argument("--archive-root", required=True)
+        q.add_argument("--recording", required=True)
+        q.add_argument("--templates", required=True)
+        q.add_argument("--regime", required=True,
+                       choices=["edge_strip", "live_sync"])
+        q.add_argument("--lock", action="append",
+                       help="reel_id:gear_index:offset，可多次")
+        q.add_argument("--new-bang", dest="new_bang",
+                       help="现场才出现的板响 pattern:cell")
+        q.set_defaults(fn=fn)
+        return q
+
+    _regime_parser("regime-assess", cmd_regime_assess)
+    _regime_parser("regime-remedy", cmd_regime_remedy)
+
+    q = sub.add_parser("sheet-export")
+    q.add_argument("--project", required=True)
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True)
+    q.add_argument("--templates", required=True)
+    q.add_argument("--out", required=True)
+    q.add_argument("--track-out", dest="track_out",
+                   help="导出逐帧对齐音轨 WAV 的路径（可选）")
+    q.add_argument("--track-archive-root", dest="track_archive_root",
+                   help="音轨来源 archive（缺省用 --archive-root）")
+    q.set_defaults(fn=cmd_sheet_export)
+
+    q = sub.add_parser("sheet-query")
+    q.add_argument("--project", required=True)
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True)
+    q.add_argument("--templates", required=True)
+    q.add_argument("--frame", type=int)
+    q.add_argument("--line")
+    q.add_argument("--lo", type=int); q.add_argument("--hi", type=int)
+    q.set_defaults(fn=cmd_sheet_query)
+
+    q = sub.add_parser("playback")
+    q.add_argument("--project", required=True)
+    q.add_argument("--archive-root", required=True)
+    q.add_argument("--recording", required=True)
+    q.add_argument("--templates", required=True)
+    q.add_argument("--play", action="append", help="lo:hi 放映区间，可多次")
+    q.add_argument("--fill", action="append", help="补一个可补无对白帧")
+    q.set_defaults(fn=cmd_playback)
 
     return ap
 
