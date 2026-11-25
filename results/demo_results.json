@@ -338,9 +338,536 @@
         "successes": 1
       },
       "ok": true
+    },
+    {
+      "actual": {
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 1,
+            "measured": {
+              "H": 1,
+              "V": 1
+            },
+            "original_width_available": false,
+            "requirement": {
+              "h": [
+                1,
+                1
+              ],
+              "hand": "RIGHT",
+              "v": [
+                1,
+                1
+              ]
+            }
+          },
+          "measured_h": 1,
+          "measured_v": 1,
+          "shift_no": 1
+        },
+        "holder_after": "kin",
+        "order_status": "SIGNED",
+        "original_width_available": false,
+        "signed": true,
+        "surviving": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT",
+            "side_wide": null
+          }
+        ]
+      },
+      "check": "nib_known_h2_only_straight_and_both1_deliverable",
+      "expected": {
+        "status": "DELIVERED",
+        "surviving": [
+          "STRAIGHT"
+        ],
+        "widths": [
+          1,
+          1
+        ]
+      },
+      "ok": true
+    },
+    {
+      "actual": {
+        "order_status": "HUNG",
+        "reason": "cannot guarantee both directions across every surviving type without identifying it; order suspended",
+        "surviving": [
+          {
+            "base": 2,
+            "kind": "SIDE",
+            "side_wide": "H"
+          }
+        ]
+      },
+      "check": "nib_known_h3_only_side_cannot_reach_both1",
+      "expected": {
+        "status": "HUNG",
+        "surviving": [
+          "SIDE"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "actual": {
+        "reason": "cannot guarantee both directions across every surviving type without identifying it; order suspended",
+        "status": "HUNG"
+      },
+      "check": "nib_slot_taken_cannot_deliver_even_with_straight_known",
+      "expected": "HUNG",
+      "ok": true
+    },
+    {
+      "actual": {
+        "after_first": {
+          "holder": "owner-N",
+          "original_width_available": false
+        },
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 1,
+            "measured": {
+              "H": 1,
+              "V": 1
+            },
+            "original_width_available": false,
+            "requirement": {
+              "h": [
+                1,
+                1
+              ],
+              "hand": "RIGHT",
+              "v": [
+                1,
+                3
+              ]
+            }
+          },
+          "measured_h": 1,
+          "measured_v": 1,
+          "shift_no": 1
+        },
+        "intake_shapes": [
+          {
+            "H": 2,
+            "V": 2
+          },
+          {
+            "H": 2,
+            "V": 4
+          }
+        ],
+        "intake_surviving": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT",
+            "side_wide": null
+          },
+          {
+            "base": 3,
+            "kind": "SIDE",
+            "side_wide": "V"
+          }
+        ],
+        "post_query": {
+          "grinds_done": 1,
+          "holder": "owner-N",
+          "original_width_available": false
+        },
+        "repeat_delivery_same_original": true,
+        "second_replay": {
+          "reason": "unit already delivered to owner-N",
+          "status": "REFUSED"
+        },
+        "urgent_order": {
+          "grinds": 1,
+          "signed": true,
+          "status": "SIGNED"
+        }
+      },
+      "check": "nib_pregrind_urgent_signed_delivered_then_same_piece_refused",
+      "expected": {
+        "original_available": false,
+        "second": "REFUSED",
+        "urgent": "DELIVERED"
+      },
+      "ok": true
+    },
+    {
+      "actual": {
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 0,
+            "measured": {
+              "H": 2,
+              "V": 2
+            },
+            "original_width_available": true,
+            "requirement": {
+              "h": [
+                2,
+                2
+              ],
+              "hand": "RIGHT",
+              "v": [
+                2,
+                2
+              ]
+            }
+          },
+          "measured_h": 2,
+          "measured_v": 2,
+          "shift_no": 2
+        },
+        "holder": "owner-N",
+        "intake_status": "AWAITING_REMEASURE",
+        "original_width_available": true,
+        "reason": "identified type by remeasure; deliverable before deadline",
+        "remeasure_status": "SIGNED"
+      },
+      "check": "nib_remeasure_read2_as_is_signed_and_original_preserved",
+      "expected": {
+        "intake": "AWAITING_REMEASURE",
+        "original": true,
+        "remeasure": "SIGNED"
+      },
+      "ok": true
+    },
+    {
+      "actual": {
+        "intake_status": "AWAITING_REMEASURE",
+        "reason": "measured type cannot reach the requested widths",
+        "remeasure_status": "REFUSED"
+      },
+      "check": "nib_remeasure_read4_as_is_refused",
+      "expected": {
+        "intake": "AWAITING_REMEASURE",
+        "remeasure": "REFUSED"
+      },
+      "ok": true
+    },
+    {
+      "actual": {
+        "as_is_signed_preserving_original": true,
+        "replay_ok": true,
+        "second_piece_refused": true,
+        "urgent_query_owner_and_width": true,
+        "urgent_signed_and_delivered": true
+      },
+      "check": "nib_plan_replays_cleanly_on_fresh_db",
+      "expected": true,
+      "ok": true
     }
   ],
   "database": "/workspace/data/demo.db",
+  "nib_plan": {
+    "note": "Nib-grinding workshop replay: urgent PREGRIND piece and two REMEASURE replays.",
+    "steps": [
+      {
+        "coupons": [],
+        "name": "snap",
+        "op": "publish_snapshot",
+        "products": [
+          {
+            "price": 100,
+            "sku": "NIB"
+          }
+        ],
+        "snapshot_id": "nib-plan-snap"
+      },
+      {
+        "basket": [
+          {
+            "price": 100,
+            "sku": "NIB",
+            "unit_id": "N1"
+          },
+          {
+            "price": 100,
+            "sku": "NIB",
+            "unit_id": "N2"
+          },
+          {
+            "price": 100,
+            "sku": "NIB",
+            "unit_id": "N3"
+          }
+        ],
+        "coupons": [],
+        "name": "q",
+        "op": "quote",
+        "request_id": "nib-plan-q",
+        "snapshot_id": "nib-plan-snap"
+      },
+      {
+        "name": "sale",
+        "op": "register_sale",
+        "quote": "$q",
+        "sale_id": "SN-plan"
+      },
+      {
+        "allowed_h": [
+          1,
+          3
+        ],
+        "allowed_v": [
+          1,
+          4
+        ],
+        "candidates": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT"
+          },
+          {
+            "base": 3,
+            "kind": "SIDE",
+            "side_wide": "V"
+          }
+        ],
+        "hand": "RIGHT",
+        "initial_trials": [
+          {
+            "direction": "H",
+            "hand": "RIGHT",
+            "width": 2
+          }
+        ],
+        "op": "register_nib",
+        "owner_id": "alice",
+        "return_deadline": 4,
+        "sale_id": "SN-plan",
+        "unit_id": "N1"
+      },
+      {
+        "claimant_id": "alice",
+        "deadline_shift": 1,
+        "name": "urgent",
+        "op": "open_nib_order",
+        "opened_shift": 1,
+        "order_id": "plan-urgent",
+        "requirement": {
+          "h": [
+            1,
+            1
+          ],
+          "hand": "RIGHT",
+          "v": [
+            1,
+            3
+          ]
+        },
+        "sale_id": "SN-plan",
+        "strategy": "PREGRIND",
+        "unit_id": "N1"
+      },
+      {
+        "op": "grind_nib",
+        "order_id": "plan-urgent",
+        "shift_no": 1
+      },
+      {
+        "measured_h": 1,
+        "measured_v": 1,
+        "name": "urgent_del",
+        "op": "deliver_nib",
+        "order_id": "plan-urgent",
+        "shift_no": 1
+      },
+      {
+        "name": "urgent_query",
+        "op": "query_nib",
+        "sale_id": "SN-plan",
+        "unit_id": "N1"
+      },
+      {
+        "claimant_id": "bob",
+        "deadline_shift": 2,
+        "name": "second",
+        "op": "open_nib_order",
+        "opened_shift": 2,
+        "order_id": "plan-second",
+        "requirement": {
+          "h": [
+            1,
+            1
+          ],
+          "hand": "RIGHT",
+          "v": [
+            1,
+            1
+          ]
+        },
+        "sale_id": "SN-plan",
+        "strategy": "PREGRIND",
+        "unit_id": "N1"
+      },
+      {
+        "allowed_h": [
+          1,
+          4
+        ],
+        "allowed_v": [
+          1,
+          5
+        ],
+        "candidates": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT"
+          },
+          {
+            "base": 3,
+            "kind": "SIDE",
+            "side_wide": "V"
+          }
+        ],
+        "hand": "RIGHT",
+        "initial_trials": [
+          {
+            "direction": "H",
+            "hand": "RIGHT",
+            "width": 2
+          }
+        ],
+        "op": "register_nib",
+        "owner_id": "carol",
+        "return_deadline": 3,
+        "sale_id": "SN-plan",
+        "unit_id": "N2"
+      },
+      {
+        "claimant_id": "carol",
+        "deadline_shift": 2,
+        "name": "as_is",
+        "op": "open_nib_order",
+        "opened_shift": 1,
+        "order_id": "plan-as-is",
+        "requirement": {
+          "h": [
+            2,
+            2
+          ],
+          "hand": "RIGHT",
+          "v": [
+            2,
+            2
+          ]
+        },
+        "sale_id": "SN-plan",
+        "strategy": "REMEASURE",
+        "unit_id": "N2"
+      },
+      {
+        "h_width": 2,
+        "op": "remeasure_nib",
+        "order_id": "plan-as-is",
+        "shift_no": 2,
+        "v_width": 2
+      },
+      {
+        "measured_h": 2,
+        "measured_v": 2,
+        "name": "as_is_del",
+        "op": "deliver_nib",
+        "order_id": "plan-as-is",
+        "shift_no": 2
+      },
+      {
+        "allowed_h": [
+          1,
+          4
+        ],
+        "allowed_v": [
+          1,
+          5
+        ],
+        "candidates": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT"
+          },
+          {
+            "base": 3,
+            "kind": "SIDE",
+            "side_wide": "V"
+          }
+        ],
+        "hand": "RIGHT",
+        "initial_trials": [
+          {
+            "direction": "H",
+            "hand": "RIGHT",
+            "width": 2
+          }
+        ],
+        "op": "register_nib",
+        "owner_id": "dave",
+        "return_deadline": 3,
+        "sale_id": "SN-plan",
+        "unit_id": "N3"
+      },
+      {
+        "claimant_id": "dave",
+        "deadline_shift": 3,
+        "name": "as_is4",
+        "op": "open_nib_order",
+        "opened_shift": 1,
+        "order_id": "plan-as-is-4",
+        "requirement": {
+          "h": [
+            2,
+            2
+          ],
+          "hand": "RIGHT",
+          "v": [
+            2,
+            2
+          ]
+        },
+        "sale_id": "SN-plan",
+        "strategy": "REMEASURE",
+        "unit_id": "N3"
+      },
+      {
+        "h_width": 2,
+        "op": "remeasure_nib",
+        "order_id": "plan-as-is-4",
+        "shift_no": 3,
+        "v_width": 4
+      },
+      {
+        "hi": 3,
+        "lo": 1,
+        "name": "availability",
+        "op": "nib_availability"
+      }
+    ]
+  },
   "plan": {
     "note": "The structured operations executed above, replayable with `python -m basket_service run-plan`.",
     "steps": [
@@ -1839,6 +2366,210 @@
       "sale_id": "S-ten",
       "sale_total": 305
     },
+    "nib_grinding": {
+      "known_h2": {
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 1,
+            "measured": {
+              "H": 1,
+              "V": 1
+            },
+            "original_width_available": false,
+            "requirement": {
+              "h": [
+                1,
+                1
+              ],
+              "hand": "RIGHT",
+              "v": [
+                1,
+                1
+              ]
+            }
+          },
+          "measured_h": 1,
+          "measured_v": 1,
+          "shift_no": 1
+        },
+        "holder_after": "kin",
+        "order_status": "SIGNED",
+        "original_width_available": false,
+        "signed": true,
+        "surviving": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT",
+            "side_wide": null
+          }
+        ]
+      },
+      "known_h3": {
+        "order_status": "HUNG",
+        "reason": "cannot guarantee both directions across every surviving type without identifying it; order suspended",
+        "surviving": [
+          {
+            "base": 2,
+            "kind": "SIDE",
+            "side_wide": "H"
+          }
+        ]
+      },
+      "pregrind_replay": {
+        "after_first": {
+          "holder": "owner-N",
+          "original_width_available": false
+        },
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 1,
+            "measured": {
+              "H": 1,
+              "V": 1
+            },
+            "original_width_available": false,
+            "requirement": {
+              "h": [
+                1,
+                1
+              ],
+              "hand": "RIGHT",
+              "v": [
+                1,
+                3
+              ]
+            }
+          },
+          "measured_h": 1,
+          "measured_v": 1,
+          "shift_no": 1
+        },
+        "intake_shapes": [
+          {
+            "H": 2,
+            "V": 2
+          },
+          {
+            "H": 2,
+            "V": 4
+          }
+        ],
+        "intake_surviving": [
+          {
+            "base": 2,
+            "kind": "STRAIGHT",
+            "side_wide": null
+          },
+          {
+            "base": 3,
+            "kind": "SIDE",
+            "side_wide": "V"
+          }
+        ],
+        "post_query": {
+          "grinds_done": 1,
+          "holder": "owner-N",
+          "original_width_available": false
+        },
+        "repeat_delivery_same_original": true,
+        "second_replay": {
+          "reason": "unit already delivered to owner-N",
+          "status": "REFUSED"
+        },
+        "urgent_order": {
+          "grinds": 1,
+          "signed": true,
+          "status": "SIGNED"
+        }
+      },
+      "remeasure_read2": {
+        "delivered": {
+          "evidence": {
+            "consistent_candidates": [
+              {
+                "base": 2,
+                "kind": "STRAIGHT",
+                "side_wide": null
+              }
+            ],
+            "grinds_done": 0,
+            "measured": {
+              "H": 2,
+              "V": 2
+            },
+            "original_width_available": true,
+            "requirement": {
+              "h": [
+                2,
+                2
+              ],
+              "hand": "RIGHT",
+              "v": [
+                2,
+                2
+              ]
+            }
+          },
+          "measured_h": 2,
+          "measured_v": 2,
+          "shift_no": 2
+        },
+        "holder": "owner-N",
+        "intake_status": "AWAITING_REMEASURE",
+        "original_width_available": true,
+        "reason": "identified type by remeasure; deliverable before deadline",
+        "remeasure_status": "SIGNED"
+      },
+      "remeasure_read4": {
+        "intake_status": "AWAITING_REMEASURE",
+        "reason": "measured type cannot reach the requested widths",
+        "remeasure_status": "REFUSED"
+      },
+      "slot_locked": {
+        "reason": "cannot guarantee both directions across every surviving type without identifying it; order suspended",
+        "status": "HUNG"
+      }
+    },
+    "nib_plan_replay": {
+      "expectations": {
+        "as_is_signed_preserving_original": true,
+        "second_piece_refused": true,
+        "urgent_query_owner_and_width": true,
+        "urgent_signed_and_delivered": true
+      },
+      "final_availability": {
+        "slots": {
+          "1": {
+            "kind": "GRIND",
+            "order_id": "plan-urgent"
+          },
+          "2": {
+            "kind": "REMEASURE",
+            "order_id": "plan-as-is"
+          },
+          "3": {
+            "kind": "REMEASURE",
+            "order_id": "plan-as-is-4"
+          }
+        }
+      },
+      "ok": true,
+      "step_count": 17
+    },
     "overlap_rejected": {
       "error": "UNIT_ALREADY_RETURNED",
       "rejected": true
@@ -3185,8 +3916,8 @@
     }
   },
   "summary": {
-    "checks": 19,
+    "checks": 26,
     "failed": 0,
-    "passed": 19
+    "passed": 26
   }
 }

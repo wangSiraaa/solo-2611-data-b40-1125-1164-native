@@ -18,6 +18,7 @@ from typing import Optional
 from .db import Database
 from .errors import BasketError
 from .ledger import AfterSalesLedger
+from .nib import NibService
 from .quote_service import QuoteService
 
 
@@ -28,6 +29,7 @@ class Service:
         self.db = Database(path, busy_timeout_ms=busy_timeout_ms)
         self.quotes = QuoteService(self.db)
         self.ledger = AfterSalesLedger(self.db)
+        self.nib = NibService(self.db, self.ledger)
 
     # quote surface -------------------------------------------------------
     def publish_snapshot(self, products=None, coupons=None, *, snapshot_id=None) -> str:
@@ -66,6 +68,40 @@ class Service:
 
     def audit_sales(self):
         return self.ledger.audit_sales()
+
+    # nib-grinding surface ------------------------------------------------
+    def register_nib(self, sale_id, unit_id, **kwargs):
+        return self.nib.register_nib(sale_id, unit_id, **kwargs)
+
+    def record_trial(self, sale_id, unit_id, **kwargs):
+        return self.nib.record_trial(sale_id, unit_id, **kwargs)
+
+    def get_nib(self, sale_id, unit_id):
+        return self.nib.get_nib(sale_id, unit_id)
+
+    def query_nib(self, sale_id, unit_id):
+        return self.nib.query_nib(sale_id, unit_id)
+
+    def open_nib_order(self, order_id, sale_id, unit_id, **kwargs):
+        return self.nib.open_nib_order(order_id, sale_id, unit_id, **kwargs)
+
+    def get_nib_order(self, order_id):
+        return self.nib.get_nib_order(order_id)
+
+    def reserve_slot(self, shift_no, order_id, kind="GRIND"):
+        return self.nib.reserve_slot(shift_no, order_id, kind)
+
+    def remeasure_nib(self, order_id, **kwargs):
+        return self.nib.remeasure_nib(order_id, **kwargs)
+
+    def grind_nib(self, order_id, **kwargs):
+        return self.nib.grind_nib(order_id, **kwargs)
+
+    def deliver_nib(self, order_id, **kwargs):
+        return self.nib.deliver_nib(order_id, **kwargs)
+
+    def nib_availability(self, lo=1, hi=8):
+        return self.nib.nib_availability(lo, hi)
 
     # cross-cutting -------------------------------------------------------
     def run(self, plan):

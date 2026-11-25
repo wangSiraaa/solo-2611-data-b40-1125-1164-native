@@ -1,0 +1,284 @@
+{
+  "note": "Nib-grinding workshop replay: urgent PREGRIND piece and two REMEASURE replays.",
+  "steps": [
+    {
+      "coupons": [],
+      "name": "snap",
+      "op": "publish_snapshot",
+      "products": [
+        {
+          "price": 100,
+          "sku": "NIB"
+        }
+      ],
+      "snapshot_id": "nib-plan-snap"
+    },
+    {
+      "basket": [
+        {
+          "price": 100,
+          "sku": "NIB",
+          "unit_id": "N1"
+        },
+        {
+          "price": 100,
+          "sku": "NIB",
+          "unit_id": "N2"
+        },
+        {
+          "price": 100,
+          "sku": "NIB",
+          "unit_id": "N3"
+        }
+      ],
+      "coupons": [],
+      "name": "q",
+      "op": "quote",
+      "request_id": "nib-plan-q",
+      "snapshot_id": "nib-plan-snap"
+    },
+    {
+      "name": "sale",
+      "op": "register_sale",
+      "quote": "$q",
+      "sale_id": "SN-plan"
+    },
+    {
+      "allowed_h": [
+        1,
+        3
+      ],
+      "allowed_v": [
+        1,
+        4
+      ],
+      "candidates": [
+        {
+          "base": 2,
+          "kind": "STRAIGHT"
+        },
+        {
+          "base": 3,
+          "kind": "SIDE",
+          "side_wide": "V"
+        }
+      ],
+      "hand": "RIGHT",
+      "initial_trials": [
+        {
+          "direction": "H",
+          "hand": "RIGHT",
+          "width": 2
+        }
+      ],
+      "op": "register_nib",
+      "owner_id": "alice",
+      "return_deadline": 4,
+      "sale_id": "SN-plan",
+      "unit_id": "N1"
+    },
+    {
+      "claimant_id": "alice",
+      "deadline_shift": 1,
+      "name": "urgent",
+      "op": "open_nib_order",
+      "opened_shift": 1,
+      "order_id": "plan-urgent",
+      "requirement": {
+        "h": [
+          1,
+          1
+        ],
+        "hand": "RIGHT",
+        "v": [
+          1,
+          3
+        ]
+      },
+      "sale_id": "SN-plan",
+      "strategy": "PREGRIND",
+      "unit_id": "N1"
+    },
+    {
+      "op": "grind_nib",
+      "order_id": "plan-urgent",
+      "shift_no": 1
+    },
+    {
+      "measured_h": 1,
+      "measured_v": 1,
+      "name": "urgent_del",
+      "op": "deliver_nib",
+      "order_id": "plan-urgent",
+      "shift_no": 1
+    },
+    {
+      "name": "urgent_query",
+      "op": "query_nib",
+      "sale_id": "SN-plan",
+      "unit_id": "N1"
+    },
+    {
+      "claimant_id": "bob",
+      "deadline_shift": 2,
+      "name": "second",
+      "op": "open_nib_order",
+      "opened_shift": 2,
+      "order_id": "plan-second",
+      "requirement": {
+        "h": [
+          1,
+          1
+        ],
+        "hand": "RIGHT",
+        "v": [
+          1,
+          1
+        ]
+      },
+      "sale_id": "SN-plan",
+      "strategy": "PREGRIND",
+      "unit_id": "N1"
+    },
+    {
+      "allowed_h": [
+        1,
+        4
+      ],
+      "allowed_v": [
+        1,
+        5
+      ],
+      "candidates": [
+        {
+          "base": 2,
+          "kind": "STRAIGHT"
+        },
+        {
+          "base": 3,
+          "kind": "SIDE",
+          "side_wide": "V"
+        }
+      ],
+      "hand": "RIGHT",
+      "initial_trials": [
+        {
+          "direction": "H",
+          "hand": "RIGHT",
+          "width": 2
+        }
+      ],
+      "op": "register_nib",
+      "owner_id": "carol",
+      "return_deadline": 3,
+      "sale_id": "SN-plan",
+      "unit_id": "N2"
+    },
+    {
+      "claimant_id": "carol",
+      "deadline_shift": 2,
+      "name": "as_is",
+      "op": "open_nib_order",
+      "opened_shift": 1,
+      "order_id": "plan-as-is",
+      "requirement": {
+        "h": [
+          2,
+          2
+        ],
+        "hand": "RIGHT",
+        "v": [
+          2,
+          2
+        ]
+      },
+      "sale_id": "SN-plan",
+      "strategy": "REMEASURE",
+      "unit_id": "N2"
+    },
+    {
+      "h_width": 2,
+      "op": "remeasure_nib",
+      "order_id": "plan-as-is",
+      "shift_no": 2,
+      "v_width": 2
+    },
+    {
+      "measured_h": 2,
+      "measured_v": 2,
+      "name": "as_is_del",
+      "op": "deliver_nib",
+      "order_id": "plan-as-is",
+      "shift_no": 2
+    },
+    {
+      "allowed_h": [
+        1,
+        4
+      ],
+      "allowed_v": [
+        1,
+        5
+      ],
+      "candidates": [
+        {
+          "base": 2,
+          "kind": "STRAIGHT"
+        },
+        {
+          "base": 3,
+          "kind": "SIDE",
+          "side_wide": "V"
+        }
+      ],
+      "hand": "RIGHT",
+      "initial_trials": [
+        {
+          "direction": "H",
+          "hand": "RIGHT",
+          "width": 2
+        }
+      ],
+      "op": "register_nib",
+      "owner_id": "dave",
+      "return_deadline": 3,
+      "sale_id": "SN-plan",
+      "unit_id": "N3"
+    },
+    {
+      "claimant_id": "dave",
+      "deadline_shift": 3,
+      "name": "as_is4",
+      "op": "open_nib_order",
+      "opened_shift": 1,
+      "order_id": "plan-as-is-4",
+      "requirement": {
+        "h": [
+          2,
+          2
+        ],
+        "hand": "RIGHT",
+        "v": [
+          2,
+          2
+        ]
+      },
+      "sale_id": "SN-plan",
+      "strategy": "REMEASURE",
+      "unit_id": "N3"
+    },
+    {
+      "h_width": 2,
+      "op": "remeasure_nib",
+      "order_id": "plan-as-is-4",
+      "shift_no": 3,
+      "v_width": 4
+    },
+    {
+      "hi": 3,
+      "lo": 1,
+      "name": "availability",
+      "op": "nib_availability"
+    }
+  ]
+}

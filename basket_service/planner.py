@@ -21,6 +21,17 @@ Supported ops::
     inventory          skus?
     audit_sales
     audit_inventory
+    register_nib       sale_id, unit_id, owner_id, candidates, hand?, model?, allowed_h?, allowed_v?, return_deadline?, initial_trials?
+    record_trial       sale_id, unit_id, hand, direction, width, shift_no?, source?
+    get_nib            sale_id, unit_id
+    query_nib          sale_id, unit_id
+    open_nib_order     order_id, sale_id, unit_id, strategy, requirement, deadline_shift, opened_shift, claimant_id
+    get_nib_order      order_id
+    reserve_slot       shift_no, order_id, kind?
+    remeasure_nib      order_id, shift_no, h_width, v_width, hand?
+    grind_nib          order_id, shift_no
+    deliver_nib        order_id, shift_no, measured_h, measured_v
+    nib_availability   lo?, hi?
 
 Any step may set ``"expect_error": <code>`` (string or list) to assert that the
 operation is rejected with that error code; the transcript then records a
@@ -144,6 +155,71 @@ def _execute(service, step: Mapping[str, Any], env: Mapping[str, Any]) -> Any:
         return service.audit_sales()
     if op == "audit_inventory":
         return service.audit_inventory()
+    if op == "register_nib":
+        return service.register_nib(
+            _require(step, "sale_id", op),
+            _require(step, "unit_id", op),
+            owner_id=_require(step, "owner_id", op),
+            candidates=_require(step, "candidates", op),
+            hand=step.get("hand", "RIGHT"),
+            model=step.get("model"),
+            allowed_h=step.get("allowed_h", (1, 10)),
+            allowed_v=step.get("allowed_v", (1, 10)),
+            return_deadline=step.get("return_deadline", 999),
+            initial_trials=step.get("initial_trials"),
+        )
+    if op == "record_trial":
+        return service.record_trial(
+            _require(step, "sale_id", op),
+            _require(step, "unit_id", op),
+            hand=_require(step, "hand", op),
+            direction=_require(step, "direction", op),
+            width=_require(step, "width", op),
+            shift_no=step.get("shift_no", 0),
+            source=step.get("source", "MANUAL"),
+        )
+    if op == "get_nib":
+        return service.get_nib(_require(step, "sale_id", op), _require(step, "unit_id", op))
+    if op == "query_nib":
+        return service.query_nib(_require(step, "sale_id", op), _require(step, "unit_id", op))
+    if op == "open_nib_order":
+        return service.open_nib_order(
+            _require(step, "order_id", op),
+            _require(step, "sale_id", op),
+            _require(step, "unit_id", op),
+            strategy=_require(step, "strategy", op),
+            requirement=_require(step, "requirement", op),
+            deadline_shift=_require(step, "deadline_shift", op),
+            opened_shift=_require(step, "opened_shift", op),
+            claimant_id=_require(step, "claimant_id", op),
+        )
+    if op == "get_nib_order":
+        return service.get_nib_order(_require(step, "order_id", op))
+    if op == "reserve_slot":
+        return service.reserve_slot(
+            _require(step, "shift_no", op),
+            _require(step, "order_id", op),
+            step.get("kind", "GRIND"),
+        )
+    if op == "remeasure_nib":
+        return service.remeasure_nib(
+            _require(step, "order_id", op),
+            shift_no=_require(step, "shift_no", op),
+            h_width=_require(step, "h_width", op),
+            v_width=_require(step, "v_width", op),
+            hand=step.get("hand"),
+        )
+    if op == "grind_nib":
+        return service.grind_nib(_require(step, "order_id", op), shift_no=_require(step, "shift_no", op))
+    if op == "deliver_nib":
+        return service.deliver_nib(
+            _require(step, "order_id", op),
+            shift_no=_require(step, "shift_no", op),
+            measured_h=_require(step, "measured_h", op),
+            measured_v=_require(step, "measured_v", op),
+        )
+    if op == "nib_availability":
+        return service.nib_availability(step.get("lo", 1), step.get("hi", 8))
     raise PlanError(f"unknown op {op!r}", step_index=-1, step=step, transcript=[])
 
 

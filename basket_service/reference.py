@@ -130,3 +130,54 @@ def expected_return(paid_by_unit: Mapping[str, int], unit_ids: Sequence[str]) ->
 
     per_unit = {unit_id: paid_by_unit[unit_id] for unit_id in unit_ids}
     return sum(per_unit.values()), per_unit
+
+
+# ---------------------------------------------------------------------------
+# Nib geometry reference (independent of basket_service.nib).
+# ---------------------------------------------------------------------------
+def nib_shape(kind: str, base: int, hand: str, side_wide: str, grinds: int) -> Dict[str, int]:
+    """Idealised width pair after ``grinds``, straight from the workshop rules.
+
+    Straight: same width in both directions.  Side: wide direction is one more,
+    narrow direction one less; a different hand swaps the two.  Grinding once
+    removes one from the base width, which raises ``ValueError`` once the nib
+    can no longer exist (straight base < 1, side base < 2).
+    """
+
+    effective = base - grinds
+    if kind == "STRAIGHT":
+        if effective < 1:
+            raise ValueError("straight nib ground away")
+        return {"H": effective, "V": effective}
+    if effective < 2:
+        raise ValueError("side nib ground away")
+    other = "V" if side_wide == "H" else "H"
+    wide = side_wide if hand == "RIGHT" else other
+    narrow = other if wide == side_wide else side_wide
+    return {wide: effective + 1, narrow: effective - 1}
+
+
+def nib_best_kind_for_pairs(observations: Sequence[Tuple[str, str, int, int]], base_candidates):
+    """Brute-force the hypotheses that explain every (hand, dir, width) reading.
+
+    ``base_candidates`` is a list of ``(kind, base, side_wide)`` tuples.  This
+    walks every admissible grind level independently, so it never shares the
+    production helper's interval arithmetic.
+    """
+
+    survivors = []
+    for kind, base, side_wide in base_candidates:
+        ok = True
+        for hand, direction, width, grinds in observations:
+            try:
+                shape = nib_shape(kind, base, hand, side_wide, grinds)
+            except ValueError:
+                ok = False
+                break
+            if shape[direction] != width:
+                ok = False
+                break
+        if ok:
+            survivors.append({"kind": kind, "base": base, "side_wide": None if kind == "STRAIGHT" else side_wide})
+    return survivors
+

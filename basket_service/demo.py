@@ -509,6 +509,50 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
     })
     del final
 
+    # ------------------------------------------------------------------
+    # 8. Nib-grinding workshop: two parallel replays of the same piece N.
+    # ------------------------------------------------------------------
+    nib_plan = _run_nib_scenarios(results, Path(db_path).parent)
+    results["nib_plan"] = nib_plan
+    _write_json(Path(plan_path).with_name("nib_plan.json"), nib_plan)
+
+    # Replay the nib plan on a throwaway database to prove it is self-contained.
+    replay_path = str(Path(db_path).with_name("nib_replay.db"))
+    for suffix in ("", "-wal", "-shm"):
+        stale = Path(replay_path + suffix)
+        if stale.exists():
+            stale.unlink()
+    replay_svc = open_service(replay_path)
+    replay = replay_svc.run(nib_plan)
+    replay_ok = replay["ok"] and all(step.get("ok", True) for step in replay["steps"])
+    by_name = {step.get("name"): step.get("result") for step in replay["steps"] if step.get("name")}
+    urgent_delivery = by_name.get("urgent_del") or {}
+    as_is_delivery = by_name.get("as_is_del") or {}
+    urgent_query = by_name.get("urgent_query") or {}
+    replay_expectations = {
+        "urgent_signed_and_delivered": by_name.get("urgent", {}).get("status") == "SIGNED"
+        and urgent_delivery.get("status") == "DELIVERED"
+        and (urgent_delivery.get("delivery") or {}).get("measured_h") == 1,
+        "second_piece_refused": by_name.get("second", {}).get("status") == "REFUSED",
+        "as_is_signed_preserving_original": as_is_delivery.get("status") == "DELIVERED"
+        and (as_is_delivery.get("delivery") or {}).get("evidence", {}).get("original_width_available") is True,
+        "urgent_query_owner_and_width": urgent_query.get("holder") is not None
+        and urgent_query.get("original_width_available") is False,
+    }
+    results["scenarios"]["nib_plan_replay"] = {
+        "ok": replay_ok,
+        "step_count": len(replay["steps"]),
+        "expectations": replay_expectations,
+        "final_availability": replay["steps"][-1]["result"],
+    }
+    results["checks"].append({
+        "check": "nib_plan_replays_cleanly_on_fresh_db",
+        "ok": replay_ok and all(replay_expectations.values()),
+        "expected": True,
+        "actual": {"replay_ok": replay_ok, **replay_expectations},
+    })
+    del replay_svc
+
     results["summary"] = {
         "checks": len(results["checks"]),
         "passed": sum(1 for c in results["checks"] if c["ok"]),
@@ -532,6 +576,269 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
     _write_json(Path(out_path), results)
     _write_json(Path(plan_path), results["plan"])
     return results
+
+
+# ---------------------------------------------------------------------------
+# Nib-grinding workshop demo
+# ---------------------------------------------------------------------------
+NIB_SKU = "NIB"
+
+
+def _nib_sale(svc, sale_id: str, unit_ids, *, db_tag: str, owner_prefix: str = "owner"):
+    """Register a real sale (independent of the quote logic) for the nib units."""
+
+    basket = [{"unit_id": uid, "sku": NIB_SKU, "price": 100} for uid in unit_ids]
+    snap = svc.publish_snapshot([{"sku": NIB_SKU, "price": 100}], [], snapshot_id=f"nib-snap-{db_tag}-{sale_id}")
+    quote = svc.quote(basket, [], f"nib-q-{db_tag}-{sale_id}", snap)
+    sale = svc.register_sale(sale_id, quote=quote)
+    owners = {uid: f"{owner_prefix}-{uid}" for uid in unit_ids}
+    return sale, owners
+
+
+def _fresh_nib_db(path: Path) -> "object":
+    for suffix in ("", "-wal", "-shm"):
+        candidate = Path(str(path) + suffix)
+        if candidate.exists():
+            candidate.unlink()
+    return open_service(str(path))
+
+
+def _run_nib_scenarios(results: Dict[str, Any], data_dir: Path) -> Dict[str, Any]:
+    from .nib import H, V, STRAIGHT, SIDE  # local import keeps top-level deps tidy
+
+    # Cans of the same model N: a straight base-2 nib or a reverse side base-3
+    # nib; only a horizontal reading of 2 is available at intake.  Their two
+    # width pairs are (2,2) and (2,4); every grind drops both by one.
+    cands_n = [{"kind": STRAIGHT, "base": 2}, {"kind": SIDE, "base": 3, "side_wide": V}]
+    # Known right-hand base-2 nib: straight 2 or either side 2 orientation.  An
+    # H reading of 2 keeps only the straight one; an H reading of 3 keeps only
+    # the side with H wide.
+    cands_known = [
+        {"kind": STRAIGHT, "base": 2},
+        {"kind": SIDE, "base": 2, "side_wide": H},
+        {"kind": SIDE, "base": 2, "side_wide": V},
+    ]
+    scenarios: Dict[str, Any] = {}
+
+    # ---------------- 8a. Known right-hand base-2 nib discriminations --------
+    def known_shop(read_h: int, tag: str):
+        path = data_dir / f"nib-known-{tag}.db"
+        svc = _fresh_nib_db(path)
+        _nib_sale(svc, "SK", ["u"], db_tag=f"known-{tag}")
+        svc.register_nib(
+            "SK", "u", owner_id="kin", candidates=cands_known, hand="RIGHT",
+            allowed_h=[1, 4], allowed_v=[1, 4], return_deadline=3,
+            initial_trials=[{"hand": "RIGHT", "direction": H, "width": read_h}],
+        )
+        return svc
+
+    # H=2 -> only straight; "both directions 1, one free slot" is deliverable.
+    svc = known_shop(2, "h2")
+    nib = svc.get_nib("SK", "u")
+    order = svc.open_nib_order(
+        "OK-H2", "SK", "u", strategy="PREGRIND",
+        requirement={"hand": "RIGHT", "h": [1, 1], "v": [1, 1]},
+        deadline_shift=1, opened_shift=1, claimant_id="kin",
+    )
+    svc.grind_nib("OK-H2", shift_no=1)
+    delivered = svc.deliver_nib("OK-H2", shift_no=1, measured_h=1, measured_v=1)
+    after = svc.query_nib("SK", "u")
+    scenarios["known_h2"] = {
+        "surviving": nib["surviving"],
+        "order_status": order["status"],
+        "signed": order["signed"],
+        "delivered": delivered["delivery"],
+        "holder_after": after["holder"],
+        "original_width_available": after["original_width_available"],
+    }
+    results["checks"].append({
+        "check": "nib_known_h2_only_straight_and_both1_deliverable",
+        "ok": [c["kind"] for c in nib["surviving"]] == ["STRAIGHT"]
+        and order["status"] == "SIGNED"
+        and delivered["status"] == "DELIVERED"
+        and delivered["delivery"]["measured_h"] == 1
+        and delivered["delivery"]["measured_v"] == 1,
+        "expected": {"surviving": ["STRAIGHT"], "status": "DELIVERED", "widths": [1, 1]},
+        "actual": scenarios["known_h2"],
+    })
+
+    # Reading changed to 3 -> only the H-wide side nib; one grind cannot give 1,1.
+    svc = known_shop(3, "h3")
+    nib = svc.get_nib("SK", "u")
+    order = svc.open_nib_order(
+        "OK-H3", "SK", "u", strategy="PREGRIND",
+        requirement={"hand": "RIGHT", "h": [1, 1], "v": [1, 1]},
+        deadline_shift=2, opened_shift=1, claimant_id="kin",
+    )
+    scenarios["known_h3"] = {
+        "surviving": nib["surviving"],
+        "order_status": order["status"],
+        "reason": order["decision"].get("reason"),
+    }
+    results["checks"].append({
+        "check": "nib_known_h3_only_side_cannot_reach_both1",
+        "ok": [c["kind"] for c in nib["surviving"]] == ["SIDE"] and order["status"] == "HUNG",
+        "expected": {"surviving": ["SIDE"], "status": "HUNG"},
+        "actual": scenarios["known_h3"],
+    })
+
+    # Restore reading 2, but the slot was locked by another order.
+    svc = known_shop(2, "locked")
+    svc.reserve_slot(1, "LOCKED-ORDER", "GRIND")
+    order = svc.open_nib_order(
+        "OK-LOCK", "SK", "u", strategy="PREGRIND",
+        requirement={"hand": "RIGHT", "h": [1, 1], "v": [1, 1]},
+        deadline_shift=1, opened_shift=1, claimant_id="kin",
+    )
+    scenarios["slot_locked"] = {"status": order["status"], "reason": order["decision"].get("reason")}
+    results["checks"].append({
+        "check": "nib_slot_taken_cannot_deliver_even_with_straight_known",
+        "ok": order["status"] == "HUNG",
+        "expected": "HUNG",
+        "actual": scenarios["slot_locked"],
+    })
+
+    # ---------------- 8b. Two parallel replays of piece N --------------------
+    # Replay A: PREGRIND store, urgent same-shift order first, then a query.
+    path_a = data_dir / "nib-pregrind.db"
+    svc = _fresh_nib_db(path_a)
+    sale, owners = _nib_sale(svc, "SN", ["N"], db_tag="pre")
+    svc.register_nib(
+        "SN", "N", owner_id=owners["N"], candidates=cands_n,
+        allowed_h=[1, 3], allowed_v=[1, 4], return_deadline=4,
+        initial_trials=[{"hand": "RIGHT", "direction": H, "width": 2}],
+    )
+    pre_intake = svc.get_nib("SN", "N")
+    urgent = svc.open_nib_order(
+        "OA-urgent", "SN", "N", strategy="PREGRIND",
+        requirement={"hand": "RIGHT", "h": [1, 1], "v": [1, 3]},
+        deadline_shift=1, opened_shift=1, claimant_id=owners["N"],
+    )
+    svc.grind_nib("OA-urgent", shift_no=1)
+    urgent_del = svc.deliver_nib("OA-urgent", shift_no=1, measured_h=1, measured_v=1)
+    after_first = svc.query_nib("SN", "N")
+    # A second customer tries to use the same sale piece -> refused.
+    second = svc.open_nib_order(
+        "OA-second", "SN", "N", strategy="PREGRIND",
+        requirement={"hand": "RIGHT", "h": [1, 1], "v": [1, 1]},
+        deadline_shift=2, opened_shift=2, claimant_id="owner-other",
+    )
+    # A later query on the same sale number: who holds it, is the original width intact?
+    post_query = svc.query_nib("SN", "N")
+    repeat_del = svc.deliver_nib("OA-urgent", shift_no=1, measured_h=1, measured_v=1)
+    scenarios["pregrind_replay"] = {
+        "intake_surviving": pre_intake["surviving"],
+        "intake_shapes": pre_intake["current_shapes"],
+        "urgent_order": {"status": urgent["status"], "signed": urgent["signed"], "grinds": urgent["decision"].get("plan", {}).get("extra_grinds")},
+        "delivered": urgent_del["delivery"],
+        "after_first": {"holder": after_first["holder"], "original_width_available": after_first["original_width_available"]},
+        "second_replay": {"status": second["status"], "reason": second["decision"].get("reason")},
+        "post_query": {"holder": post_query["holder"], "original_width_available": post_query["original_width_available"], "grinds_done": post_query["grinds_done"]},
+        "repeat_delivery_same_original": repeat_del["delivery"] == urgent_del["delivery"] and repeat_del["repeated"],
+    }
+    results["checks"].append({
+        "check": "nib_pregrind_urgent_signed_delivered_then_same_piece_refused",
+        "ok": urgent["status"] == "SIGNED"
+        and urgent_del["status"] == "DELIVERED"
+        and urgent_del["delivery"]["measured_h"] == 1
+        and after_first["holder"] == owners["N"]
+        and after_first["original_width_available"] is False
+        and second["status"] == "REFUSED"
+        and repeat_del["delivery"] == urgent_del["delivery"],
+        "expected": {"urgent": "DELIVERED", "second": "REFUSED", "original_available": False},
+        "actual": scenarios["pregrind_replay"],
+    })
+
+    # Replay B: REMEASURE store, "return it as it is, H,V = 2,2 by shift 2".
+    def remeasure_replay(read_h: int, read_v: int, tag: str):
+        path = data_dir / f"nib-remeasure-{tag}.db"
+        svc = _fresh_nib_db(path)
+        sale, owners = _nib_sale(svc, "SN", ["N"], db_tag=f"remeasure-{tag}")
+        svc.register_nib(
+            "SN", "N", owner_id=owners["N"], candidates=cands_n,
+            allowed_h=[1, 4], allowed_v=[1, 5], return_deadline=3,
+            initial_trials=[{"hand": "RIGHT", "direction": H, "width": 2}],
+        )
+        intake = svc.open_nib_order(
+            "OB-as-is", "SN", "N", strategy="REMEASURE",
+            requirement={"hand": "RIGHT", "h": [2, 2], "v": [2, 2]},
+            deadline_shift=2, opened_shift=1, claimant_id=owners["N"],
+        )
+        remeasured = svc.remeasure_nib("OB-as-is", shift_no=1, h_width=read_h, v_width=read_v)
+        result = {"intake_status": intake["status"], "remeasure_status": remeasured["status"],
+                  "reason": remeasured["decision"].get("reason")}
+        if remeasured["status"] == "SIGNED":
+            # Returned exactly as it came in: no grind, deliver at original width.
+            delivered = svc.deliver_nib("OB-as-is", shift_no=2, measured_h=2, measured_v=2)
+            after = svc.query_nib("SN", "N")
+            result["delivered"] = delivered["delivery"]
+            result["original_width_available"] = after["original_width_available"]
+            result["holder"] = after["holder"]
+        return svc, result
+
+    _, rem2 = remeasure_replay(2, 2, "read2")
+    scenarios["remeasure_read2"] = rem2
+    results["checks"].append({
+        "check": "nib_remeasure_read2_as_is_signed_and_original_preserved",
+        "ok": rem2["intake_status"] == "AWAITING_REMEASURE"
+        and rem2["remeasure_status"] == "SIGNED"
+        and rem2.get("delivered", {}).get("measured_h") == 2
+        and rem2.get("original_width_available") is True,
+        "expected": {"intake": "AWAITING_REMEASURE", "remeasure": "SIGNED", "original": True},
+        "actual": rem2,
+    })
+    _, rem4 = remeasure_replay(2, 4, "read4")
+    scenarios["remeasure_read4"] = rem4
+    results["checks"].append({
+        "check": "nib_remeasure_read4_as_is_refused",
+        "ok": rem4["intake_status"] == "AWAITING_REMEASURE" and rem4["remeasure_status"] == "REFUSED",
+        "expected": {"intake": "AWAITING_REMEASURE", "remeasure": "REFUSED"},
+        "actual": rem4,
+    })
+
+    results["scenarios"]["nib_grinding"] = scenarios
+
+    # A self-contained, replayable plan expressing the two parallel replays on
+    # one fresh database (the PREGRIND urgent piece and the REMEASURE as-is
+    # piece under two independent later readings).
+    plan_basket = [{"unit_id": uid, "sku": NIB_SKU, "price": 100} for uid in ("N1", "N2", "N3")]
+    nib_plan = {
+        "note": "Nib-grinding workshop replay: urgent PREGRIND piece and two REMEASURE replays.",
+        "steps": [
+            {"name": "snap", "op": "publish_snapshot", "products": [{"sku": NIB_SKU, "price": 100}], "coupons": [], "snapshot_id": "nib-plan-snap"},
+            {"name": "q", "op": "quote", "basket": plan_basket, "coupons": [], "request_id": "nib-plan-q", "snapshot_id": "nib-plan-snap"},
+            {"name": "sale", "op": "register_sale", "sale_id": "SN-plan", "quote": "$q"},
+            {"op": "register_nib", "sale_id": "SN-plan", "unit_id": "N1", "owner_id": "alice",
+             "candidates": cands_n, "hand": "RIGHT", "allowed_h": [1, 3], "allowed_v": [1, 4], "return_deadline": 4,
+             "initial_trials": [{"hand": "RIGHT", "direction": H, "width": 2}]},
+            {"name": "urgent", "op": "open_nib_order", "order_id": "plan-urgent", "sale_id": "SN-plan", "unit_id": "N1",
+             "strategy": "PREGRIND", "requirement": {"hand": "RIGHT", "h": [1, 1], "v": [1, 3]},
+             "deadline_shift": 1, "opened_shift": 1, "claimant_id": "alice"},
+            {"op": "grind_nib", "order_id": "plan-urgent", "shift_no": 1},
+            {"name": "urgent_del", "op": "deliver_nib", "order_id": "plan-urgent", "shift_no": 1, "measured_h": 1, "measured_v": 1},
+            {"name": "urgent_query", "op": "query_nib", "sale_id": "SN-plan", "unit_id": "N1"},
+            {"name": "second", "op": "open_nib_order", "order_id": "plan-second", "sale_id": "SN-plan", "unit_id": "N1",
+             "strategy": "PREGRIND", "requirement": {"hand": "RIGHT", "h": [1, 1], "v": [1, 1]},
+             "deadline_shift": 2, "opened_shift": 2, "claimant_id": "bob"},
+            {"op": "register_nib", "sale_id": "SN-plan", "unit_id": "N2", "owner_id": "carol",
+             "candidates": cands_n, "hand": "RIGHT", "allowed_h": [1, 4], "allowed_v": [1, 5], "return_deadline": 3,
+             "initial_trials": [{"hand": "RIGHT", "direction": H, "width": 2}]},
+            {"name": "as_is", "op": "open_nib_order", "order_id": "plan-as-is", "sale_id": "SN-plan", "unit_id": "N2",
+             "strategy": "REMEASURE", "requirement": {"hand": "RIGHT", "h": [2, 2], "v": [2, 2]},
+             "deadline_shift": 2, "opened_shift": 1, "claimant_id": "carol"},
+            {"op": "remeasure_nib", "order_id": "plan-as-is", "shift_no": 2, "h_width": 2, "v_width": 2},
+            {"name": "as_is_del", "op": "deliver_nib", "order_id": "plan-as-is", "shift_no": 2, "measured_h": 2, "measured_v": 2},
+            {"op": "register_nib", "sale_id": "SN-plan", "unit_id": "N3", "owner_id": "dave",
+             "candidates": cands_n, "hand": "RIGHT", "allowed_h": [1, 4], "allowed_v": [1, 5], "return_deadline": 3,
+             "initial_trials": [{"hand": "RIGHT", "direction": H, "width": 2}]},
+            {"name": "as_is4", "op": "open_nib_order", "order_id": "plan-as-is-4", "sale_id": "SN-plan", "unit_id": "N3",
+             "strategy": "REMEASURE", "requirement": {"hand": "RIGHT", "h": [2, 2], "v": [2, 2]},
+             "deadline_shift": 3, "opened_shift": 1, "claimant_id": "dave"},
+            {"op": "remeasure_nib", "order_id": "plan-as-is-4", "shift_no": 3, "h_width": 2, "v_width": 4},
+            {"name": "availability", "op": "nib_availability", "lo": 1, "hi": 3},
+        ],
+    }
+    return nib_plan
 
 
 def _run_plan_file(db_path: str, plan_file: str, out_file: str | None) -> Dict[str, Any]:

@@ -7,7 +7,11 @@ A standalone, Python 3.11 solution for the brief in `README.md`:
   allocation;
 * an **after-sales ledger** that binds each sale to a complete published quote
   and refunds exactly the per-unit amount that sale paid, with idempotent
-  requests, all-or-nothing overlap rejection, and transactional stock moves.
+  requests, all-or-nothing overlap rejection, and transactional stock moves;
+* a **nib-grinding workshop** (`basket_service/nib.py`) that reads sold, not
+  refunded nibs by sale+unit, keeps per-piece try-write evidence and each
+  piece's reachable shapes, schedules one grind slot per shift, and only signs
+  orders it can guarantee to return to the owner.
 
 No external dependencies are required — only the standard library and SQLite.
 
@@ -87,13 +91,68 @@ payload structurally and **never re-runs the optimizer** for sales or refunds.
 * Sales do not imply stock-out; after-sales stock starts at zero and is
   reconciled only from its own events.
 
+### Nib-grinding workshop
+
+A nib is registered against a *sold, not refunded* unit (`register_nib`), with
+the catalogue of **hypotheses** its model admits plus the owner, allowed width
+band and return deadline. Each piece is a separate physical unit: two units of
+the same model keep independent try-write records.
+
+**Width model** (`shape_of`). Each hypothesis is `(kind, base, side_wide)`:
+
+* straight writes its base width in both directions — `(b, b)`;
+* side writes one wide (`b+1`) and one narrow (`b-1`); the wide direction is a
+  property of the piece and **swaps when the hand swaps** (`换手对调两向`);
+* every width is an integer, and a grind subtracts one from the base for the
+  whole piece. A straight nib survives to base ≥ 1, a side nib to base ≥ 2;
+  metal is never recovered, so the grind count only rises and is shared by every
+  order on the piece.
+
+**Try-writes** (`record_trial`) are directional readings attached to one piece;
+a reading retains exactly the hypotheses that explain it *at that grind level*.
+Adding a contradictory reading is rejected and rolled back. Because evidence
+only ever removes hypotheses, a guarantee computed on the survivors remains
+valid as more readings arrive.
+
+**Delivery guarantee** (`open_nib_order`). The counter signs only when the
+customer's two-direction interval, deadline and a one-grind-slot-per-shift
+schedule are simultaneously satisfiable **for every surviving hypothesis** — it
+never has to know the nib type to promise the result. Two strategies:
+
+* `PREGRIND` — grind now within the range guaranteeable without identifying the
+  type (for urgent, same-shift orders). If no such grind exists it suspends the
+  order (`HUNG`).
+* `REMEASURE` — keep the original width, occupy one whole shift for the owner's
+  two-direction try-write, then decide (`AWAITING_REMEASURE` → signed/refused at
+  `remeasure_nib`). This is the "return it as it is" route and never removes
+  metal until the type is known.
+
+Each accepted order reserves its shifts (`nib_shifts`), so a slot cannot be
+promised to two orders, and one piece cannot be signed to two customers while an
+order on it is active. `deliver_nib` requires the planned grinds, checks the
+actual measured pair against a surviving type and the signed interval, records
+that evidence, and hands the physical piece to the claimant. A query
+(`query_nib`) reports who holds the piece and whether the original width is
+intact; a refunded or delivered piece cannot start a new order, and repeating a
+delivery replays the identical original record.
+
+For the brief's piece **N** (straight 2 → `(2,2)`, reverse side 3 → `(2,4)`, only
+H=2 observed): the urgent `H=1, V∈1..3` same-shift order is signed after one
+grind (both hypotheses land in band); the "return as-is (2,2)" order waits one
+shift, then signs if N reads `(2,2)` and is refused if it reads `(2,4)`.
+
 ### Error codes
 
 `INVALID_BASKET`, `INVALID_COUPON`, `INVALID_INPUT`, `INVALID_GRADE`,
 `INVALID_QUOTE`, `UNKNOWN_SNAPSHOT`, `SNAPSHOT_CONFLICT`, `REQUEST_CONFLICT`,
 `QUOTE_CONFLICT`, `UNKNOWN_QUOTE`, `UNKNOWN_SALE`, `SALE_CONFLICT`,
 `QUOTE_MISMATCH`, `UNIT_INELIGIBLE`, `UNIT_ALREADY_RETURNED`,
-`OVERLAPPING_RETURN`, `INVENTORY_CONFLICT`.
+`OVERLAPPING_RETURN`, `INVENTORY_CONFLICT`, and for nibs:
+`NIB_UNKNOWN`, `NIB_UNIT_CONFLICT`, `NIB_UNIT_RETURNED`, `NIB_UNIT_DELIVERED`,
+`NIB_UNIT_NOT_IN_SHOP`, `NIB_ORDER_UNKNOWN`, `NIB_ORDER_CONFLICT`,
+`NIB_ORDER_STATE`, `NIB_NO_PLAN`, `NIB_EVIDENCE_MISMATCH`,
+`NIB_REQUIREMENT_VIOLATED`, `NIB_DELIVERY_CONFLICT`, `NIB_ALREADY_DELIVERED`,
+`NIB_SLOT_CONFLICT`, `NIB_INVALID_TRIAL`.
 
 Every public operation either commits a complete result or raises before any
 partial state is written.
@@ -134,6 +193,7 @@ basket_service/
   quote_service.py snapshots and quote API
   ledger.py        sales, returns, inventory, audits
   planner.py       JSON plan runner
+  nib.py           nib-grinding workshop (width model, evidence, orders, slots)
   demo.py          demo driver + CLI (demo / run-plan / self-check)
 tests/             optimizer, quote-service, ledger, reference tests
 data/              real SQLite databases (created by the demo)
@@ -142,7 +202,7 @@ results/           JSON plans and result records
 
 ## Verification
 
-`python3 -m basket_service demo` runs 19 checks, all computed against
+`python3 -m basket_service demo` runs 26 checks, all computed against
 independent references:
 
 * case-material quotes vs. exhaustive enumeration;
@@ -154,4 +214,9 @@ independent references:
 * lost-response retry replay, whole-request overlap rejection, independent
   stock adjustments, and a two-thread concurrent return race with no double
   stock;
+* the nib workshop: H=2/H=3 discriminations, both-1 deliverability with a free
+  slot, a stolen slot blocking delivery, two parallel replays of piece N
+  (urgent PREGRIND delivered then refused to a second customer; REMEASURE as-is
+  signed on read 2 and refused on read 4), and a full nib plan replayed on a
+  fresh database;
 * reopening the database preserves everything.

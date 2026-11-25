@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+data/nib-*.db
+data/nib_replay.db

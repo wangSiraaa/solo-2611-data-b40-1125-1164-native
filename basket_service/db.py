@@ -184,5 +184,90 @@ class Database:
                 qty INTEGER NOT NULL,
                 PRIMARY KEY (sku, bucket)
             );
+
+            -- Nib-grinding extension -------------------------------------
+            CREATE TABLE IF NOT EXISTS nib_units (
+                sale_id TEXT NOT NULL,
+                unit_id TEXT NOT NULL,
+                model TEXT,
+                owner_id TEXT NOT NULL,
+                known_base INTEGER,
+                hand TEXT NOT NULL DEFAULT 'RIGHT',
+                holder TEXT NOT NULL DEFAULT 'SHOP',
+                returned INTEGER NOT NULL DEFAULT 0,
+                committed_grinds INTEGER NOT NULL DEFAULT 0,
+                delivered_order_id TEXT,
+                content_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                PRIMARY KEY (sale_id, unit_id),
+                FOREIGN KEY (sale_id) REFERENCES sales(sale_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS nib_trials (
+                seq INTEGER PRIMARY KEY AUTOINCREMENT,
+                sale_id TEXT NOT NULL,
+                unit_id TEXT NOT NULL,
+                hand TEXT NOT NULL,
+                direction TEXT NOT NULL CHECK (direction IN ('H', 'V')),
+                width INTEGER NOT NULL,
+                grind_level INTEGER NOT NULL,
+                shift_no INTEGER NOT NULL,
+                source TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (sale_id, unit_id) REFERENCES nib_units(sale_id, unit_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS nib_orders (
+                order_id TEXT PRIMARY KEY,
+                sale_id TEXT NOT NULL,
+                unit_id TEXT NOT NULL,
+                strategy TEXT NOT NULL CHECK (strategy IN ('PREGRIND', 'REMEASURE')),
+                require_hand TEXT NOT NULL,
+                req_h_min INTEGER NOT NULL,
+                req_h_max INTEGER NOT NULL,
+                req_v_min INTEGER NOT NULL,
+                req_v_max INTEGER NOT NULL,
+                deadline_shift INTEGER NOT NULL,
+                opened_shift INTEGER NOT NULL,
+                claimant_id TEXT NOT NULL,
+                status TEXT NOT NULL,
+                signed INTEGER NOT NULL DEFAULT 0,
+                plan_json TEXT NOT NULL,
+                decision_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (sale_id, unit_id) REFERENCES nib_units(sale_id, unit_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS nib_grinds (
+                seq INTEGER PRIMARY KEY AUTOINCREMENT,
+                sale_id TEXT NOT NULL,
+                unit_id TEXT NOT NULL,
+                order_id TEXT NOT NULL,
+                shift_no INTEGER NOT NULL,
+                grinds_before INTEGER NOT NULL,
+                grinds_after INTEGER NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (sale_id, unit_id) REFERENCES nib_units(sale_id, unit_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS nib_deliveries (
+                order_id TEXT PRIMARY KEY,
+                sale_id TEXT NOT NULL,
+                unit_id TEXT NOT NULL,
+                shift_no INTEGER NOT NULL,
+                measured_h INTEGER NOT NULL,
+                measured_v INTEGER NOT NULL,
+                realized_json TEXT NOT NULL,
+                evidence_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (order_id) REFERENCES nib_orders(order_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS nib_shifts (
+                shift_no INTEGER PRIMARY KEY,
+                order_id TEXT NOT NULL,
+                kind TEXT NOT NULL CHECK (kind IN ('GRIND', 'REMEASURE')),
+                created_at TEXT NOT NULL
+            );
             """
         )
