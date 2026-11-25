@@ -1,13 +1,14 @@
-# 多采样率剪辑时间轴与真实混音档案（audiomix）
+# 多采样率剪辑时间轴、真实混音档案与车站报站词库（audiomix）
 
-纯 Python 3.11 实现（NumPy/SciPy/标准 `wave`），无视频、无音频设备、无网页。
-两个独立服务：
+纯 Python 3.11 实现，无视频、无音频设备、无网页。包含三个服务：
 
 1. **可独立编辑的音频时间轴服务**（`audiomix/timeline.py`）：插入/移动/修改/删除/
-   区间查询/发布，clip 身份独立于素材，有理数时间，不渲染即可点查询。
+   区间查询/发布，clip 身份独立于素材，有理数时间，不渲染即可点查询。（依赖 NumPy/SciPy）
 2. **实际混音数据仓**（`audiomix/archive.py`）：只消费不可变发布产品与实际素材字节，
-   固定 16kHz 输出，按固定样本块存档，内容寻址复用，支持范围读取与逐块追溯；
-   不读取编辑器私有操作日志，也接受外部合法时间轴产品。
+   固定 16kHz 输出，按固定样本块存档，内容寻址复用，支持范围读取与逐块追溯。（依赖 NumPy/SciPy）
+3. **车站报站词库与出声台**（`audiomix/announce/`）：纯标准库子包，小整数 PCM、
+   读音模板与容差、音高档位归并、母录/分出资产与不可变发版、接头拼接渲染、
+   严格听辨裁决、买断/租用合同、排播与按原音回听。**无 NumPy 也可独立运行。**
 
 ## 目录
 
@@ -85,6 +86,98 @@ python3 -m audiomix.cli verify-integrity --archive-root DIR/archive
 ```
 
 完整端到端示例：`bash demo/cli_walkthrough.sh`；全量验证：`bash run_all_checks.sh`。
+
+---
+
+# 车站报站词库与出声台（`audiomix/announce`，纯标准库）
+
+乘务员可再次调用的**词库发版、排播、试听入口**。素材是有明确采样边界的本地短录音，
+一律用小整数 PCM 元组表示；全部状态可落盘为单个 `state.json`，重开后续办、回听。
+
+## 目录
+
+```
+audiomix/announce/
+  pcm.py        小整数 PCM；接头重叠固定格数、重叠采样相加、禁止重剪
+  templates.py  读音模板（逐样本容差）、严格站名模板、发音人音高档位归并
+  lexicon.py    整词母录/分出词头尾字、改版血缘、采样预算、不可变发版 Release
+  render.py     接头表 SpliceTable；整词/拼接只从发版 Release 读真实 PCM 渲染
+  hearing.py    严格听辨裁决：核对全部候选站（本站+相邻站），决定能否按方向开播
+  contracts.py  买断 BUYOUT / 租用 RENTAL 两种合同与代价台账
+  schedule.py   班次、广播窗、短单元独占预约、录音档期、签播凭证与拒播依据
+  desk.py       乘务出声台：发版读取→渲染→听辨→按合同签播/拒播/约补录/回听
+  store.py      JSON 持久化（落盘重开，旧播次 PCM 快照不变）
+  cli.py        命令行入口
+demo/station_scenario.py       题面全场景叙事（含全部验收断言）
+demo/station_cli_walkthrough.sh CLI 端到端走查
+tests/test_station_announce.py  21 个纯标准库 unittest
+```
+
+## 关键语义（每条都有测试与叙事留痕）
+
+- **模板与容差**：`CharacterTemplate(字, 发音人, 档位, 参考PCM, 允许误差)`，
+  逐样本绝对差不超容差且采样边界一致才算命中；一段录音同时落入两个字的容差时，
+  两个读法都保留（`segment_matches`）。
+- **音高档位归并**：同一发音人编号的片段共享一次录制的档位；某档位必须让该发音人
+  **全部**片段同时成立，任一段无容许模板即整档排除（`analyze_speaker`）。复例中
+  P1=[5] 同时兼容两字/落两档，P2=[8] 排除高档，最终只剩低档且保留 P1 的两个读法。
+- **母录与分出资产**：母录 `[4,1,2]` 可分出词头 `[4]`、尾字 `[1,2]`，只记切片边界、
+  不占录音采样预算；母录改版（如末样本 2→3）会**同时**替换母录与全部分出资产，
+  已发版 `Release` 与已签播次仍指向改版前快照。
+- **真实渲染只读取发版**：整词或两片段拼接都从 `Release.pcm_of` 取 PCM，未发版资产
+  拒播；拼接按接头表固定重叠一格、重叠采样相加，无接头即“禁止重剪”拒播。
+- **严格听辨**：零误差整句模板（甲 `[4,1,2]`、乙 `[4,1,3]`、丙 `[4,2,3]`，均三样本）。
+  渲染命中邻站即“误听”须改选整词/另找接头/留待补录；一个候选都不命中即“缺录档”；
+  广播窗按样本数硬约束且禁止截字，窗不足直接拒签。
+- **合同**：买断店锁素材与档期、已签整段不得换尾、补录必须约新录音档，并受理
+  “档期允许时补录后再播”的订单；租用店尾字可同店跨班复用，每次接头与听辨结论
+  对应那次实际出声，短单元被另一班独占时本店不能借。
+- **回听**：`PlayOrder` 保存签播时的 PCM 快照与听辨证据；车已发出的旧播次不受后续
+  词库改版影响，`replay` 永远听到原音。
+- **采样预算**：只有真实新录音计费，分出切片不计；题面各次录音合计远低于百样本，
+  超限在录入时直接拒绝。
+
+## 题面验收点对照（`python3 -m demo.station_scenario`）
+
+| 题面要求 | 场景中的证据 |
+| --- | --- |
+| 零误差且三样本窗可播甲 | 首版 `M_JIA=[4,1,2]` 两店首班签播 |
+| 改末样本为3，整词与分出尾字都无法播甲 | 改版后母录 `[4,1,3]`、尾字联动 `[1,3]`，R1 快照不变 |
+| 恢复原版但窗缩到两样本且禁截字，不能签 | `WINDOW_TOO_SMALL` 拒签 |
+| 同一发音人片段落两档、另一段排除一档 | 音高复例，最终仅“低档”成立且保留双读法 |
+| 次班情形A：T_03 可借 | 拼接 `[4,1]+[0,3]=[4,1,3]` 签播乙；T_13 拼成丙站误听拒播 |
+| 次班情形B：T_03 被他班独占 | 误听+独占双依据，租用店无播次，留待补录 |
+| 买断店补录后再播 | 档期3 录入 `M_YI=[4,1,3]` 后班次3 播出；再办触发“已买断锁定” |
+| 接回首班听当时的甲 | 两店 `replay(1)` 均为 `[4,1,2]` |
+| 各次录音合计不超过百样本 | 预算检查输出 `recorded_samples <= 100` |
+
+## 命令速览（工作区可反复调用，状态自动落盘）
+
+```bash
+python3 -m audiomix.announce.cli station-init --root DIR/station      # 初始化+首发
+python3 -m audiomix.announce.cli station-catalog --root DIR/station   # 同一份资产目录
+python3 -m audiomix.announce.cli station-release --root DIR/station --note 改版
+# 整词签播/拒播（拒播退出码 2，便于脚本编排；买断缺录档会带 deferred_slot）
+python3 -m audiomix.announce.cli station-evaluate --root DIR/station \
+    --contract rental --trip 2 --plan splice --splice H_41 T_03
+python3 -m audiomix.announce.cli station-evaluate --root DIR/station \
+    --contract buyout --trip 2 --plan whole --asset M_JIA
+python3 -m audiomix.announce.cli station-replay     --root DIR/station --contract rental --trip 1
+python3 -m audiomix.announce.cli station-rejections --root DIR/station
+python3 -m audiomix.announce.cli station-ledger     --root DIR/station
+python3 -m audiomix.announce.cli station-budget     --root DIR/station
+```
+
+CLI 走查：`bash demo/station_cli_walkthrough.sh`；全量验证：`bash run_all_checks.sh`。
+
+## 验证策略
+
+- `tests/test_station_announce.py`：21 个 unittest 覆盖接头数学与禁重剪、容差/双读法/
+  档位排除、母录改版联动与发版不可变、预算、四类听辨结论、发版读取、两种合同、
+  次班 A/B 两情形、跨班复用、落盘重开回听。
+- `demo/station_scenario.py`：把题面叙事按顺序办理一遍，关键结论均带 `assert`，
+  并打印实际播音 PCM、拒播依据、两店台账与采样预算。
+
 
 ## 验证策略（不使用任何外部混音结果）
 
