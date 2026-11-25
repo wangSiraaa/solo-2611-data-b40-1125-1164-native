@@ -16,14 +16,21 @@ confcat/
   csv_pipeline.py   # CSV 读取与按配置归一化（列映射/缺失值/分区/列血缘）
   ingest.py         # 消费仓：类型化取参、整次拒绝、任务结果持久化（SQLite）
   cli.py            # 人工检查命令行
+orchard/            # 口袋果园花期展图应用层（构建在 confcat 之上）
+  ingest.py         # 四类关注点接入任务 + 当时版本列来源定位补记
+  observation.py    # 冷天归并（冲突指名哪一天哪一边）+ 相容整园花期表
+  commitments.py    # 方向正确交集 + 床距<=1 + 缺日/缺边诊断
+  layout.py         # 固定床位图（冷天稳健）与带轮盆逐日换位（通道+搬运上限）
+  exhibit.py        # 编排/渲染/交付 + 从实际归档任务复跑两次更正
 samples/            # 多文档同名锚点、merge 序列冲突、显式键前后等 YAML 样例
 data/               # 合成 CSV 与运行期 SQLite
 demo/run_demo.py    # 端到端演示（含断言）
-tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度
+demo/orchard_demo.py# 果园花期展图端到端演示（含断言）
+tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度、果园
 ```
 
 至少两个实质模块的分工：`yaml_parser`/`materialize`/`codec` 负责 YAML 目录与
-来源，`csv_pipeline`/`ingest` 负责 CSV 数据转换与消费。
+来源，`csv_pipeline`/`ingest` 负责 CSV 数据转换与消费；`orchard/` 在此之上实现花期展图。
 
 ## 合同实现要点
 
@@ -87,3 +94,37 @@ python -m confcat.cli verify data/catalog.db orders-product
 ```
 
 无第三方依赖，仅用 Python 3.11 标准库；SQLite 数据库文件为真实持久化产物。
+
+## 口袋果园花期展图（`orchard/`）
+
+在 confcat 目录/消费仓之上实现题面「花期展图」的应用层：把每株的开花日志、
+供粉日段、受粉日段与冷天补记当作真实 CSV 接入任务，用**当时版本的列来源**定位补记，
+归出**相容的整园花期表**，再结合实地床位判定可挂牌承诺。规模：六株、五床、四天以内。
+
+```bash
+# 端到端演示（含全部断言）：接入/定位、冷天归并、承诺、两次更正复跑、固定+轮式两路
+python3 demo/orchard_demo.py
+
+# 果园层测试（真实 SQLite + 真实 CSV，不 mock 接入层）
+python3 -m unittest tests.test_orchard -v
+```
+
+模块分工：
+
+| 模块 | 职责 |
+| --- | --- |
+| `orchard/ingest.py` | 四类关注点（开花/供粉/受粉/冷天）作为真实接入任务；`locate_record` 用当时版本 column lineage + 配置 provenance 定位一条补记 |
+| `orchard/observation.py` | 冷天断言按 `(片区,天)` 归并：同日发生/没发生并存即 `ColdRevisionConflict`（指名哪一天哪一边）；按**不同发生日**计延迟，复跑重复断言天然去重；产出租相容整园花期表 |
+| `orchard/commitments.py` | 方向正确的花期交集 + 床距≤1 + 自己不作伴；`MissingSide` 指出缺的是哪一天哪一边；`Commitment` 带支撑记录 |
+| `orchard/layout.py` | 固定床位图（对片区尚可能冷天稳健：跨区树对若单独遇冷会错开则弃用）与带轮盆逐日换位（累计封锁已开放通道 + 每日搬运上限） |
+| `orchard/exhibit.py` | 编排 + `render_report`/`deliver` 交付；`replay_revisions` 从实际归档任务复跑初始 + 两次更正 |
+
+题面示例的落地（`demo/orchard_demo.py` 均带断言）：
+
+* **甲乙次日同开即可挂牌**：甲仅次日可受、相邻乙仅次日可供 → 第 2 天 `甲 <- 乙`；
+* **只把乙的供期校正到第三天，甲就失约**：诊断为「第 2 天缺乙可供粉」；
+* **恢复原花期但乙只许放隔一空床**：同天有交集但床距 2 → 无邻树，报距离失配；
+* **冷天**：同片区多株一起迟一天（承诺日期随之后移）；同一冷天既发生又没发生 →
+  冲突并指名该天与两边来源；两次复跑各记「发生」只算一次；
+* **两路交付一致**：固定永久床位图与带轮盆逐日方案的承诺树对一致（`consistency_ok`）。
+
