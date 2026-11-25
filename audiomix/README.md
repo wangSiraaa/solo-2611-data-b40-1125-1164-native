@@ -86,6 +86,46 @@ python3 -m audiomix.cli verify-integrity --archive-root DIR/archive
 
 完整端到端示例：`bash demo/cli_walkthrough.sh`；全量验证：`bash run_all_checks.sh`。
 
+## 气象传真制版子系统（`fax.py` / `faxedit.py` / `board.py` / `plate.py` / `craft.py`）
+
+校史馆用同一套设施整理合成的气象传真声带。短音脉冲给出行首与格值，时间轴可
+裁切、变速或混入重录的一行；解图端给出与同步脉冲、行长、独立校准条相容的整幅图。
+
+- **物理层 `fax.py`**：小字典三态——高值 `H`、低值 `L`、漏读 `MISSING`（脉冲损坏，
+  不是第四种格值，重读后按“仍可能 H/L”枚举）。每段录音**共用一种行相位**（行首
+  整体缺脉冲），校准参考行的完好槽把相位收窄到候选集，证据全无则保留全部候选，
+  绝不逐格各挑对齐、绝不硬猜。真实发布 16kHz 单声道 WAV，卷号与 PCM 摘要绑定。
+- **编辑 `faxedit.py`**：裁切（按行步长整行）、整数倍变速（有理 `speed` + 重采样
+  回标准槽计时）、混入重录一行（双 clip 叠混）。全部走时间轴产品与数据仓渲染，
+  块级 `clip/asset` 索引保留每段样本出处（原 asset、重录 asset、render_id）。
+- **制版 `board.py`**：版面裁边、具名标记与可放签槽位。一枚“闭合低雨区”签只贴在
+  **不与版边经上下左右低值连通**的低值区；同一连通块最多一签；锚点必须在*所有仍
+  可能读法*下都落在闭合低值块，每签保留每种读法下的实际连通块依据。
+- **入口 `plate.py`**：`IntakeDesk` 同一入口受理已渲染卷号、裁框与本场用签许可，
+  短传真或换裁边单同样受理；按实读格值（而非自报相位）出开馆单，旧目录按原展次
+  永久可查观众可见签与原卷依据。
+- **工坊 `craft.py`**：压印（签随版封存、不可拆运乙展）与游签（仅具名闭馆窗可
+  换位）两家做法，各回放“接单在窗口前/后”，给出观众所见、封存板与签最终位置。
+
+### 三个 3×3 判定与卷对
+
+- 外围全高、正中低 → 中心可签；上边正中改低 → 中心有路连版边 → 不可签；
+  恢复原声裁去顶行 → 原中心成为边点 → 不可签。
+- 另有两幅 5×5：关键格**逐格可能读数同为 {H,L}**，但一幅行内共享槽使两格反相
+  （永不双双低，中心恒闭合→可签），另一幅段内共用相位使两格同步（含双双低的开口
+  读法→不可签），见 `tests/test_fax.py::test_same_marginals_different_phase_constraints`。
+
+```bash
+python3 -m tests.test_fax                       # 传真制版 10 组测试
+python3 -m demo.fax_demo /tmp/fax_demo         # 端到端演示
+python3 -m audiomix.cli fax-publish --reel-id R --grid HHH,HLH,HHH --out r.wav
+python3 -m audiomix.cli fax-read --wav r.wav
+python3 -m audiomix.cli fax-intake --desk-root D/desk --order-id o1 --wav r.wav \
+    --exhibition 甲展 --marker 中心槽:1:1:1
+python3 -m audiomix.cli fax-catalog --desk-root D/desk --exhibition 甲展
+python3 -m audiomix.cli craft-replay
+```
+
 ## 验证策略（不使用任何外部混音结果）
 
 - `tests/test_hand_calc.py`：短整数序列素材，10 个案例人工推导每个输出样本

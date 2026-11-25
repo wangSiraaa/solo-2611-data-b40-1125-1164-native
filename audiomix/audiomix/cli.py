@@ -232,6 +232,68 @@ def cmd_render_compare(p):
             "identical": bool(mismatch == 0)})
 
 
+# ----------------------------- 气象传真制版命令 ----------------------------- #
+
+def _parse_grid(text: str) -> list[list[str]]:
+    """'HHH,HLH,HHH' -> [['H','H','H'],...]。"""
+    rows = []
+    for line in text.split(","):
+        line = line.strip()
+        if any(ch not in ("H", "L") for ch in line):
+            raise ValueError("传真格值只允许 H/L")
+        rows.append(list(line))
+    return rows
+
+
+def cmd_fax_publish(p):
+    from .fax import Reel, Segment, publish_reel
+    grid = _parse_grid(p.grid)
+    seg = Segment(p.seg_id, rows=grid, phase=p.phase)
+    reel = Reel(p.reel_id, [seg], note=p.note)
+    _print(publish_reel(reel, p.out))
+
+
+def cmd_fax_read(p):
+    from .fax import load_published_reel, read_reel_waveform, possible_grids
+    _, pcm, meta = load_published_reel(p.wav)
+    reads = read_reel_waveform(pcm, meta["reel"])
+    grids = possible_grids(reads)
+    _print({"reel_id": meta["reel"]["reel_id"],
+            "segments": [r.to_json() for r in reads],
+            "n_possible_readings": len(grids),
+            "possible_grids": grids})
+
+
+def cmd_fax_intake(p):
+    from .plate import IntakeDesk, PlateOrder, Crop, Marker
+    crop = Crop(top=p.crop_top, bottom=p.crop_bottom,
+                left=p.crop_left, right=p.crop_right)
+    markers = []
+    for item in p.marker or []:
+        name, r, c, slot = item.split(":")
+        markers.append(Marker(name, int(r), int(c), slot == "1"))
+    desk = IntakeDesk(p.desk_root)
+    sheet = desk.accept(PlateOrder(
+        p.order_id, p.wav, crop=crop, markers=markers,
+        labels_permitted=not p.no_label, exhibition=p.exhibition))
+    _print(sheet.to_json())
+
+
+def cmd_fax_catalog(p):
+    from .plate import IntakeDesk
+    desk = IntakeDesk(p.desk_root)
+    sheets = desk.by_exhibition(p.exhibition) if p.exhibition else desk.all_sheets()
+    _print([{"order_id": s.order_id, "exhibition": s.exhibition,
+             "reel_id": s.reel_id, "visible_labels":
+                 [l["name"] for l in s.labels_visible],
+             "cell_readings": s.cell_readings} for s in sheets])
+
+
+def cmd_craft_replay(p):
+    from .craft import run_all_replays
+    _print(run_all_replays())
+
+
 # ----------------------------- 参数解析 ----------------------------- #
 
 def build_parser() -> argparse.ArgumentParser:
@@ -329,6 +391,34 @@ def build_parser() -> argparse.ArgumentParser:
     q = sub.add_parser("render-compare"); q.add_argument("--product", required=True)
     q.add_argument("--registry-root", required=True); q.add_argument("--T", required=True)
     q.set_defaults(fn=cmd_render_compare)
+
+    # ---- 气象传真制版 ---- #
+    q = sub.add_parser("fax-publish", help="按格值发布一卷真实传真声带 WAV")
+    q.add_argument("--reel-id", required=True); q.add_argument("--seg-id", default="s")
+    q.add_argument("--grid", required=True, help="如 HHH,HLH,HHH")
+    q.add_argument("--phase", type=int, default=0)
+    q.add_argument("--note", default=""); q.add_argument("--out", required=True)
+    q.set_defaults(fn=cmd_fax_publish)
+
+    q = sub.add_parser("fax-read", help="重读已发布传真声带并枚举全部仍可能读法")
+    q.add_argument("--wav", required=True); q.set_defaults(fn=cmd_fax_read)
+
+    q = sub.add_parser("fax-intake", help="制版入口：受理卷号/裁框/用签许可并开馆")
+    q.add_argument("--desk-root", required=True); q.add_argument("--order-id", required=True)
+    q.add_argument("--wav", required=True); q.add_argument("--exhibition", required=True)
+    q.add_argument("--crop-top", type=int, default=0); q.add_argument("--crop-bottom", type=int, default=0)
+    q.add_argument("--crop-left", type=int, default=0); q.add_argument("--crop-right", type=int, default=0)
+    q.add_argument("--marker", action="append",
+                   help="名字:行:列:是否可放签(1/0)，可多次")
+    q.add_argument("--no-label", action="store_true", help="本场不许可用签")
+    q.set_defaults(fn=cmd_fax_intake)
+
+    q = sub.add_parser("fax-catalog", help="按展次查回观众可见签与原卷依据")
+    q.add_argument("--desk-root", required=True); q.add_argument("--exhibition")
+    q.set_defaults(fn=cmd_fax_catalog)
+
+    q = sub.add_parser("craft-replay", help="压印/游签两工坊窗口前/后回放")
+    q.set_defaults(fn=cmd_craft_replay)
 
     return ap
 
