@@ -1,0 +1,1695 @@
+{
+  "entry": "python3.11 tools/baggage_demo.py",
+  "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0",
+  "product_file": "/workspace/artifacts/baggage_catalog.json",
+  "warehouse_db": "/workspace/artifacts/baggage.db",
+  "warehouse_counts": {
+    "ok": 28,
+    "rejected": 0,
+    "total": 28,
+    "observations": 75
+  },
+  "stored_frames": [
+    {
+      "frame_event_id": "TWO-RING-RACK-R1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "01000100",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R4",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "11010400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R5",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "11000500",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R6",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "11030600",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R23",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 2,
+      "payload_hex": "0202060f",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "CANONICAL-DEFAULT-STEP-A-0",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "EARLY-DEPARTURE-STEP-A-0",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "RIGHT-AT-ONE-STEP-A-0",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-A-0",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-B-0",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0500",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R3-T1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "01000300",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R6-T1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "11000600",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-SW4",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 2,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "4400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "CANONICAL-DEFAULT-STEP-A-1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "EARLY-DEPARTURE-STEP-A-1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "RIGHT-AT-ONE-STEP-A-1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-A-1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-B-1",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0500",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R2-T2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "01000200",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "CANONICAL-DEFAULT-STEP-A-2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "EARLY-DEPARTURE-STEP-A-2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "RIGHT-AT-ONE-STEP-A-2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-A-2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-STEP-B-2",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0500",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "TWO-RING-RACK-R4-T3",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 3,
+      "status": "ok",
+      "selector": 1,
+      "payload_hex": "01000400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "CANONICAL-DEFAULT-STEP-A-3",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "EARLY-DEPARTURE-STEP-A-3",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    },
+    {
+      "frame_event_id": "RIGHT-AT-ONE-STEP-A-3",
+      "bus": "toy-terminal.baggage",
+      "frame_id": 1,
+      "status": "ok",
+      "selector": null,
+      "payload_hex": "0400",
+      "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0"
+    }
+  ],
+  "frame_identity_note": "每帧保留 frame_event_id、bus、实 frame_id、原始 payload_hex 与绑定产品 SHA-256",
+  "results": [
+    {
+      "case_id": "CANONICAL-DEFAULT",
+      "title": "例1：左0右2，留到第2拍可领齐",
+      "policy": "simple-open-port (canonical timing check; rack policy used in two-ring case)",
+      "topology": {
+        "rings": {
+          "A": 4
+        },
+        "ports": {
+          "P0": {
+            "ring": "A",
+            "cell": 0,
+            "open_beats": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "switches": {}
+      },
+      "deadline_beat": 2,
+      "complete_beat": 2,
+      "delivered": true,
+      "tickets": [
+        {
+          "group_id": "TWIN",
+          "passenger": "左/右板旅客",
+          "bag_numbers": [
+            1,
+            2
+          ],
+          "depart_beat": 2
+        }
+      ],
+      "rows": [
+        {
+          "beat": 0,
+          "before_advance": {
+            "A": [
+              1,
+              null,
+              2,
+              null
+            ]
+          },
+          "port_bags": [
+            1
+          ],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          }
+        },
+        {
+          "beat": 1,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 2,
+          "before_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          },
+          "port_bags": [
+            2
+          ],
+          "collected": [
+            1,
+            2
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 3,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1,
+            2
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        }
+      ],
+      "events": [
+        {
+          "beat": 0,
+          "status": "recognized_at_open_port",
+          "bag": 1
+        },
+        {
+          "beat": 2,
+          "status": "recognized_at_open_port",
+          "bag": 2
+        },
+        {
+          "beat": 2,
+          "status": "group_complete",
+          "group": "TWIN",
+          "bags": [
+            1,
+            2
+          ]
+        }
+      ],
+      "handoff": null,
+      "checks": [
+        "第 0 拍为开场可领拍",
+        "前进格数取自仓库中的实际 teeth 原始值，不按拍数想当然"
+      ]
+    },
+    {
+      "case_id": "RIGHT-AT-ONE",
+      "title": "例2：右袋改在1号格，第3拍到口",
+      "policy": "simple-open-port (canonical timing check; rack policy used in two-ring case)",
+      "topology": {
+        "rings": {
+          "A": 4
+        },
+        "ports": {
+          "P0": {
+            "ring": "A",
+            "cell": 0,
+            "open_beats": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "switches": {}
+      },
+      "deadline_beat": 3,
+      "complete_beat": 3,
+      "delivered": true,
+      "tickets": [
+        {
+          "group_id": "TWIN",
+          "passenger": "左/右板旅客",
+          "bag_numbers": [
+            1,
+            2
+          ],
+          "depart_beat": 3
+        }
+      ],
+      "rows": [
+        {
+          "beat": 0,
+          "before_advance": {
+            "A": [
+              1,
+              2,
+              null,
+              null
+            ]
+          },
+          "port_bags": [
+            1
+          ],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              2,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 1,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              2,
+              null
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          }
+        },
+        {
+          "beat": 2,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 3,
+          "before_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          },
+          "port_bags": [
+            2
+          ],
+          "collected": [
+            1,
+            2
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        }
+      ],
+      "events": [
+        {
+          "beat": 0,
+          "status": "recognized_at_open_port",
+          "bag": 1
+        },
+        {
+          "beat": 3,
+          "status": "recognized_at_open_port",
+          "bag": 2
+        },
+        {
+          "beat": 3,
+          "status": "group_complete",
+          "group": "TWIN",
+          "bags": [
+            1,
+            2
+          ]
+        }
+      ],
+      "handoff": null,
+      "checks": [
+        "第 0 拍为开场可领拍",
+        "前进格数取自仓库中的实际 teeth 原始值，不按拍数想当然"
+      ]
+    },
+    {
+      "case_id": "EARLY-DEPARTURE",
+      "title": "例3：恢复0/2但第1拍离厅，交不齐",
+      "policy": "simple-open-port (canonical timing check; rack policy used in two-ring case)",
+      "topology": {
+        "rings": {
+          "A": 4
+        },
+        "ports": {
+          "P0": {
+            "ring": "A",
+            "cell": 0,
+            "open_beats": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "switches": {}
+      },
+      "deadline_beat": 1,
+      "complete_beat": 2,
+      "delivered": false,
+      "tickets": [
+        {
+          "group_id": "TWIN",
+          "passenger": "左/右板旅客",
+          "bag_numbers": [
+            1,
+            2
+          ],
+          "depart_beat": 1
+        }
+      ],
+      "rows": [
+        {
+          "beat": 0,
+          "before_advance": {
+            "A": [
+              1,
+              null,
+              2,
+              null
+            ]
+          },
+          "port_bags": [
+            1
+          ],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          }
+        },
+        {
+          "beat": 1,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              2
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 2,
+          "before_advance": {
+            "A": [
+              2,
+              null,
+              null,
+              null
+            ]
+          },
+          "port_bags": [
+            2
+          ],
+          "collected": [
+            1,
+            2
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        },
+        {
+          "beat": 3,
+          "before_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "port_bags": [],
+          "collected": [
+            1,
+            2
+          ],
+          "actual_teeth_from_frames": [
+            1
+          ],
+          "after_advance": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        }
+      ],
+      "events": [
+        {
+          "beat": 0,
+          "status": "recognized_at_open_port",
+          "bag": 1
+        },
+        {
+          "beat": 2,
+          "status": "recognized_at_open_port",
+          "bag": 2
+        },
+        {
+          "beat": 2,
+          "status": "group_complete",
+          "group": "TWIN",
+          "bags": [
+            1,
+            2
+          ]
+        },
+        {
+          "beat": 1,
+          "status": "missed_departure",
+          "depart_beat": 1,
+          "complete_beat": 2,
+          "message": "旅客已于第 1 拍离厅，整组未交齐"
+        }
+      ],
+      "handoff": null,
+      "checks": [
+        "第 0 拍为开场可领拍",
+        "前进格数取自仓库中的实际 teeth 原始值，不按拍数想当然"
+      ]
+    },
+    {
+      "case_id": "TWO-RING-RACK",
+      "title": "两圈、两开口、六袋：互斥摆法交接 + 编号整组架交付",
+      "policy": "numbered-group-rack",
+      "topology": {
+        "rings": {
+          "A": 4,
+          "B": 4
+        },
+        "ports": {
+          "PA": {
+            "ring": "A",
+            "cell": 0,
+            "open_beats": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "PB": {
+            "ring": "B",
+            "cell": 0,
+            "open_beats": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "switches": {
+          "X1": {
+            "code": 0,
+            "cells": {
+              "A": 2,
+              "B": 2
+            }
+          }
+        }
+      },
+      "deadline_beat": 3,
+      "complete_beat": 3,
+      "delivered": true,
+      "tickets": [
+        {
+          "group_id": "T1",
+          "passenger": "林岚",
+          "bag_numbers": [
+            1,
+            2
+          ],
+          "depart_beat": 2
+        },
+        {
+          "group_id": "T2",
+          "passenger": "陈默",
+          "bag_numbers": [
+            3,
+            4
+          ],
+          "depart_beat": 3
+        },
+        {
+          "group_id": "T3",
+          "passenger": "周禾",
+          "bag_numbers": [
+            5,
+            6
+          ],
+          "depart_beat": 1
+        }
+      ],
+      "rows": [
+        {
+          "beat": 0,
+          "rings_at_beat_start": {
+            "A": [
+              1,
+              null,
+              2,
+              3
+            ],
+            "B": [
+              5,
+              4,
+              null,
+              6
+            ]
+          },
+          "step_frames": [
+            {
+              "ring": "A",
+              "teeth": 1,
+              "before": [
+                null,
+                null,
+                2,
+                3
+              ]
+            },
+            {
+              "ring": "B",
+              "teeth": 1,
+              "before": [
+                null,
+                4,
+                null,
+                6
+              ]
+            }
+          ],
+          "rings_after_phase": {
+            "A": [
+              3,
+              null,
+              null,
+              2
+            ],
+            "B": [
+              6,
+              null,
+              4,
+              null
+            ]
+          },
+          "rack_occupancy": {
+            "PA-01": 1,
+            "PA-02": null,
+            "PA-03": null,
+            "PB-01": 5,
+            "PB-02": null,
+            "PB-03": null
+          },
+          "rack_promises": {
+            "PA-03": 2
+          },
+          "events": [
+            {
+              "beat": 0,
+              "slot": "PA-03",
+              "bag": 2,
+              "group": "T1",
+              "allowed": true,
+              "status": "promised",
+              "reason": null
+            },
+            {
+              "beat": 0,
+              "slot": "PA-03",
+              "bag": 4,
+              "group": "T2",
+              "allowed": false,
+              "status": "contest_lost",
+              "reason": "priority went to bag 2 / group T1 (depart beat 2)"
+            },
+            {
+              "beat": 0,
+              "slot": "PA-01",
+              "bag": 1,
+              "group": "T1",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            },
+            {
+              "beat": 0,
+              "status": "covered_read_handoff",
+              "event_id": "TWO-RING-RACK-R23",
+              "candidates": [
+                2,
+                3
+              ],
+              "message": "只形成互斥整圈摆法，不据此提前拣袋"
+            },
+            {
+              "beat": 0,
+              "slot": "PB-01",
+              "bag": 5,
+              "group": "T3",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            }
+          ]
+        },
+        {
+          "beat": 1,
+          "rings_at_beat_start": {
+            "A": [
+              3,
+              null,
+              null,
+              2
+            ],
+            "B": [
+              6,
+              null,
+              4,
+              null
+            ]
+          },
+          "step_frames": [
+            {
+              "ring": "A",
+              "teeth": 1,
+              "before": [
+                null,
+                null,
+                4,
+                2
+              ]
+            },
+            {
+              "ring": "B",
+              "teeth": 1,
+              "before": [
+                null,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "rings_after_phase": {
+            "A": [
+              2,
+              null,
+              null,
+              4
+            ],
+            "B": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "rack_occupancy": {
+            "PA-01": 1,
+            "PA-02": 3,
+            "PA-03": null,
+            "PB-01": null,
+            "PB-02": null,
+            "PB-03": null
+          },
+          "rack_promises": {
+            "PA-03": 2
+          },
+          "events": [
+            {
+              "beat": 1,
+              "status": "ambiguity_resolved",
+              "message": "第1拍 PA 精确读到3号：保留 AMB-1-L1，排除互斥的 AMB-1-L2"
+            },
+            {
+              "beat": 1,
+              "slot": "PA-02",
+              "bag": 3,
+              "group": "T2",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            },
+            {
+              "beat": 1,
+              "slot": "PB-02",
+              "bag": 6,
+              "group": "T3",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            },
+            {
+              "beat": 1,
+              "slot": "PA-02",
+              "bag": 4,
+              "group": "T2",
+              "allowed": false,
+              "status": "slot_occupied_denied",
+              "reason": "slot is already physically occupied by bag 3"
+            },
+            {
+              "beat": 1,
+              "claimant": "赵误",
+              "presented_group": "T2",
+              "target_bag": 6,
+              "allowed": false,
+              "status": "misclaim_blocked",
+              "message": "赵误 的 T2 组单不含 6 号袋，拒绝误领"
+            },
+            {
+              "beat": 1,
+              "group": "T3",
+              "passenger": "周禾",
+              "allowed": true,
+              "status": "delivered",
+              "bags": [
+                5,
+                6
+              ],
+              "slots": [
+                "PB-01",
+                "PB-02"
+              ],
+              "depart_beat": 1,
+              "message": "周禾 凭 T3 组单领齐 [5, 6] 号袋"
+            },
+            {
+              "beat": 1,
+              "status": "switch_moved",
+              "bag": 4,
+              "route": "B->{A}",
+              "event_id": "TWO-RING-RACK-SW4"
+            }
+          ]
+        },
+        {
+          "beat": 2,
+          "rings_at_beat_start": {
+            "A": [
+              2,
+              null,
+              null,
+              4
+            ],
+            "B": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "step_frames": [
+            {
+              "ring": "A",
+              "teeth": 1,
+              "before": [
+                null,
+                null,
+                null,
+                4
+              ]
+            },
+            {
+              "ring": "B",
+              "teeth": 1,
+              "before": [
+                null,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "rings_after_phase": {
+            "A": [
+              4,
+              null,
+              null,
+              null
+            ],
+            "B": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "rack_occupancy": {
+            "PA-01": null,
+            "PA-02": 3,
+            "PA-03": null,
+            "PB-01": null,
+            "PB-02": null,
+            "PB-03": null
+          },
+          "rack_promises": {},
+          "events": [
+            {
+              "beat": 2,
+              "slot": "PA-03",
+              "bag": 2,
+              "group": "T1",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            },
+            {
+              "beat": 2,
+              "group": "T1",
+              "passenger": "林岚",
+              "allowed": true,
+              "status": "delivered",
+              "bags": [
+                1,
+                2
+              ],
+              "slots": [
+                "PA-01",
+                "PA-03"
+              ],
+              "depart_beat": 2,
+              "message": "林岚 凭 T1 组单领齐 [1, 2] 号袋"
+            }
+          ]
+        },
+        {
+          "beat": 3,
+          "rings_at_beat_start": {
+            "A": [
+              4,
+              null,
+              null,
+              null
+            ],
+            "B": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "step_frames": [],
+          "rings_after_phase": {
+            "A": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "B": [
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          "rack_occupancy": {
+            "PA-01": null,
+            "PA-02": null,
+            "PA-03": null,
+            "PB-01": null,
+            "PB-02": null,
+            "PB-03": null
+          },
+          "rack_promises": {},
+          "events": [
+            {
+              "beat": 3,
+              "slot": "PA-01",
+              "bag": 4,
+              "group": "T2",
+              "allowed": true,
+              "status": "racked",
+              "reason": null
+            },
+            {
+              "beat": 3,
+              "group": "T2",
+              "passenger": "陈默",
+              "allowed": true,
+              "status": "delivered",
+              "bags": [
+                3,
+                4
+              ],
+              "slots": [
+                "PA-02",
+                "PA-01"
+              ],
+              "depart_beat": 3,
+              "message": "陈默 凭 T2 组单领齐 [3, 4] 号袋"
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "beat": 0,
+          "slot": "PA-03",
+          "bag": 2,
+          "group": "T1",
+          "allowed": true,
+          "status": "promised",
+          "reason": null
+        },
+        {
+          "beat": 0,
+          "slot": "PA-03",
+          "bag": 4,
+          "group": "T2",
+          "allowed": false,
+          "status": "contest_lost",
+          "reason": "priority went to bag 2 / group T1 (depart beat 2)"
+        },
+        {
+          "beat": 0,
+          "slot": "PA-03",
+          "bag": 2,
+          "group": "T1",
+          "allowed": true,
+          "status": "promised",
+          "reason": null
+        },
+        {
+          "beat": 0,
+          "slot": "PA-03",
+          "bag": 4,
+          "group": "T2",
+          "allowed": false,
+          "status": "contest_lost",
+          "reason": "priority went to bag 2 / group T1 (depart beat 2)"
+        },
+        {
+          "beat": 0,
+          "slot": "PA-01",
+          "bag": 1,
+          "group": "T1",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 0,
+          "status": "covered_read_handoff",
+          "event_id": "TWO-RING-RACK-R23",
+          "candidates": [
+            2,
+            3
+          ],
+          "message": "只形成互斥整圈摆法，不据此提前拣袋"
+        },
+        {
+          "beat": 0,
+          "slot": "PB-01",
+          "bag": 5,
+          "group": "T3",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 1,
+          "status": "ambiguity_resolved",
+          "message": "第1拍 PA 精确读到3号：保留 AMB-1-L1，排除互斥的 AMB-1-L2"
+        },
+        {
+          "beat": 1,
+          "slot": "PA-02",
+          "bag": 3,
+          "group": "T2",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 1,
+          "slot": "PB-02",
+          "bag": 6,
+          "group": "T3",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 1,
+          "slot": "PA-02",
+          "bag": 4,
+          "group": "T2",
+          "allowed": false,
+          "status": "slot_occupied_denied",
+          "reason": "slot is already physically occupied by bag 3"
+        },
+        {
+          "beat": 1,
+          "claimant": "赵误",
+          "presented_group": "T2",
+          "target_bag": 6,
+          "allowed": false,
+          "status": "misclaim_blocked",
+          "message": "赵误 的 T2 组单不含 6 号袋，拒绝误领"
+        },
+        {
+          "beat": 1,
+          "group": "T3",
+          "passenger": "周禾",
+          "allowed": true,
+          "status": "delivered",
+          "bags": [
+            5,
+            6
+          ],
+          "slots": [
+            "PB-01",
+            "PB-02"
+          ],
+          "depart_beat": 1,
+          "message": "周禾 凭 T3 组单领齐 [5, 6] 号袋"
+        },
+        {
+          "beat": 1,
+          "status": "switch_moved",
+          "bag": 4,
+          "route": "B->{A}",
+          "event_id": "TWO-RING-RACK-SW4"
+        },
+        {
+          "beat": 2,
+          "slot": "PA-03",
+          "bag": 2,
+          "group": "T1",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 2,
+          "group": "T1",
+          "passenger": "林岚",
+          "allowed": true,
+          "status": "delivered",
+          "bags": [
+            1,
+            2
+          ],
+          "slots": [
+            "PA-01",
+            "PA-03"
+          ],
+          "depart_beat": 2,
+          "message": "林岚 凭 T1 组单领齐 [1, 2] 号袋"
+        },
+        {
+          "beat": 3,
+          "slot": "PA-01",
+          "bag": 4,
+          "group": "T2",
+          "allowed": true,
+          "status": "racked",
+          "reason": null
+        },
+        {
+          "beat": 3,
+          "group": "T2",
+          "passenger": "陈默",
+          "allowed": true,
+          "status": "delivered",
+          "bags": [
+            3,
+            4
+          ],
+          "slots": [
+            "PA-02",
+            "PA-01"
+          ],
+          "depart_beat": 3,
+          "message": "陈默 凭 T2 组单领齐 [3, 4] 号袋"
+        },
+        {
+          "beat": 4,
+          "group": "T1",
+          "allowed": false,
+          "status": "duplicate_delivery_blocked",
+          "message": "group was already handed over; same bags cannot count twice"
+        }
+      ],
+      "handoff": {
+        "product_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0",
+        "source_event_ids": [
+          "TWO-RING-RACK-R23"
+        ],
+        "exclusive_warning": "互斥整圈摆法只能分别推演；不得把不同摆法中的同号袋合并计数，也不得把两个候选身份当成同时存在的两袋。",
+        "alternatives": [
+          {
+            "alt_id": "AMB-1-L1",
+            "ambiguity_id": "AMB-1",
+            "source_event_id": "TWO-RING-RACK-R23",
+            "rings": {
+              "A": [
+                1,
+                null,
+                2,
+                3
+              ],
+              "B": [
+                5,
+                4,
+                null,
+                6
+              ]
+            },
+            "placements": [
+              {
+                "bag": 1,
+                "ring": "A",
+                "cell": 0
+              },
+              {
+                "bag": 2,
+                "ring": "A",
+                "cell": 2
+              },
+              {
+                "bag": 3,
+                "ring": "A",
+                "cell": 3
+              },
+              {
+                "bag": 4,
+                "ring": "B",
+                "cell": 1
+              },
+              {
+                "bag": 5,
+                "ring": "B",
+                "cell": 0
+              },
+              {
+                "bag": 6,
+                "ring": "B",
+                "cell": 3
+              }
+            ]
+          },
+          {
+            "alt_id": "AMB-1-L2",
+            "ambiguity_id": "AMB-1",
+            "source_event_id": "TWO-RING-RACK-R23",
+            "rings": {
+              "A": [
+                1,
+                null,
+                3,
+                2
+              ],
+              "B": [
+                5,
+                4,
+                null,
+                6
+              ]
+            },
+            "placements": [
+              {
+                "bag": 1,
+                "ring": "A",
+                "cell": 0
+              },
+              {
+                "bag": 2,
+                "ring": "A",
+                "cell": 3
+              },
+              {
+                "bag": 3,
+                "ring": "A",
+                "cell": 2
+              },
+              {
+                "bag": 4,
+                "ring": "B",
+                "cell": 1
+              },
+              {
+                "bag": 5,
+                "ring": "B",
+                "cell": 0
+              },
+              {
+                "bag": 6,
+                "ring": "B",
+                "cell": 3
+              }
+            ]
+          }
+        ],
+        "port_options": {
+          "1": [
+            "PA"
+          ],
+          "2": [
+            "PA"
+          ],
+          "3": [
+            "PA"
+          ],
+          "4": [
+            "PA"
+          ],
+          "5": [
+            "PB"
+          ],
+          "6": [
+            "PB"
+          ]
+        },
+        "port_passes": {
+          "AMB-1-L1": {
+            "1": [
+              {
+                "beat": 0,
+                "port": "PA"
+              }
+            ],
+            "2": [
+              {
+                "beat": 2,
+                "port": "PA"
+              }
+            ],
+            "3": [
+              {
+                "beat": 1,
+                "port": "PA"
+              }
+            ],
+            "4": [
+              {
+                "beat": 3,
+                "port": "PA"
+              }
+            ],
+            "5": [
+              {
+                "beat": 0,
+                "port": "PB"
+              }
+            ],
+            "6": [
+              {
+                "beat": 1,
+                "port": "PB"
+              }
+            ]
+          },
+          "AMB-1-L2": {
+            "1": [
+              {
+                "beat": 0,
+                "port": "PA"
+              }
+            ],
+            "2": [
+              {
+                "beat": 1,
+                "port": "PA"
+              }
+            ],
+            "3": [
+              {
+                "beat": 2,
+                "port": "PA"
+              }
+            ],
+            "4": [
+              {
+                "beat": 3,
+                "port": "PA"
+              }
+            ],
+            "5": [
+              {
+                "beat": 0,
+                "port": "PB"
+              }
+            ],
+            "6": [
+              {
+                "beat": 1,
+                "port": "PB"
+              }
+            ]
+          }
+        }
+      },
+      "checks": [
+        "读标 selector=2 时，仓库观测中没有 exact_bag_no/branch1_hint；脏分支位未参与袋号判断",
+        "AMB-1-L1 与 AMB-1-L2 互斥；每份摆法都恰有6袋，未把候选合并成12袋",
+        "4号袋第0拍齿步后到 B2，第1拍凭道岔帧 B2→A2；不在道岔格的换环会被 switch_bag 拒绝",
+        "PA-03 争用按离厅拍优先给 T1/2号袋；PA-02 被3号袋占住后拒绝再许给4号袋",
+        "每组袋号唯一；重复交 T1 组被 duplicate_delivery_blocked 拦截",
+        "赵误持 T2 组单索6号袋被 misclaim_blocked 拦截"
+      ]
+    }
+  ]
+}

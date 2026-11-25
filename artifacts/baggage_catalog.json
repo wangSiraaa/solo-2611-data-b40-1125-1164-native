@@ -1,0 +1,363 @@
+{
+ "compiled": [
+  {
+   "always": [
+    0,
+    1
+   ],
+   "branch_values": [],
+   "bus": "toy-terminal.baggage",
+   "frame_id": 1,
+   "payload_bytes": 2,
+   "signals": [
+    {
+     "mask": "0x3",
+     "name": "ring_code",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "3"
+     ],
+     "raw_range": [
+      0,
+      3
+     ],
+     "start": 0,
+     "width": 2
+    },
+    {
+     "mask": "0xf",
+     "name": "teeth",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "15"
+     ],
+     "raw_range": [
+      0,
+      15
+     ],
+     "start": 2,
+     "width": 4
+    }
+   ],
+   "unassigned_mask": "0xffc0"
+  },
+  {
+   "always": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "branch_values": [],
+   "bus": "toy-terminal.baggage",
+   "frame_id": 2,
+   "payload_bytes": 2,
+   "signals": [
+    {
+     "mask": "0xf",
+     "name": "bag_no",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "15"
+     ],
+     "raw_range": [
+      0,
+      15
+     ],
+     "start": 0,
+     "width": 4
+    },
+    {
+     "mask": "0x3",
+     "name": "switch_code",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "3"
+     ],
+     "raw_range": [
+      0,
+      3
+     ],
+     "start": 4,
+     "width": 2
+    },
+    {
+     "mask": "0x1",
+     "name": "from_ring_code",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "1"
+     ],
+     "raw_range": [
+      0,
+      1
+     ],
+     "start": 6,
+     "width": 1
+    },
+    {
+     "mask": "0x1",
+     "name": "to_ring_code",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "1"
+     ],
+     "raw_range": [
+      0,
+      1
+     ],
+     "start": 7,
+     "width": 1
+    }
+   ],
+   "unassigned_mask": "0xff00"
+  },
+  {
+   "always": [
+    0,
+    1
+   ],
+   "branch_values": [
+    1,
+    2
+   ],
+   "bus": "toy-terminal.baggage",
+   "frame_id": 3,
+   "payload_bytes": 4,
+   "signals": [
+    {
+     "mask": "0x3",
+     "name": "ring_code",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "3"
+     ],
+     "raw_range": [
+      0,
+      3
+     ],
+     "start": 4,
+     "width": 2
+    },
+    {
+     "mask": "0x7",
+     "name": "cell",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "7"
+     ],
+     "raw_range": [
+      0,
+      7
+     ],
+     "start": 8,
+     "width": 3
+    },
+    {
+     "mask": "0xf",
+     "name": "exact_bag_no",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "15"
+     ],
+     "raw_range": [
+      0,
+      15
+     ],
+     "start": 16,
+     "width": 4
+    },
+    {
+     "mask": "0x3f",
+     "name": "pair_mask",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "63"
+     ],
+     "raw_range": [
+      0,
+      63
+     ],
+     "start": 16,
+     "width": 6
+    },
+    {
+     "mask": "0xf",
+     "name": "branch1_hint",
+     "order": "little",
+     "phys_range": [
+      "0",
+      "15"
+     ],
+     "raw_range": [
+      0,
+      15
+     ],
+     "start": 24,
+     "width": 4
+    }
+   ],
+   "unassigned_mask": "0xf0c0f8c0"
+  }
+ ],
+ "content": {
+  "messages": [
+   {
+    "bus": "toy-terminal.baggage",
+    "frame_id": 1,
+    "payload_bytes": 2,
+    "selector": null,
+    "signals": [
+     {
+      "factor": "1",
+      "name": "ring_code",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 0,
+      "width": 2
+     },
+     {
+      "factor": "1",
+      "name": "teeth",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 2,
+      "width": 4
+     }
+    ]
+   },
+   {
+    "bus": "toy-terminal.baggage",
+    "frame_id": 2,
+    "payload_bytes": 2,
+    "selector": null,
+    "signals": [
+     {
+      "factor": "1",
+      "name": "bag_no",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 0,
+      "width": 4
+     },
+     {
+      "factor": "1",
+      "name": "switch_code",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 4,
+      "width": 2
+     },
+     {
+      "factor": "1",
+      "name": "from_ring_code",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 6,
+      "width": 1
+     },
+     {
+      "factor": "1",
+      "name": "to_ring_code",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 7,
+      "width": 1
+     }
+    ]
+   },
+   {
+    "bus": "toy-terminal.baggage",
+    "frame_id": 3,
+    "payload_bytes": 4,
+    "selector": {
+     "factor": "1",
+     "name": "read_kind",
+     "offset": "0",
+     "order": "little",
+     "signed": false,
+     "start": 0,
+     "width": 4
+    },
+    "signals": [
+     {
+      "factor": "1",
+      "name": "ring_code",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 4,
+      "width": 2
+     },
+     {
+      "factor": "1",
+      "name": "cell",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 8,
+      "width": 3
+     },
+     {
+      "branches": [
+       1
+      ],
+      "factor": "1",
+      "name": "exact_bag_no",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 16,
+      "width": 4
+     },
+     {
+      "branches": [
+       2
+      ],
+      "factor": "1",
+      "name": "pair_mask",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 16,
+      "width": 6
+     },
+     {
+      "branches": [
+       1
+      ],
+      "factor": "1",
+      "name": "branch1_hint",
+      "offset": "0",
+      "order": "little",
+      "signed": false,
+      "start": 24,
+      "width": 4
+     }
+    ]
+   }
+  ],
+  "protocol": "bitcatalog-proto/1"
+ },
+ "content_sha256": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0",
+ "fingerprint": "53e0f39ba0f38781a84f967983fd26a91bae6cc0d2e86906cc86130c3155dbd0",
+ "format": "bitcatalog-product/1",
+ "message_count": 3,
+ "protocol": "bitcatalog-proto/1"
+}

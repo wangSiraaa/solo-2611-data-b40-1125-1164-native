@@ -47,7 +47,18 @@ python3.11 tools/verify.py
 
 # 4) 演示
 python3.11 tools/demo.py
+
+# 5) 大件行李转盘：三消息小目录、原仓收帧、互斥摆法、整组架交付
+python3.11 tools/baggage_demo.py
 ```
+
+`tools/baggage_demo.py` 会生成 `artifacts/baggage_catalog.json`、`artifacts/baggage.db`、
+`artifacts/baggage_report.json` 和逐拍中文说明 `artifacts/baggage_report.md`。其中核对：
+
+* 四格环 0/2 号袋在第 2 拍领齐；右袋改 1 号格时第 3 拍到口；离厅提前到第 1 拍则失败。
+* 读标 selector=2 的遮标分支只使用活动的 `pair_mask`；手工写入的非活动分支脏位不会变成袋号。
+* 一次遮两个标签时输出两份互斥整圈摆法、各袋可能经过的领取口；两份摆法不会合并成双倍袋数。
+* 两圈、两开口、六袋场景中，道岔帧且袋在道岔格才允许换环；编号架位不会重复许诺，组单交付不会把同一袋算两次。
 
 快速小规模冒烟：
 
