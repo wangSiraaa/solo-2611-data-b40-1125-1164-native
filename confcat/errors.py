@@ -67,3 +67,7 @@ class TaskRejected(ConfCatError):
         self.reason = reason
         prefix = f"[{'/'.join(str(p) for p in self.path)}] " if self.path else ""
         super().__init__(f"{prefix}{message}")
+
+
+class ArenaError(ConfCatError):
+    """楹联擂台赛务错误（词册/卷数据不合合同、赛制参数非法等）。"""

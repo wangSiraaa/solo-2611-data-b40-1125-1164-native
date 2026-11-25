@@ -22,6 +22,7 @@ from pathlib import Path
 from .catalog import Catalog
 from .codec import path_str
 from .ingest import TaskRepository
+from .arena import ArenaOffice, PLAQUE, SEAL
 
 
 def _print(obj) -> None:
@@ -82,6 +83,59 @@ def main(argv: list[str] | None = None) -> int:
     p_rows.add_argument("catalog_db")
     p_rows.add_argument("task_id")
 
+    # 楹联擂台 -------------------------------------------------------------- #
+    p_open = sub.add_parser("arena-open", help="擂台开场（固定词册/卷任务版本，公布承诺名额）")
+    p_open.add_argument("arena_db")
+    p_open.add_argument("task_db")
+    p_open.add_argument("catalog_db")
+    p_open.add_argument("match_id")
+    p_open.add_argument("ruleset", choices=[PLAQUE, SEAL])
+    p_open.add_argument("wordbook_task")
+    p_open.add_argument("scroll_task")
+    p_open.add_argument("slots", type=int)
+    p_open.add_argument("--deadline")
+    p_open.add_argument("--plaque", nargs="*", help="题匾断法词序（如题匾制：白露）")
+
+    p_review = sub.add_parser("arena-review", help="按卷号查审读台全部读法与淘汰依据")
+    p_review.add_argument("arena_db")
+    p_review.add_argument("task_db")
+    p_review.add_argument("catalog_db")
+    p_review.add_argument("match_id")
+    p_review.add_argument("scroll_no")
+
+    p_hang = sub.add_parser("arena-hang", help="受理具名挂卷订单")
+    p_hang.add_argument("arena_db")
+    p_hang.add_argument("task_db")
+    p_hang.add_argument("catalog_db")
+    p_hang.add_argument("match_id")
+    p_hang.add_argument("scroll_no")
+
+    p_wall = sub.add_parser("arena-wall", help="获选墙（对外只显示获选卷）")
+    p_wall.add_argument("arena_db")
+    p_wall.add_argument("task_db")
+    p_wall.add_argument("catalog_db")
+    p_wall.add_argument("match_id")
+
+    p_order = sub.add_parser("arena-order", help="按卷号查挂卷裁定与依据")
+    p_order.add_argument("arena_db")
+    p_order.add_argument("task_db")
+    p_order.add_argument("catalog_db")
+    p_order.add_argument("match_id")
+    p_order.add_argument("scroll_no")
+
+    p_appeal = sub.add_parser("arena-appeal", help="申诉人按卷号对照已用词册与截止回执")
+    p_appeal.add_argument("arena_db")
+    p_appeal.add_argument("task_db")
+    p_appeal.add_argument("catalog_db")
+    p_appeal.add_argument("match_id")
+    p_appeal.add_argument("scroll_no")
+
+    p_promise = sub.add_parser("arena-promises", help="名额承诺落实到卷号")
+    p_promise.add_argument("arena_db")
+    p_promise.add_argument("task_db")
+    p_promise.add_argument("catalog_db")
+    p_promise.add_argument("match_id")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "publish":
@@ -98,7 +152,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     is_task_cmd = args.cmd in ("run-task", "tasks", "rows")
-    catalog_db = args.catalog_db if is_task_cmd else args.db
+    is_arena_cmd = args.cmd.startswith("arena-")
+    catalog_db = args.catalog_db if (is_task_cmd or is_arena_cmd) else args.db
     with Catalog(catalog_db) as cat:
         if args.cmd == "products":
             _print(
@@ -150,6 +205,34 @@ def main(argv: list[str] | None = None) -> int:
                             "rows": repo.get_rows(args.task_id),
                         }
                     )
+        elif is_arena_cmd:
+            with TaskRepository(args.task_db, cat) as repo, ArenaOffice(
+                args.arena_db, repo
+            ) as office:
+                if args.cmd == "arena-open":
+                    _print(
+                        office.open_match(
+                            args.match_id,
+                            args.ruleset,
+                            args.wordbook_task,
+                            args.scroll_task,
+                            args.slots,
+                            deadline=args.deadline,
+                            plaque_words=tuple(args.plaque) if args.plaque else None,
+                        )
+                    )
+                elif args.cmd == "arena-review":
+                    _print(office.get_review(args.match_id, args.scroll_no))
+                elif args.cmd == "arena-hang":
+                    _print(office.hang(args.match_id, args.scroll_no).as_dict())
+                elif args.cmd == "arena-wall":
+                    _print(office.wall(args.match_id))
+                elif args.cmd == "arena-order":
+                    _print(office.order(args.match_id, args.scroll_no))
+                elif args.cmd == "arena-appeal":
+                    _print(office.appeal(args.match_id, args.scroll_no))
+                elif args.cmd == "arena-promises":
+                    _print(office.promises(args.match_id))
     return 0
 
 

@@ -1,0 +1,13 @@
+# 本届楹联擂台 · 参赛卷归一任务配置（产品 scroll-product）
+# 同一份 column_mapping 接正文不同的新卷：再递一次归一任务即可，赛务入口不变。
+ingest:
+  source_uri: file:///data/arena/scrolls_match01.csv
+  column_mapping:
+    scroll_no: juan_no
+    author: author_name
+    upper_text: shang_lian
+    lower_text: xia_lian
+    homophone_marks: tong_yin
+    seal_upper: feng_shang
+    seal_lower: feng_xia
+    seal_at: feng_time

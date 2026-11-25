@@ -1,0 +1,11 @@
+# 本届楹联擂台 · 词册归一任务配置（产品 wordbook-product）
+# column_mapping：目标列 -> 词册 CSV 原列；换带新词条的词册即按新版再递一次任务。
+ingest:
+  source_uri: file:///data/arena/wordbook_v1.csv
+  column_mapping:
+    headword: word
+    word_class: pos
+    final_tone: tone
+    readings: reading
+    supplement_no: supplement_form
+    recorder: signer

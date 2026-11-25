@@ -15,11 +15,17 @@ confcat/
   catalog.py        # 配置产品目录：版本化发布、路径查询、哈希校验（SQLite）
   csv_pipeline.py   # CSV 读取与按配置归一化（列映射/缺失值/分区/列血缘）
   ingest.py         # 消费仓：类型化取参、整次拒绝、任务结果持久化（SQLite）
-  cli.py            # 人工检查命令行
-samples/            # 多文档同名锚点、merge 序列冲突、显式键前后等 YAML 样例
-data/               # 合成 CSV 与运行期 SQLite
+  arena/            # 虚构楹联擂台：词册审读、赛制裁定、获选墙（SQLite）
+    wordbook.py     #   联律词册装载；沿 TaskRepository 行/列溯源补录单与签录人
+    scrolls.py      #   带卷号参赛原文、同音标记、选手封注装载
+    review.py       #   审读台：完整覆盖断词/同音一致读法/联律裁定/全联标注
+    contest.py      #   赛务柜台（题匾制/封匣制）、承诺名额、回放、截止回执
+  cli.py            # 人工检查命令行（含 arena-* 赛务命令）
+samples/            # 多文档同名锚点、merge 序列冲突、显式键前后、擂台词册/卷 YAML
+data/               # 合成 CSV 与运行期 SQLite（data/arena/ 为擂台词册与参赛卷）
 demo/run_demo.py    # 端到端演示（含断言）
-tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度
+demo/run_arena_demo.py  # 擂台端到端演示（白露两断法/两套赛制/回放/词册改版）
+tests/              # unittest：真值表、逐行关系表、隔离、重开、规模、深度、擂台合同
 ```
 
 至少两个实质模块的分工：`yaml_parser`/`materialize`/`codec` 负责 YAML 目录与
@@ -67,11 +73,73 @@ tests/              # unittest：真值表、逐行关系表、隔离、重开�
 （已用 100 配置 × 万节点、200 路别名复用测试覆盖）；收益是消费隔离由数据结构天然保证、
 来源证据随树自包含、重开无需重放解析。
 
+## 楹联擂台（`confcat.arena`）
+
+给 confcat 接的一届虚构楹联擂台。声类、词类、特许读音全部以**本届自定词册**为准，
+词册与带卷号参赛原文是两份归一任务，经**同一个** `TaskRepository` 入口受理：编辑换
+带新词条的词册或递正文不同的新卷，都是按 `column_mapping` 再跑一次归一任务。
+
+### 数据血缘与改版重开
+- 词册每行一个词条（词形/词类/词末平仄/读音/补录单单号/签录人），
+  `Wordbook.trace_entry` 沿 TaskRepository 的实际归一行（`task_row`）与列血缘
+  （`task_column` 的原 CSV 列、表头行号）查回该版词条的补录单及**真实签录人**。
+- 每场比赛固定开场时的词册任务与收卷任务（=目录版本快照）；撤词条、改词册只影响
+  新开场次，**已挂出的旧卷仍按原词册重开**，挂卷订单里的全联标注与裁定原样可查。
+
+### 审读台合同（`arena/review.py`）
+- DFS 枚举每联**所有能完整覆盖原文**的断词；同形多词条逐一套用。
+- 上、下联对应词**字数与词类相合、词末声类相反**（平对仄）。
+- 同一卷标作同音的一组字经并查集并入同读组件，组件可取读音为各词读音集合交集；
+  每个读法都是覆盖全联的完整赋值，**不产生两种互斥读法的局部拼接**。
+- 淘汰断法逐条留诊断；获选卷附可向作者解释的全联标注（逐词带补录单/签录人依据）。
+
+### 两套赛制（任选一套，开场即公布）
+- `plaque` 题匾制：赛前刻定一种上联断法整场公开沿用，后来收的卷须守原匾；
+  匾词必须能拼成场上联原文且每段都是词册收录词条，否则拒绝开场。
+- `seal` 封匣制：选手揭卷前封好上联断法与下联读音，挂卷时拆封；封注晚于截止
+  时刻（封匣到期、事后补封无效）或对不上审读台读法均拒收。
+
+### 获选墙与承诺
+- 受理开场即公布**最多能承诺的不同作者人数**（墙格 `slots`），承诺槽位在挂卷时
+  落实到卷号；一位作者最多挂一卷，名额满后后来的卷一律拒收。
+- 对外墙只显示获选卷；申诉人可按本人卷号经 `appeal` 对照已用词册版本与截止回执，
+  回执不含他人卷信息。
+- `replay_match` 从同一场赛前记录另开回放（词册/原文/题匾照前，仅换收卷任务与
+  受理次序），演示已刻匾或已到期封匣如何限制柜台。
+
+### 小例（白露/清霜/晚霞，读音取词条唯一读音）
+白露整词为名、词末仄；拆开为 白（形平）+ 露（名仄）。清霜只录整词名平，
+晚霞只录 晚（形仄）+ 霞（名平）。故甲投清霜只有整词读法合式，乙投晚霞只有
+拆词读法合式；撤白露整词条后甲卷无完整合法读法。
+
+```bash
+# 擂台端到端演示（含全部题面场景与断言）
+python3 demo/run_arena_demo.py
+
+# 人工柜台命令（库均为演示产物）
+python -m confcat.cli arena-open  data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1 seal wb-v1 sc-m1 2 \
+    --deadline 2026-11-02T00:00:00 --plaque 白露
+python -m confcat.cli arena-hang    data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1 J01
+python -m confcat.cli arena-review  data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1 J02
+python -m confcat.cli arena-wall    data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1
+python -m confcat.cli arena-promises data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1
+python -m confcat.cli arena-appeal  data/demo_arena.db data/demo_arena_tasks.db \
+    data/demo_arena_catalog.db M1 J01
+```
+
 ## 运行
 
 ```bash
 # 端到端演示（发布/检查/任务/拒绝/修订有效性/隔离/重开，含内置断言）
 python3 demo/run_demo.py
+
+# 擂台端到端演示
+python3 demo/run_arena_demo.py
 
 # 全量测试（秒级）
 python3 -m unittest discover -s tests -v
