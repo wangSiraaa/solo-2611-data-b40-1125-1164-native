@@ -1,0 +1,116 @@
+{
+  "note": "Replayable optics handover transcript (focal 10, path 6, travel 3..4).",
+  "steps": [
+    {
+      "coupons": [],
+      "op": "publish_snapshot",
+      "products": [
+        {
+          "price": 100,
+          "sku": "E-A"
+        },
+        {
+          "price": 100,
+          "sku": "AD-1"
+        }
+      ],
+      "snapshot_id": "snap-S1"
+    },
+    {
+      "basket": [
+        {
+          "price": 100,
+          "sku": "E-A",
+          "unit_id": "u-E-A"
+        },
+        {
+          "price": 100,
+          "sku": "AD-1",
+          "unit_id": "u-AD-1"
+        }
+      ],
+      "coupons": [],
+      "op": "quote",
+      "request_id": "q-S1",
+      "snapshot_id": "snap-S1"
+    },
+    {
+      "op": "register_sale",
+      "quote_request_id": "q-S1",
+      "sale_id": "S1"
+    },
+    {
+      "op": "add_telescope",
+      "out_iface": "SCT",
+      "telescope_id": "T-A",
+      "travel_hi": 4,
+      "travel_lo": 3
+    },
+    {
+      "batch_id": "B1",
+      "cards": [],
+      "op": "add_batch",
+      "scale_hi": 0,
+      "scale_lo": 0
+    },
+    {
+      "batch_id": "B1",
+      "focal_position": 10,
+      "in_iface": "SC",
+      "kind": "eyepiece",
+      "measured_hi": 5,
+      "measured_lo": 5,
+      "model": "E-A",
+      "op": "register_piece",
+      "piece_id": "EP-A",
+      "sale_id": "S1",
+      "unit_id": "u-E-A"
+    },
+    {
+      "in_iface": "SCT",
+      "kind": "adapter",
+      "model": "AD-1",
+      "nominal_path": 1,
+      "op": "register_piece",
+      "out_iface": "SC",
+      "piece_id": "AD-1",
+      "sale_id": "S1",
+      "unit_id": "u-AD-1"
+    },
+    {
+      "adapter_ids": [
+        "AD-1"
+      ],
+      "eyepiece_id": "EP-A",
+      "group_id": "GA1",
+      "op": "lock_group",
+      "telescope_id": "T-A"
+    },
+    {
+      "group_id": "GA1",
+      "observe_wheel": 4,
+      "op": "verify_group",
+      "technician": "tech-A"
+    },
+    {
+      "ends_at": 100,
+      "op": "add_session",
+      "seq": 1,
+      "session_id": "SES1",
+      "starts_at": 0
+    },
+    {
+      "group_id": "GA1",
+      "op": "place_order",
+      "order_id": "ORDER-1",
+      "sale_id": "S1",
+      "session_id": "SES1",
+      "slot_hi": 2,
+      "slot_lo": 1
+    },
+    {
+      "op": "deliver_order",
+      "order_id": "ORDER-1"
+    }
+  ]
+}

@@ -563,11 +563,24 @@ def main(argv: List[str] | None = None) -> int:
     selfcheck.add_argument("--db", default=str(ROOT / "data" / "selfcheck.db"))
     selfcheck.add_argument("--out", default=str(ROOT / "results" / "self_check.json"))
 
+    optics = sub.add_parser("optics-demo", help="run the optics handover demo")
+    optics.add_argument("--db", default=str(ROOT / "data" / "optics.db"))
+    optics.add_argument("--out", default=str(ROOT / "results" / "optics_results.json"))
+    optics.add_argument("--plan", default=str(ROOT / "results" / "optics_plan.json"))
+
     args = parser.parse_args(argv)
     if args.command == "demo":
         os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
         os.makedirs(os.path.dirname(args.db) or ".", exist_ok=True)
         results = run_demo(args.db, args.out, args.plan)
+        print(json.dumps({"database": args.db, "results": args.out, "summary": results["summary"]}, indent=2))
+        return 0 if results["summary"]["failed"] == 0 else 1
+    if args.command == "optics-demo":
+        from .optics_demo import run_optics_demo
+
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+        os.makedirs(os.path.dirname(args.db) or ".", exist_ok=True)
+        results = run_optics_demo(args.db, args.out, args.plan)
         print(json.dumps({"database": args.db, "results": args.out, "summary": results["summary"]}, indent=2))
         return 0 if results["summary"]["failed"] == 0 else 1
     if args.command == "run-plan":

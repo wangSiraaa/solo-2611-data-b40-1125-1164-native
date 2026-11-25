@@ -22,6 +22,36 @@ Supported ops::
     audit_sales
     audit_inventory
 
+Optics handover ops::
+
+    add_telescope      telescope_id, out_iface, travel_lo, travel_hi
+    get_telescope      telescope_id
+    add_batch          batch_id, scale_lo, scale_hi, cards
+    calibrate_batch    batch_id, cards
+    get_batch          batch_id
+    register_piece     piece_id, kind, model, sale_id, unit_id, ...piece fields
+    get_piece          piece_id
+    piece_path_interval piece_id
+    update_piece_evidence piece_id, measured_lo, measured_hi
+    assess_combo       telescope_id, eyepiece_id, adapter_ids
+    lock_group         group_id, telescope_id, eyepiece_id, adapter_ids
+    verify_group       group_id, observe_wheel, technician
+    unseal_group       group_id
+    get_group          group_id
+    add_session        session_id, seq, starts_at, ends_at
+    get_session        session_id
+    place_order        order_id, sale_id, group_id, session_id, slot_lo, slot_hi
+    deliver_order      order_id
+    fulfil_session     session_id
+    cancel_order       order_id, reason?
+    switch_telescope   order_id, new_telescope_id
+    get_order          order_id
+    get_delivery       order_id
+    return_pieces      order_id
+    return_piece       piece_id
+    list_orders
+    list_bookings
+
 Any step may set ``"expect_error": <code>`` (string or list) to assert that the
 operation is rejected with that error code; the transcript then records a
 passing step instead of aborting.  Without it, the first error aborts the plan
@@ -144,6 +174,81 @@ def _execute(service, step: Mapping[str, Any], env: Mapping[str, Any]) -> Any:
         return service.audit_sales()
     if op == "audit_inventory":
         return service.audit_inventory()
+    if op == "add_telescope":
+        return service.add_telescope(
+            _require(step, "telescope_id", op), _require(step, "out_iface", op),
+            _require(step, "travel_lo", op), _require(step, "travel_hi", op))
+    if op == "get_telescope":
+        return service.get_telescope(_require(step, "telescope_id", op))
+    if op == "add_batch":
+        return service.add_batch(
+            _require(step, "batch_id", op), _require(step, "scale_lo", op),
+            _require(step, "scale_hi", op), step.get("cards", []))
+    if op == "calibrate_batch":
+        return service.calibrate_batch(_require(step, "batch_id", op), step.get("cards", []))
+    if op == "get_batch":
+        return service.get_batch(_require(step, "batch_id", op))
+    if op == "register_piece":
+        fields = {k: v for k, v in step.items() if k not in ("op", "name", "expect_error", "piece_id", "kind", "model", "sale_id", "unit_id")}
+        return service.register_piece(
+            _require(step, "piece_id", op), _require(step, "kind", op), _require(step, "model", op),
+            _require(step, "sale_id", op), _require(step, "unit_id", op), **fields)
+    if op == "get_piece":
+        return service.get_piece(_require(step, "piece_id", op))
+    if op == "piece_path_interval":
+        return list(service.piece_path_interval(_require(step, "piece_id", op)))
+    if op == "update_piece_evidence":
+        return service.update_piece_evidence(
+            _require(step, "piece_id", op), _require(step, "measured_lo", op),
+            _require(step, "measured_hi", op))
+    if op == "assess_combo":
+        return service.assess_combo(
+            _require(step, "telescope_id", op), _require(step, "eyepiece_id", op),
+            step.get("adapter_ids", []))
+    if op == "lock_group":
+        return service.lock_group(
+            _require(step, "group_id", op), _require(step, "telescope_id", op),
+            _require(step, "eyepiece_id", op), step.get("adapter_ids", []))
+    if op == "verify_group":
+        return service.verify_group(
+            _require(step, "group_id", op), observe_wheel=_require(step, "observe_wheel", op),
+            technician=_require(step, "technician", op))
+    if op == "unseal_group":
+        return service.unseal_group(_require(step, "group_id", op))
+    if op == "get_group":
+        return service.get_group(_require(step, "group_id", op))
+    if op == "add_session":
+        return service.add_session(
+            _require(step, "session_id", op), _require(step, "seq", op),
+            _require(step, "starts_at", op), _require(step, "ends_at", op))
+    if op == "get_session":
+        return service.get_session(_require(step, "session_id", op))
+    if op == "place_order":
+        return service.place_order(
+            _require(step, "order_id", op), _require(step, "sale_id", op),
+            _require(step, "group_id", op), _require(step, "session_id", op),
+            _require(step, "slot_lo", op), _require(step, "slot_hi", op))
+    if op == "deliver_order":
+        return service.deliver_order(_require(step, "order_id", op))
+    if op == "fulfil_session":
+        return service.fulfil_session(_require(step, "session_id", op))
+    if op == "cancel_order":
+        return service.cancel_order(_require(step, "order_id", op), step.get("reason", ""))
+    if op == "switch_telescope":
+        return service.switch_telescope(
+            _require(step, "order_id", op), _require(step, "new_telescope_id", op))
+    if op == "get_order":
+        return service.get_order(_require(step, "order_id", op))
+    if op == "get_delivery":
+        return service.get_delivery(_require(step, "order_id", op))
+    if op == "return_pieces":
+        return service.return_pieces(_require(step, "order_id", op))
+    if op == "return_piece":
+        return service.return_piece(_require(step, "piece_id", op))
+    if op == "list_orders":
+        return service.list_orders()
+    if op == "list_bookings":
+        return service.list_bookings()
     raise PlanError(f"unknown op {op!r}", step_index=-1, step=step, transcript=[])
 
 

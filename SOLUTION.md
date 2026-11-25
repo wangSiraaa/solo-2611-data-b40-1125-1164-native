@@ -133,9 +133,11 @@ basket_service/
   db.py            SQLite schema and transaction helpers
   quote_service.py snapshots and quote API
   ledger.py        sales, returns, inventory, audits
+  optics.py        telescope/eyepiece handover, focus math, scheduling
+  optics_demo.py   optics demo driver (18 checks)
   planner.py       JSON plan runner
-  demo.py          demo driver + CLI (demo / run-plan / self-check)
-tests/             optimizer, quote-service, ledger, reference tests
+  demo.py          demo driver + CLI (demo / optics-demo / run-plan / self-check)
+tests/             optimizer, quote-service, ledger, optics, reference tests
 data/              real SQLite databases (created by the demo)
 results/           JSON plans and result records
 ```
@@ -155,3 +157,65 @@ independent references:
   stock adjustments, and a two-thread concurrent return race with no double
   stock;
 * reopening the database preserves everything.
+
+## Optics handover subsystem
+
+The astronomy club's borrowed-eyepiece scenario lives in
+`basket_service/optics.py`, wired onto the same SQLite database and surfaced
+through `Service.optics` (and as `optics-*` ops in the JSON planner).  It
+composes with the ledger: a piece is only accepted when a lender signs it onto
+a **real, unreturned sale unit**, so two identical-looking eyepieces remain
+distinct physical items and cannot impersonate each other by model number.
+
+```bash
+python3 -m basket_service optics-demo   # 18 checks; writes
+                                        # data/optics.db,
+                                        # results/optics_results.json,
+                                        # results/optics_plan.json
+```
+
+Chosen delivery strategy: **pre-locked verified barrel groups** (not loose
+pieces with a live trial that consumes an observing window).  A group is a
+telescope + eyepiece + ordered adapter chain; it may be handed to a duty
+officer only after a signed focus trial, and while sealed no member may be lent
+alone.  Unsealing forces re-verification.
+
+### Focus model
+
+* **Net demand** = eyepiece focal position − total optical path of all inserted
+  pieces.  The focus wheel travels an **inclusive** integer interval
+  `[travel_lo, travel_hi]` (both endpoints reachable, adjustable on site).
+* An **adapter** has an integer optical path and a directed interface
+  `in_iface -> out_iface`; a chain must match head-to-tail
+  (scope output → adapters → eyepiece input) and may not reuse a piece.
+* An **eyepiece** has a shoulder measurement interval plus the zero-point bias
+  of its **barrel batch**.  The technician recovers that bias from a two-end
+  scale and known test-focus cards as an inclusive interval of *all compatible
+  calibrations*.  Each batch keeps its own bias — never shared across batches.
+* A delivery is legal only if the **whole net interval** fits the wheel travel
+  under **every** compatible calibration (a robust check), never a point
+  estimate.  Calibration can be re-opened; placement and delivery recompute the
+  verdict from live evidence, so a stale OK can never ship.
+
+Worked example (the brief's positive case): focal 10, eyepiece+adapter path 6,
+travel 3..4 ⇒ net 4, inclusive ⇒ deliverable.  Changing the shoulder evidence
+to path 5 ⇒ net 5, needing travel 5 ⇒ not deliverable and the group cannot
+lock.
+
+### Scheduling and exclusivity
+
+* Sessions are time intervals; two consecutive sessions may overlap.  Pieces
+  are exclusively booked over their session interval (touching endpoints do not
+  conflict).  A checked-in piece is held until returned: a later session cannot
+  take it even if its window does not overlap.  A telescope likewise serves one
+  overlapping/active order at a time.
+* `switch_telescope` re-mounts an open order onto another scope only if the
+  chain stays compatible and the net interval still fits — the "continues after
+  a temporary swap" case; otherwise it must be refused and the order cancelled
+  (`cancel_order`), matching the "one continues, one must retract" pair.
+
+Limits: at most 3 telescopes, 6 pieces and 3 sessions (enforced with
+`OPTIC_LIMIT`).  All ops are transactional and survive reopen; the demo
+re-checks state before/after a close/reopen.
+
+## Verification

@@ -18,16 +18,18 @@ from typing import Optional
 from .db import Database
 from .errors import BasketError
 from .ledger import AfterSalesLedger
+from .optics import OpticsService
 from .quote_service import QuoteService
 
 
 class Service:
-    """Thin façade wiring the quote service and ledger onto one database."""
+    """Thin façade wiring the quote service, ledger and optics onto one database."""
 
     def __init__(self, path: str = ":memory:", *, busy_timeout_ms: int = 30000):
         self.db = Database(path, busy_timeout_ms=busy_timeout_ms)
         self.quotes = QuoteService(self.db)
         self.ledger = AfterSalesLedger(self.db)
+        self.optics = OpticsService(self.db)
 
     # quote surface -------------------------------------------------------
     def publish_snapshot(self, products=None, coupons=None, *, snapshot_id=None) -> str:
@@ -66,6 +68,88 @@ class Service:
 
     def audit_sales(self):
         return self.ledger.audit_sales()
+
+    # optics surface ------------------------------------------------------
+    def add_telescope(self, *args, **kwargs):
+        return self.optics.add_telescope(*args, **kwargs)
+
+    def get_telescope(self, telescope_id):
+        return self.optics.get_telescope(telescope_id)
+
+    def add_batch(self, *args, **kwargs):
+        return self.optics.add_batch(*args, **kwargs)
+
+    def calibrate_batch(self, *args, **kwargs):
+        return self.optics.calibrate_batch(*args, **kwargs)
+
+    def get_batch(self, batch_id):
+        return self.optics.get_batch(batch_id)
+
+    def register_piece(self, *args, **kwargs):
+        return self.optics.register_piece(*args, **kwargs)
+
+    def get_piece(self, piece_id):
+        return self.optics.get_piece(piece_id)
+
+    def piece_path_interval(self, piece_id):
+        return self.optics.piece_path_interval(piece_id)
+
+    def update_piece_evidence(self, *args, **kwargs):
+        return self.optics.update_piece_evidence(*args, **kwargs)
+
+    def assess_combo(self, *args, **kwargs):
+        return self.optics.assess_combo(*args, **kwargs)
+
+    def lock_group(self, *args, **kwargs):
+        return self.optics.lock_group(*args, **kwargs)
+
+    def verify_group(self, *args, **kwargs):
+        return self.optics.verify_group(*args, **kwargs)
+
+    def unseal_group(self, group_id):
+        return self.optics.unseal_group(group_id)
+
+    def get_group(self, group_id):
+        return self.optics.get_group(group_id)
+
+    def add_session(self, *args, **kwargs):
+        return self.optics.add_session(*args, **kwargs)
+
+    def get_session(self, session_id):
+        return self.optics.get_session(session_id)
+
+    def place_order(self, *args, **kwargs):
+        return self.optics.place_order(*args, **kwargs)
+
+    def deliver_order(self, order_id):
+        return self.optics.deliver_order(order_id)
+
+    def fulfil_session(self, session_id):
+        return self.optics.fulfil_session(session_id)
+
+    def cancel_order(self, order_id, reason=""):
+        return self.optics.cancel_order(order_id, reason)
+
+    def switch_telescope(self, order_id, new_telescope_id):
+        return self.optics.switch_telescope(order_id, new_telescope_id)
+
+    def get_order(self, order_id):
+        return self.optics.get_order(order_id)
+
+    def get_delivery(self, order_id):
+        return self.optics.get_delivery(order_id)
+
+    def return_pieces(self, order_id):
+        return self.optics.return_pieces(order_id)
+
+    def return_piece(self, piece_id):
+        return self.optics.return_piece(piece_id)
+
+    def list_orders(self):
+        return self.optics.list_orders()
+
+    def list_bookings(self):
+        return self.optics.list_bookings()
 
     # cross-cutting -------------------------------------------------------
     def run(self, plan):

@@ -1,0 +1,1109 @@
+{
+  "checks": [
+    {
+      "actual": "distinct sales",
+      "check": "intake.same_look_distinct_units",
+      "expected": "distinct sales",
+      "ok": true
+    },
+    {
+      "actual": "PIECE_IMPERSONATION",
+      "check": "intake.no_model_impersonation",
+      "expected": "PIECE_IMPERSONATION",
+      "ok": true
+    },
+    {
+      "actual": {
+        "B1": 0,
+        "B2": 2
+      },
+      "check": "two_barrel.bias_is_per_batch",
+      "expected": "different biases",
+      "ok": true
+    },
+    {
+      "actual": {
+        "correct_deliverable": true,
+        "naive_deliverable": false
+      },
+      "check": "two_barrel.shared_bias_flips_verdict",
+      "expected": {
+        "correct_deliverable": true,
+        "naive_deliverable": false
+      },
+      "ok": true
+    },
+    {
+      "actual": "GROUP_SEALED",
+      "check": "two_barrel.one_adapter_not_shared",
+      "expected": "GROUP_SEALED",
+      "ok": true
+    },
+    {
+      "actual": [
+        6,
+        6
+      ],
+      "check": "focus.positive_total_is_6",
+      "expected": [
+        6,
+        6
+      ],
+      "ok": true
+    },
+    {
+      "actual": [
+        4,
+        4
+      ],
+      "check": "focus.positive_net_is_4",
+      "expected": [
+        4,
+        4
+      ],
+      "ok": true
+    },
+    {
+      "actual": {
+        "focus_hi": 4,
+        "telescope": "T-A"
+      },
+      "check": "focus.positive_delivers",
+      "expected": {
+        "focus_hi": 4,
+        "telescope": "T-A"
+      },
+      "ok": true
+    },
+    {
+      "actual": "PIECE_BOOKED",
+      "check": "sessions.reserved_overlap_conflicts",
+      "expected": "PIECE_BOOKED",
+      "ok": true
+    },
+    {
+      "actual": {
+        "deliverable": false,
+        "needed_travel": 5
+      },
+      "check": "counterexample.changed_path_needs_5",
+      "expected": {
+        "deliverable": false,
+        "needed_travel": 5
+      },
+      "ok": true
+    },
+    {
+      "actual": "FOCUS_UNREACHABLE",
+      "check": "counterexample.changed_cannot_lock",
+      "expected": "FOCUS_UNREACHABLE",
+      "ok": true
+    },
+    {
+      "actual": [
+        4,
+        4
+      ],
+      "check": "counterexample.restore_evidence_delivers",
+      "expected": [
+        4,
+        4
+      ],
+      "ok": true
+    },
+    {
+      "actual": "PIECE_BOOKED",
+      "check": "sessions.delivered_front_blocks_next",
+      "expected": "PIECE_BOOKED",
+      "ok": true
+    },
+    {
+      "actual": "OPEN",
+      "check": "sessions.after_return_next_ok",
+      "expected": "OPEN",
+      "ok": true
+    },
+    {
+      "actual": true,
+      "check": "switch.compatible_continues",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": "FOCUS_UNREACHABLE",
+      "check": "switch.unfocusable_refused",
+      "expected": "FOCUS_UNREACHABLE",
+      "ok": true
+    },
+    {
+      "actual": "CANCELLED",
+      "check": "switch.must_cancel",
+      "expected": "CANCELLED",
+      "ok": true
+    },
+    {
+      "actual": "identical",
+      "check": "reopen.preserves_optics",
+      "expected": "identical",
+      "ok": true
+    }
+  ],
+  "database": "/workspace/data/optics.db",
+  "plan": {
+    "note": "Replayable optics handover transcript (focal 10, path 6, travel 3..4).",
+    "steps": [
+      {
+        "coupons": [],
+        "op": "publish_snapshot",
+        "products": [
+          {
+            "price": 100,
+            "sku": "E-A"
+          },
+          {
+            "price": 100,
+            "sku": "AD-1"
+          }
+        ],
+        "snapshot_id": "snap-S1"
+      },
+      {
+        "basket": [
+          {
+            "price": 100,
+            "sku": "E-A",
+            "unit_id": "u-E-A"
+          },
+          {
+            "price": 100,
+            "sku": "AD-1",
+            "unit_id": "u-AD-1"
+          }
+        ],
+        "coupons": [],
+        "op": "quote",
+        "request_id": "q-S1",
+        "snapshot_id": "snap-S1"
+      },
+      {
+        "op": "register_sale",
+        "quote_request_id": "q-S1",
+        "sale_id": "S1"
+      },
+      {
+        "op": "add_telescope",
+        "out_iface": "SCT",
+        "telescope_id": "T-A",
+        "travel_hi": 4,
+        "travel_lo": 3
+      },
+      {
+        "batch_id": "B1",
+        "cards": [],
+        "op": "add_batch",
+        "scale_hi": 0,
+        "scale_lo": 0
+      },
+      {
+        "batch_id": "B1",
+        "focal_position": 10,
+        "in_iface": "SC",
+        "kind": "eyepiece",
+        "measured_hi": 5,
+        "measured_lo": 5,
+        "model": "E-A",
+        "op": "register_piece",
+        "piece_id": "EP-A",
+        "sale_id": "S1",
+        "unit_id": "u-E-A"
+      },
+      {
+        "in_iface": "SCT",
+        "kind": "adapter",
+        "model": "AD-1",
+        "nominal_path": 1,
+        "op": "register_piece",
+        "out_iface": "SC",
+        "piece_id": "AD-1",
+        "sale_id": "S1",
+        "unit_id": "u-AD-1"
+      },
+      {
+        "adapter_ids": [
+          "AD-1"
+        ],
+        "eyepiece_id": "EP-A",
+        "group_id": "GA1",
+        "op": "lock_group",
+        "telescope_id": "T-A"
+      },
+      {
+        "group_id": "GA1",
+        "observe_wheel": 4,
+        "op": "verify_group",
+        "technician": "tech-A"
+      },
+      {
+        "ends_at": 100,
+        "op": "add_session",
+        "seq": 1,
+        "session_id": "SES1",
+        "starts_at": 0
+      },
+      {
+        "group_id": "GA1",
+        "op": "place_order",
+        "order_id": "ORDER-1",
+        "sale_id": "S1",
+        "session_id": "SES1",
+        "slot_hi": 2,
+        "slot_lo": 1
+      },
+      {
+        "op": "deliver_order",
+        "order_id": "ORDER-1"
+      }
+    ]
+  },
+  "scenarios": {
+    "after_reopen": {
+      "batches": [
+        {
+          "batch_id": "B1",
+          "bias_hi": 0,
+          "bias_lo": 0,
+          "cards": [],
+          "scale_hi": 0,
+          "scale_lo": 0
+        },
+        {
+          "batch_id": "B2",
+          "bias_hi": 2,
+          "bias_lo": 2,
+          "cards": [],
+          "scale_hi": 2,
+          "scale_lo": 2
+        }
+      ],
+      "bookings": [
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1",
+          "piece_id": "AD-1",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1b",
+          "piece_id": "AD-1",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 1,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-3",
+          "piece_id": "AD-1",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-B"
+        },
+        {
+          "active": 0,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-5",
+          "piece_id": "AD-2",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1",
+          "piece_id": "EP-A",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1b",
+          "piece_id": "EP-A",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 1,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-3",
+          "piece_id": "EP-A",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-B"
+        },
+        {
+          "active": 0,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-5",
+          "piece_id": "EP-B",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-A"
+        }
+      ],
+      "orders": [
+        {
+          "delivery": {
+            "delivery_id": "delivery-ORDER-1",
+            "focus_hi": 4,
+            "focus_lo": 4,
+            "group_id": "GA1",
+            "order_id": "ORDER-1",
+            "pieces": [
+              "EP-A",
+              "AD-1"
+            ],
+            "sale_id": "S1",
+            "session_id": "SES1",
+            "slot_hi": 2,
+            "slot_lo": 1,
+            "telescope_id": "T-A",
+            "travel_hi": 4,
+            "travel_lo": 3
+          },
+          "group_id": "GA1",
+          "order_id": "ORDER-1",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES1",
+          "slot_hi": 2,
+          "slot_lo": 1,
+          "status": "DELIVERED",
+          "telescope_id": "T-A"
+        },
+        {
+          "delivery": {
+            "delivery_id": "delivery-ORDER-1b",
+            "focus_hi": 4,
+            "focus_lo": 4,
+            "group_id": "GA1b",
+            "order_id": "ORDER-1b",
+            "pieces": [
+              "EP-A",
+              "AD-1"
+            ],
+            "sale_id": "S1",
+            "session_id": "SES1",
+            "slot_hi": 2,
+            "slot_lo": 1,
+            "telescope_id": "T-A",
+            "travel_hi": 4,
+            "travel_lo": 3
+          },
+          "group_id": "GA1b",
+          "order_id": "ORDER-1b",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES1",
+          "slot_hi": 2,
+          "slot_lo": 1,
+          "status": "DELIVERED",
+          "telescope_id": "T-A"
+        },
+        {
+          "delivery": null,
+          "group_id": "GA1b",
+          "order_id": "ORDER-3",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES3",
+          "slot_hi": 302,
+          "slot_lo": 301,
+          "status": "OPEN",
+          "telescope_id": "T-B"
+        },
+        {
+          "delivery": null,
+          "group_id": "GB1",
+          "order_id": "ORDER-5",
+          "pieces": [
+            {
+              "piece_id": "EP-B",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-2",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S2",
+          "session_id": "SES3",
+          "slot_hi": 306,
+          "slot_lo": 305,
+          "status": "CANCELLED",
+          "telescope_id": "T-A"
+        }
+      ],
+      "pieces": [
+        {
+          "batch_id": "B1",
+          "focal_position": 10,
+          "group_id": "GA1b",
+          "in_iface": "SC",
+          "kind": "eyepiece",
+          "lend_return_deadline": 140,
+          "measured_hi": 5,
+          "measured_lo": 5,
+          "model": "E-A",
+          "nominal_path": null,
+          "out_iface": null,
+          "piece_id": "EP-A",
+          "repair_deadline": 120,
+          "return_deadline": 100,
+          "sale_id": "S1",
+          "status": "IN_STOCK",
+          "unit_id": "u-E-A"
+        },
+        {
+          "batch_id": "B2",
+          "focal_position": 10,
+          "group_id": "GB1",
+          "in_iface": "SC",
+          "kind": "eyepiece",
+          "lend_return_deadline": null,
+          "measured_hi": 3,
+          "measured_lo": 3,
+          "model": "E-B",
+          "nominal_path": null,
+          "out_iface": null,
+          "piece_id": "EP-B",
+          "repair_deadline": null,
+          "return_deadline": null,
+          "sale_id": "S2",
+          "status": "IN_STOCK",
+          "unit_id": "u-E-B"
+        },
+        {
+          "batch_id": null,
+          "focal_position": null,
+          "group_id": "GA1b",
+          "in_iface": "SCT",
+          "kind": "adapter",
+          "lend_return_deadline": null,
+          "measured_hi": null,
+          "measured_lo": null,
+          "model": "AD-1",
+          "nominal_path": 1,
+          "out_iface": "SC",
+          "piece_id": "AD-1",
+          "repair_deadline": null,
+          "return_deadline": null,
+          "sale_id": "S1",
+          "status": "IN_STOCK",
+          "unit_id": "u-AD-1"
+        }
+      ]
+    },
+    "before_reopen": {
+      "batches": [
+        {
+          "batch_id": "B1",
+          "bias_hi": 0,
+          "bias_lo": 0,
+          "cards": [],
+          "scale_hi": 0,
+          "scale_lo": 0
+        },
+        {
+          "batch_id": "B2",
+          "bias_hi": 2,
+          "bias_lo": 2,
+          "cards": [],
+          "scale_hi": 2,
+          "scale_lo": 2
+        }
+      ],
+      "bookings": [
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1",
+          "piece_id": "AD-1",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1b",
+          "piece_id": "AD-1",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 1,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-3",
+          "piece_id": "AD-1",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-B"
+        },
+        {
+          "active": 0,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-5",
+          "piece_id": "AD-2",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1",
+          "piece_id": "EP-A",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 0,
+          "delivered": 1,
+          "ends_at": 100,
+          "order_id": "ORDER-1b",
+          "piece_id": "EP-A",
+          "session_id": "SES1",
+          "starts_at": 0,
+          "telescope_id": "T-A"
+        },
+        {
+          "active": 1,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-3",
+          "piece_id": "EP-A",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-B"
+        },
+        {
+          "active": 0,
+          "delivered": 0,
+          "ends_at": 400,
+          "order_id": "ORDER-5",
+          "piece_id": "EP-B",
+          "session_id": "SES3",
+          "starts_at": 300,
+          "telescope_id": "T-A"
+        }
+      ],
+      "orders": [
+        {
+          "delivery": {
+            "delivery_id": "delivery-ORDER-1",
+            "focus_hi": 4,
+            "focus_lo": 4,
+            "group_id": "GA1",
+            "order_id": "ORDER-1",
+            "pieces": [
+              "EP-A",
+              "AD-1"
+            ],
+            "sale_id": "S1",
+            "session_id": "SES1",
+            "slot_hi": 2,
+            "slot_lo": 1,
+            "telescope_id": "T-A",
+            "travel_hi": 4,
+            "travel_lo": 3
+          },
+          "group_id": "GA1",
+          "order_id": "ORDER-1",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES1",
+          "slot_hi": 2,
+          "slot_lo": 1,
+          "status": "DELIVERED",
+          "telescope_id": "T-A"
+        },
+        {
+          "delivery": {
+            "delivery_id": "delivery-ORDER-1b",
+            "focus_hi": 4,
+            "focus_lo": 4,
+            "group_id": "GA1b",
+            "order_id": "ORDER-1b",
+            "pieces": [
+              "EP-A",
+              "AD-1"
+            ],
+            "sale_id": "S1",
+            "session_id": "SES1",
+            "slot_hi": 2,
+            "slot_lo": 1,
+            "telescope_id": "T-A",
+            "travel_hi": 4,
+            "travel_lo": 3
+          },
+          "group_id": "GA1b",
+          "order_id": "ORDER-1b",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES1",
+          "slot_hi": 2,
+          "slot_lo": 1,
+          "status": "DELIVERED",
+          "telescope_id": "T-A"
+        },
+        {
+          "delivery": null,
+          "group_id": "GA1b",
+          "order_id": "ORDER-3",
+          "pieces": [
+            {
+              "piece_id": "EP-A",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-1",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S1",
+          "session_id": "SES3",
+          "slot_hi": 302,
+          "slot_lo": 301,
+          "status": "OPEN",
+          "telescope_id": "T-B"
+        },
+        {
+          "delivery": null,
+          "group_id": "GB1",
+          "order_id": "ORDER-5",
+          "pieces": [
+            {
+              "piece_id": "EP-B",
+              "role": "eyepiece"
+            },
+            {
+              "piece_id": "AD-2",
+              "role": "adapter"
+            }
+          ],
+          "sale_id": "S2",
+          "session_id": "SES3",
+          "slot_hi": 306,
+          "slot_lo": 305,
+          "status": "CANCELLED",
+          "telescope_id": "T-A"
+        }
+      ],
+      "pieces": [
+        {
+          "batch_id": "B1",
+          "focal_position": 10,
+          "group_id": "GA1b",
+          "in_iface": "SC",
+          "kind": "eyepiece",
+          "lend_return_deadline": 140,
+          "measured_hi": 5,
+          "measured_lo": 5,
+          "model": "E-A",
+          "nominal_path": null,
+          "out_iface": null,
+          "piece_id": "EP-A",
+          "repair_deadline": 120,
+          "return_deadline": 100,
+          "sale_id": "S1",
+          "status": "IN_STOCK",
+          "unit_id": "u-E-A"
+        },
+        {
+          "batch_id": "B2",
+          "focal_position": 10,
+          "group_id": "GB1",
+          "in_iface": "SC",
+          "kind": "eyepiece",
+          "lend_return_deadline": null,
+          "measured_hi": 3,
+          "measured_lo": 3,
+          "model": "E-B",
+          "nominal_path": null,
+          "out_iface": null,
+          "piece_id": "EP-B",
+          "repair_deadline": null,
+          "return_deadline": null,
+          "sale_id": "S2",
+          "status": "IN_STOCK",
+          "unit_id": "u-E-B"
+        },
+        {
+          "batch_id": null,
+          "focal_position": null,
+          "group_id": "GA1b",
+          "in_iface": "SCT",
+          "kind": "adapter",
+          "lend_return_deadline": null,
+          "measured_hi": null,
+          "measured_lo": null,
+          "model": "AD-1",
+          "nominal_path": 1,
+          "out_iface": "SC",
+          "piece_id": "AD-1",
+          "repair_deadline": null,
+          "return_deadline": null,
+          "sale_id": "S1",
+          "status": "IN_STOCK",
+          "unit_id": "u-AD-1"
+        }
+      ]
+    },
+    "changed_evidence": {
+      "assess": {
+        "adapter_ids": [
+          "AD-1"
+        ],
+        "deliverable": false,
+        "eyepiece_id": "EP-A",
+        "needed_travel": 5,
+        "net_hi": 5,
+        "net_lo": 5,
+        "telescope_id": "T-A",
+        "total_hi": 5,
+        "total_lo": 5,
+        "travel_hi": 4,
+        "travel_lo": 3
+      },
+      "relock_error": "FOCUS_UNREACHABLE"
+    },
+    "held_forward": {
+      "after_return": {
+        "delivery": null,
+        "group_id": "GA1b",
+        "order_id": "ORDER-3",
+        "pieces": [
+          {
+            "piece_id": "EP-A",
+            "role": "eyepiece"
+          },
+          {
+            "piece_id": "AD-1",
+            "role": "adapter"
+          }
+        ],
+        "sale_id": "S1",
+        "session_id": "SES3",
+        "slot_hi": 302,
+        "slot_lo": 301,
+        "status": "OPEN",
+        "telescope_id": "T-A"
+      },
+      "next_session_error": "PIECE_BOOKED"
+    },
+    "impersonation_error": "PIECE_IMPERSONATION",
+    "intake": {
+      "EP-A": {
+        "batch_id": "B1",
+        "focal_position": 10,
+        "group_id": null,
+        "in_iface": "SC",
+        "kind": "eyepiece",
+        "lend_return_deadline": 140,
+        "measured_hi": 5,
+        "measured_lo": 5,
+        "model": "E-A",
+        "nominal_path": null,
+        "out_iface": null,
+        "piece_id": "EP-A",
+        "repair_deadline": 120,
+        "return_deadline": 100,
+        "sale_id": "S1",
+        "status": "IN_STOCK",
+        "unit_id": "u-E-A"
+      },
+      "EP-A_path": [
+        5,
+        5
+      ],
+      "EP-B": {
+        "batch_id": "B2",
+        "focal_position": 10,
+        "group_id": null,
+        "in_iface": "SC",
+        "kind": "eyepiece",
+        "lend_return_deadline": null,
+        "measured_hi": 3,
+        "measured_lo": 3,
+        "model": "E-B",
+        "nominal_path": null,
+        "out_iface": null,
+        "piece_id": "EP-B",
+        "repair_deadline": null,
+        "return_deadline": null,
+        "sale_id": "S2",
+        "status": "IN_STOCK",
+        "unit_id": "u-E-B"
+      },
+      "EP-B_path": [
+        5,
+        5
+      ]
+    },
+    "positive": {
+      "delivery": {
+        "delivery_id": "delivery-ORDER-1",
+        "focus_hi": 4,
+        "focus_lo": 4,
+        "group_id": "GA1",
+        "order_id": "ORDER-1",
+        "pieces": [
+          "EP-A",
+          "AD-1"
+        ],
+        "sale_id": "S1",
+        "session_id": "SES1",
+        "slot_hi": 2,
+        "slot_lo": 1,
+        "telescope_id": "T-A",
+        "travel_hi": 4,
+        "travel_lo": 3
+      },
+      "group": {
+        "adapter_ids": [
+          "AD-1"
+        ],
+        "eyepiece_id": "EP-A",
+        "group_id": "GA1",
+        "net_hi": 4,
+        "net_lo": 4,
+        "piece_ids": [
+          "EP-A",
+          "AD-1"
+        ],
+        "sealed": true,
+        "telescope_id": "T-A",
+        "total_hi": 6,
+        "total_lo": 6,
+        "travel_hi": 4,
+        "travel_lo": 3,
+        "verified": false,
+        "verify": {}
+      },
+      "order": {
+        "delivery": null,
+        "group_id": "GA1",
+        "order_id": "ORDER-1",
+        "pieces": [
+          {
+            "piece_id": "EP-A",
+            "role": "eyepiece"
+          },
+          {
+            "piece_id": "AD-1",
+            "role": "adapter"
+          }
+        ],
+        "sale_id": "S1",
+        "session_id": "SES1",
+        "slot_hi": 2,
+        "slot_lo": 1,
+        "status": "OPEN",
+        "telescope_id": "T-A"
+      },
+      "overlap_error": "PIECE_BOOKED"
+    },
+    "restored_group": {
+      "adapter_ids": [
+        "AD-1"
+      ],
+      "eyepiece_id": "EP-A",
+      "group_id": "GA1b",
+      "net_hi": 4,
+      "net_lo": 4,
+      "piece_ids": [
+        "EP-A",
+        "AD-1"
+      ],
+      "sealed": true,
+      "telescope_id": "T-A",
+      "total_hi": 6,
+      "total_lo": 6,
+      "travel_hi": 4,
+      "travel_lo": 3,
+      "verified": false,
+      "verify": {}
+    },
+    "switch": {
+      "cancelled": {
+        "cancel_reason": "no compatible telescope on site",
+        "delivery": null,
+        "group_id": "GB1",
+        "order_id": "ORDER-5",
+        "pieces": [
+          {
+            "piece_id": "EP-B",
+            "role": "eyepiece"
+          },
+          {
+            "piece_id": "AD-2",
+            "role": "adapter"
+          }
+        ],
+        "sale_id": "S2",
+        "session_id": "SES3",
+        "slot_hi": 306,
+        "slot_lo": 305,
+        "status": "CANCELLED",
+        "telescope_id": "T-A"
+      },
+      "continued": {
+        "continued": true,
+        "delivery": null,
+        "group_id": "GA1b",
+        "order_id": "ORDER-3",
+        "pieces": [
+          {
+            "piece_id": "EP-A",
+            "role": "eyepiece"
+          },
+          {
+            "piece_id": "AD-1",
+            "role": "adapter"
+          }
+        ],
+        "sale_id": "S1",
+        "session_id": "SES3",
+        "slot_hi": 302,
+        "slot_lo": 301,
+        "status": "OPEN",
+        "switched_from": "T-A",
+        "telescope_id": "T-B"
+      },
+      "move_error": "FOCUS_UNREACHABLE"
+    },
+    "two_barrel": {
+      "batch_B1": {
+        "batch_id": "B1",
+        "bias_hi": 0,
+        "bias_lo": 0,
+        "cards": [],
+        "scale_hi": 0,
+        "scale_lo": 0
+      },
+      "batch_B2": {
+        "batch_id": "B2",
+        "bias_hi": 2,
+        "bias_lo": 2,
+        "cards": [],
+        "scale_hi": 2,
+        "scale_lo": 2
+      },
+      "correct_bias": {
+        "deliverable": true,
+        "net": 4
+      },
+      "naive_shared_bias": {
+        "deliverable": false,
+        "net": 6,
+        "path": 4
+      },
+      "probe": {
+        "adapter_ids": [
+          "AD-1"
+        ],
+        "eyepiece_id": "EP-B",
+        "group_id": "G-probe",
+        "net_hi": 4,
+        "net_lo": 4,
+        "piece_ids": [
+          "EP-B",
+          "AD-1"
+        ],
+        "sealed": true,
+        "telescope_id": "T-B",
+        "total_hi": 6,
+        "total_lo": 6,
+        "travel_hi": 4,
+        "travel_lo": 3,
+        "verified": false,
+        "verify": {}
+      },
+      "shared_adapter_error": "GROUP_SEALED"
+    }
+  },
+  "summary": {
+    "checks": 18,
+    "failed": 0,
+    "passed": 18
+  }
+}
