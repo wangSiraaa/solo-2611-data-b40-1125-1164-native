@@ -300,9 +300,147 @@
       "ok": true
     },
     {
+      "actual": 2,
+      "check": "troupe.pair.one_stretch_two_pairs",
+      "expected": 2,
+      "ok": true
+    },
+    {
+      "actual": 1,
+      "check": "troupe.pair.r2_cannot_stretch_one_pair",
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "actual": 1,
+      "check": "troupe.pair.occupancy_handoff_one_pair",
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "actual": [
+        {
+          "physical_id": "R2",
+          "reason": "occupied by another run"
+        }
+      ],
+      "check": "troupe.pair.occupancy_excludes_r2",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": 2,
+      "check": "troupe.pair.clearing_occupancy_does_not_change_width",
+      "expected": 2,
+      "ok": true,
+      "pair_count": 1
+    },
+    {
+      "actual": true,
+      "check": "troupe.width.irreversible",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": true,
+      "check": "troupe.width.occupancy_cannot_unstretch",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": 2,
+      "check": "troupe.delivery.two_pairs",
+      "expected": 2,
+      "ok": true
+    },
+    {
+      "actual": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "check": "troupe.delivery.laces_tied",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": 0,
+      "check": "troupe.binding.held_shoe_not_reallocated",
+      "expected": 0,
+      "ok": true
+    },
+    {
+      "actual": 1,
+      "check": "troupe.pad.prestretch_own_one_pair",
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "actual": [
+        "bing"
+      ],
+      "check": "troupe.pad.single_pad_used_once",
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "actual": "INVALID_RECEIPT",
+      "check": "troupe.pad.cannot_acquire_while_borrowed",
+      "expected": "INVALID_RECEIPT",
+      "ok": true
+    },
+    {
+      "actual": 1,
+      "check": "troupe.pad.return_then_acquire_enables_one_pair",
+      "expected": 1,
+      "ok": true
+    },
+    {
+      "actual": "INVALID_SHOP_MODE",
+      "check": "troupe.pad.prestretch_refuses_transfer",
+      "expected": "INVALID_SHOP_MODE",
+      "ok": true
+    },
+    {
+      "actual": {
+        "count": 1,
+        "width": 3
+      },
+      "check": "troupe.jia.width3_signed_and_returned_kept",
+      "expected": true,
+      "ok": true
+    },
+    {
+      "actual": {
+        "after": 0,
+        "before": 2,
+        "delivered": 2
+      },
+      "check": "troupe.aftersales.late_return_stops_new_issuance",
+      "expected": {
+        "after": 0,
+        "before": 2,
+        "delivered": 2
+      },
+      "ok": true
+    },
+    {
+      "actual": 2,
+      "check": "troupe.integrated.two_pairs_delivered",
+      "expected": 2,
+      "ok": true
+    },
+    {
       "actual": "identical",
       "check": "reopen_preserves_quote_sale_return_inventory",
       "expected": "identical",
+      "ok": true
+    },
+    {
+      "actual": true,
+      "check": "reopen_preserves_cabinet_widths_laces_bindings_pads",
+      "expected": true,
       "ok": true
     },
     {
@@ -502,6 +640,177 @@
         "op": "register_sale",
         "quote": "$q_added",
         "sale_id": "S1"
+      },
+      {
+        "mode": "PRESTRETCH",
+        "op": "set_shop_mode"
+      },
+      {
+        "coupons": [],
+        "op": "publish_snapshot",
+        "products": [
+          {
+            "price": 100,
+            "sku": "DANCE"
+          }
+        ],
+        "snapshot_id": "troupe-plan-snap"
+      },
+      {
+        "basket": [
+          {
+            "price": 100,
+            "sku": "DANCE",
+            "unit_id": "tLJ"
+          },
+          {
+            "price": 100,
+            "sku": "DANCE",
+            "unit_id": "tLY"
+          },
+          {
+            "price": 100,
+            "sku": "DANCE",
+            "unit_id": "tR1"
+          },
+          {
+            "price": 100,
+            "sku": "DANCE",
+            "unit_id": "tR2"
+          }
+        ],
+        "coupons": [],
+        "name": "tq",
+        "op": "quote",
+        "request_id": "troupe-plan-q",
+        "snapshot_id": "troupe-plan-snap"
+      },
+      {
+        "op": "register_sale",
+        "quote_request_id": "troupe-plan-q",
+        "sale_id": "troupe-plan-sale"
+      },
+      {
+        "length": 5,
+        "op": "recover_from_sale",
+        "physical_id": "tLJ",
+        "sale_id": "troupe-plan-sale",
+        "side": "L",
+        "stretch_to": 2,
+        "unit_id": "tLJ",
+        "width": 2
+      },
+      {
+        "length": 5,
+        "op": "recover_from_sale",
+        "physical_id": "tLY",
+        "sale_id": "troupe-plan-sale",
+        "side": "L",
+        "stretch_to": 2,
+        "unit_id": "tLY",
+        "width": 2
+      },
+      {
+        "length": 5,
+        "op": "recover_from_sale",
+        "physical_id": "tR1",
+        "sale_id": "troupe-plan-sale",
+        "side": "R",
+        "stretch_to": 2,
+        "unit_id": "tR1",
+        "width": 2
+      },
+      {
+        "length": 5,
+        "op": "recover_from_sale",
+        "physical_id": "tR2",
+        "sale_id": "troupe-plan-sale",
+        "side": "R",
+        "stretch_to": 3,
+        "unit_id": "tR2",
+        "width": 2
+      },
+      {
+        "dancer_id": "owner",
+        "op": "consign",
+        "physical_id": "tLJ",
+        "receipt_id": "c"
+      },
+      {
+        "dancer_id": "owner",
+        "op": "consign",
+        "physical_id": "tLY",
+        "receipt_id": "c"
+      },
+      {
+        "dancer_id": "owner",
+        "op": "consign",
+        "physical_id": "tR1",
+        "receipt_id": "c"
+      },
+      {
+        "dancer_id": "owner",
+        "op": "consign",
+        "physical_id": "tR2",
+        "receipt_id": "c"
+      },
+      {
+        "op": "publish_fitting_slip",
+        "physical_id": "tLJ",
+        "slip_id": "t-slip-tLJ"
+      },
+      {
+        "op": "publish_fitting_slip",
+        "physical_id": "tLY",
+        "slip_id": "t-slip-tLY"
+      },
+      {
+        "op": "publish_fitting_slip",
+        "physical_id": "tR1",
+        "slip_id": "t-slip-tR1"
+      },
+      {
+        "op": "publish_fitting_slip",
+        "physical_id": "tR2",
+        "slip_id": "t-slip-tR2"
+      },
+      {
+        "allocation_id": "troupe-plan-alloc",
+        "name": "talloc",
+        "needs": [
+          {
+            "dancer_id": "jia",
+            "left": {
+              "length": 5,
+              "width": 2
+            },
+            "right": {
+              "length": 5,
+              "width": 2
+            }
+          },
+          {
+            "dancer_id": "yi",
+            "left": {
+              "length": 5,
+              "width": 2
+            },
+            "right": {
+              "length": 5,
+              "width": 3
+            }
+          }
+        ],
+        "op": "allocate",
+        "stretch_budget": 1
+      },
+      {
+        "allocation_id": "troupe-plan-alloc",
+        "op": "confirm_delivery",
+        "run_until": "run-end"
+      },
+      {
+        "op": "cabinet_view"
       }
     ]
   },
@@ -614,8 +923,359 @@
           "snapshot_id": "case-added",
           "sum_paid": 120,
           "total": 120
+        },
+        {
+          "quote_id": "troupe-q-integrated",
+          "refundable_before_returns": 400,
+          "refunded_from_units": 0,
+          "remaining_refundable": [
+            "ILJ",
+            "ILY",
+            "IR1",
+            "IR2"
+          ],
+          "returned_units": [],
+          "sale_id": "troupe-sale-integrated",
+          "snapshot_id": "troupe-snap-integrated",
+          "sum_paid": 400,
+          "total": 400
         }
       ],
+      "cabinet": {
+        "bindings": [
+          {
+            "binding_id": "troupe-integrated:jia:L",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "jia",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:jia",
+            "physical_id": "ILJ",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:jia:R",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "jia",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:jia",
+            "physical_id": "IR1",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:yi:L",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "yi",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:yi",
+            "physical_id": "ILY",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:yi:R",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "yi",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:yi",
+            "physical_id": "IR2",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 3
+          }
+        ],
+        "measurements": [
+          {
+            "created_at": "2026-11-25T06:22:11.701795+00:00",
+            "physical_id": "ILJ",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.716261+00:00",
+            "physical_id": "ILY",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.732827+00:00",
+            "physical_id": "IR1",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.746982+00:00",
+            "physical_id": "IR2",
+            "stretch_to": 3,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "physical_id": "IR2",
+            "stretch_to": 3,
+            "width": 3
+          }
+        ],
+        "occupancies": [],
+        "pads": [],
+        "physicals": [
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:jia:L",
+                "dancer_id": "jia",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:jia",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-ILJ",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.707169+00:00",
+              "dancer_id": "owner",
+              "physical_id": "ILJ",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.707169+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "ILJ",
+            "sale_id": "troupe-sale-integrated",
+            "side": "L",
+            "stretch_to": 2,
+            "unit_id": "ILJ",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:yi:L",
+                "dancer_id": "yi",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:yi",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-ILY",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.721028+00:00",
+              "dancer_id": "owner",
+              "physical_id": "ILY",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.721028+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "ILY",
+            "sale_id": "troupe-sale-integrated",
+            "side": "L",
+            "stretch_to": 2,
+            "unit_id": "ILY",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:jia:R",
+                "dancer_id": "jia",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:jia",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-IR1",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.738372+00:00",
+              "dancer_id": "owner",
+              "physical_id": "IR1",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.738372+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "IR1",
+            "sale_id": "troupe-sale-integrated",
+            "side": "R",
+            "stretch_to": 2,
+            "unit_id": "IR1",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:yi:R",
+                "dancer_id": "yi",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:yi",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 3
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-IR2",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.751632+00:00",
+              "dancer_id": "owner",
+              "physical_id": "IR2",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.751632+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "IR2",
+            "sale_id": "troupe-sale-integrated",
+            "side": "R",
+            "stretch_to": 3,
+            "unit_id": "IR2",
+            "usable": true,
+            "width": 3
+          }
+        ],
+        "shop_mode": "PRESTRETCH",
+        "slips": [
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "ILJ",
+            "released": true,
+            "side": "L",
+            "slip_id": "troupe-slip-ILJ",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "ILY",
+            "released": true,
+            "side": "L",
+            "slip_id": "troupe-slip-ILY",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "IR1",
+            "released": true,
+            "side": "R",
+            "slip_id": "troupe-slip-IR1",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "IR2",
+            "released": true,
+            "side": "R",
+            "slip_id": "troupe-slip-IR2",
+            "stretch_to": 3,
+            "width": 2
+          }
+        ]
+      },
       "get_quote_case": {
         "allocation": [
           {
@@ -961,8 +1621,359 @@
           "snapshot_id": "case-added",
           "sum_paid": 120,
           "total": 120
+        },
+        {
+          "quote_id": "troupe-q-integrated",
+          "refundable_before_returns": 400,
+          "refunded_from_units": 0,
+          "remaining_refundable": [
+            "ILJ",
+            "ILY",
+            "IR1",
+            "IR2"
+          ],
+          "returned_units": [],
+          "sale_id": "troupe-sale-integrated",
+          "snapshot_id": "troupe-snap-integrated",
+          "sum_paid": 400,
+          "total": 400
         }
       ],
+      "cabinet": {
+        "bindings": [
+          {
+            "binding_id": "troupe-integrated:jia:L",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "jia",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:jia",
+            "physical_id": "ILJ",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:jia:R",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "jia",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:jia",
+            "physical_id": "IR1",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:yi:L",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "yi",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:yi",
+            "physical_id": "ILY",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 2
+          },
+          {
+            "binding_id": "troupe-integrated:yi:R",
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "dancer_id": "yi",
+            "pad_id": null,
+            "pair_id": "troupe-integrated:yi",
+            "physical_id": "IR2",
+            "released": 0,
+            "run_id": "integrated-run",
+            "run_until": "integrated-run-end",
+            "tied_laces": 1,
+            "updated_at": "2026-11-25T06:22:11.769457+00:00",
+            "width_delivered": 3
+          }
+        ],
+        "measurements": [
+          {
+            "created_at": "2026-11-25T06:22:11.701795+00:00",
+            "physical_id": "ILJ",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.716261+00:00",
+            "physical_id": "ILY",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.732827+00:00",
+            "physical_id": "IR1",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.746982+00:00",
+            "physical_id": "IR2",
+            "stretch_to": 3,
+            "width": 2
+          },
+          {
+            "created_at": "2026-11-25T06:22:11.769457+00:00",
+            "physical_id": "IR2",
+            "stretch_to": 3,
+            "width": 3
+          }
+        ],
+        "occupancies": [],
+        "pads": [],
+        "physicals": [
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:jia:L",
+                "dancer_id": "jia",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:jia",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-ILJ",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.707169+00:00",
+              "dancer_id": "owner",
+              "physical_id": "ILJ",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.707169+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "ILJ",
+            "sale_id": "troupe-sale-integrated",
+            "side": "L",
+            "stretch_to": 2,
+            "unit_id": "ILJ",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:yi:L",
+                "dancer_id": "yi",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:yi",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-ILY",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.721028+00:00",
+              "dancer_id": "owner",
+              "physical_id": "ILY",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.721028+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "ILY",
+            "sale_id": "troupe-sale-integrated",
+            "side": "L",
+            "stretch_to": 2,
+            "unit_id": "ILY",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:jia:R",
+                "dancer_id": "jia",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:jia",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 2
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-IR1",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.738372+00:00",
+              "dancer_id": "owner",
+              "physical_id": "IR1",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.738372+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "IR1",
+            "sale_id": "troupe-sale-integrated",
+            "side": "R",
+            "stretch_to": 2,
+            "unit_id": "IR1",
+            "usable": true,
+            "width": 2
+          },
+          {
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:yi:R",
+                "dancer_id": "yi",
+                "pad_id": null,
+                "pair_id": "troupe-integrated:yi",
+                "released": 0,
+                "run_id": "integrated-run",
+                "run_until": "integrated-run-end",
+                "tied_laces": 1,
+                "width_delivered": 3
+              }
+            ],
+            "consigned": true,
+            "consignment": {
+              "consent_receipt": "consent-IR2",
+              "consented": 1,
+              "created_at": "2026-11-25T06:22:11.751632+00:00",
+              "dancer_id": "owner",
+              "physical_id": "IR2",
+              "revoked": 0,
+              "updated_at": "2026-11-25T06:22:11.751632+00:00"
+            },
+            "directions": [
+              "WIDTH"
+            ],
+            "length": 5,
+            "occupancies": [],
+            "origin": "SALE",
+            "origin_ledger": {
+              "grade": null,
+              "paid": 100,
+              "return_request_id": null,
+              "returned": 0
+            },
+            "pads": [],
+            "paid": 100,
+            "physical_id": "IR2",
+            "sale_id": "troupe-sale-integrated",
+            "side": "R",
+            "stretch_to": 3,
+            "unit_id": "IR2",
+            "usable": true,
+            "width": 3
+          }
+        ],
+        "shop_mode": "PRESTRETCH",
+        "slips": [
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "ILJ",
+            "released": true,
+            "side": "L",
+            "slip_id": "troupe-slip-ILJ",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "ILY",
+            "released": true,
+            "side": "L",
+            "slip_id": "troupe-slip-ILY",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "IR1",
+            "released": true,
+            "side": "R",
+            "slip_id": "troupe-slip-IR1",
+            "stretch_to": 2,
+            "width": 2
+          },
+          {
+            "directions": [
+              "WIDTH"
+            ],
+            "eligible_feet": [],
+            "length": 5,
+            "physical_id": "IR2",
+            "released": true,
+            "side": "R",
+            "slip_id": "troupe-slip-IR2",
+            "stretch_to": 3,
+            "width": 2
+          }
+        ]
+      },
       "inventory": {
         "RESTOCK": {
           "A": 5,
@@ -2976,6 +3987,1088 @@
         ]
       }
     },
+    "troupe": {
+      "checks": [
+        {
+          "actual": 2,
+          "check": "troupe.pair.one_stretch_two_pairs",
+          "expected": 2,
+          "ok": true
+        },
+        {
+          "actual": 1,
+          "check": "troupe.pair.r2_cannot_stretch_one_pair",
+          "expected": 1,
+          "ok": true
+        },
+        {
+          "actual": 1,
+          "check": "troupe.pair.occupancy_handoff_one_pair",
+          "expected": 1,
+          "ok": true
+        },
+        {
+          "actual": [
+            {
+              "physical_id": "R2",
+              "reason": "occupied by another run"
+            }
+          ],
+          "check": "troupe.pair.occupancy_excludes_r2",
+          "expected": true,
+          "ok": true
+        },
+        {
+          "actual": 2,
+          "check": "troupe.pair.clearing_occupancy_does_not_change_width",
+          "expected": 2,
+          "ok": true,
+          "pair_count": 1
+        },
+        {
+          "actual": true,
+          "check": "troupe.width.irreversible",
+          "expected": true,
+          "ok": true
+        },
+        {
+          "actual": true,
+          "check": "troupe.width.occupancy_cannot_unstretch",
+          "expected": true,
+          "ok": true
+        },
+        {
+          "actual": 2,
+          "check": "troupe.delivery.two_pairs",
+          "expected": 2,
+          "ok": true
+        },
+        {
+          "actual": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "check": "troupe.delivery.laces_tied",
+          "expected": true,
+          "ok": true
+        },
+        {
+          "actual": 0,
+          "check": "troupe.binding.held_shoe_not_reallocated",
+          "expected": 0,
+          "ok": true
+        },
+        {
+          "actual": 1,
+          "check": "troupe.pad.prestretch_own_one_pair",
+          "expected": 1,
+          "ok": true
+        },
+        {
+          "actual": [
+            "bing"
+          ],
+          "check": "troupe.pad.single_pad_used_once",
+          "expected": 1,
+          "ok": true
+        },
+        {
+          "actual": "INVALID_RECEIPT",
+          "check": "troupe.pad.cannot_acquire_while_borrowed",
+          "expected": "INVALID_RECEIPT",
+          "ok": true
+        },
+        {
+          "actual": 1,
+          "check": "troupe.pad.return_then_acquire_enables_one_pair",
+          "expected": 1,
+          "ok": true
+        },
+        {
+          "actual": "INVALID_SHOP_MODE",
+          "check": "troupe.pad.prestretch_refuses_transfer",
+          "expected": "INVALID_SHOP_MODE",
+          "ok": true
+        },
+        {
+          "actual": {
+            "count": 1,
+            "width": 3
+          },
+          "check": "troupe.jia.width3_signed_and_returned_kept",
+          "expected": true,
+          "ok": true
+        },
+        {
+          "actual": {
+            "after": 0,
+            "before": 2,
+            "delivered": 2
+          },
+          "check": "troupe.aftersales.late_return_stops_new_issuance",
+          "expected": {
+            "after": 0,
+            "before": 2,
+            "delivered": 2
+          },
+          "ok": true
+        },
+        {
+          "actual": 2,
+          "check": "troupe.integrated.two_pairs_delivered",
+          "expected": 2,
+          "ok": true
+        }
+      ],
+      "scenarios": {
+        "final_cabinet": {
+          "bindings": [
+            {
+              "binding_id": "troupe-integrated:jia:L",
+              "created_at": "2026-11-25T06:22:11.769457+00:00",
+              "dancer_id": "jia",
+              "pad_id": null,
+              "pair_id": "troupe-integrated:jia",
+              "physical_id": "ILJ",
+              "released": 0,
+              "run_id": "integrated-run",
+              "run_until": "integrated-run-end",
+              "tied_laces": 1,
+              "updated_at": "2026-11-25T06:22:11.769457+00:00",
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-integrated:jia:R",
+              "created_at": "2026-11-25T06:22:11.769457+00:00",
+              "dancer_id": "jia",
+              "pad_id": null,
+              "pair_id": "troupe-integrated:jia",
+              "physical_id": "IR1",
+              "released": 0,
+              "run_id": "integrated-run",
+              "run_until": "integrated-run-end",
+              "tied_laces": 1,
+              "updated_at": "2026-11-25T06:22:11.769457+00:00",
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-integrated:yi:L",
+              "created_at": "2026-11-25T06:22:11.769457+00:00",
+              "dancer_id": "yi",
+              "pad_id": null,
+              "pair_id": "troupe-integrated:yi",
+              "physical_id": "ILY",
+              "released": 0,
+              "run_id": "integrated-run",
+              "run_until": "integrated-run-end",
+              "tied_laces": 1,
+              "updated_at": "2026-11-25T06:22:11.769457+00:00",
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-integrated:yi:R",
+              "created_at": "2026-11-25T06:22:11.769457+00:00",
+              "dancer_id": "yi",
+              "pad_id": null,
+              "pair_id": "troupe-integrated:yi",
+              "physical_id": "IR2",
+              "released": 0,
+              "run_id": "integrated-run",
+              "run_until": "integrated-run-end",
+              "tied_laces": 1,
+              "updated_at": "2026-11-25T06:22:11.769457+00:00",
+              "width_delivered": 3
+            }
+          ],
+          "measurements": [
+            {
+              "created_at": "2026-11-25T06:22:11.701795+00:00",
+              "physical_id": "ILJ",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "created_at": "2026-11-25T06:22:11.716261+00:00",
+              "physical_id": "ILY",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "created_at": "2026-11-25T06:22:11.732827+00:00",
+              "physical_id": "IR1",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "created_at": "2026-11-25T06:22:11.746982+00:00",
+              "physical_id": "IR2",
+              "stretch_to": 3,
+              "width": 2
+            },
+            {
+              "created_at": "2026-11-25T06:22:11.769457+00:00",
+              "physical_id": "IR2",
+              "stretch_to": 3,
+              "width": 3
+            }
+          ],
+          "occupancies": [],
+          "pads": [],
+          "physicals": [
+            {
+              "bindings": [
+                {
+                  "binding_id": "troupe-integrated:jia:L",
+                  "dancer_id": "jia",
+                  "pad_id": null,
+                  "pair_id": "troupe-integrated:jia",
+                  "released": 0,
+                  "run_id": "integrated-run",
+                  "run_until": "integrated-run-end",
+                  "tied_laces": 1,
+                  "width_delivered": 2
+                }
+              ],
+              "consigned": true,
+              "consignment": {
+                "consent_receipt": "consent-ILJ",
+                "consented": 1,
+                "created_at": "2026-11-25T06:22:11.707169+00:00",
+                "dancer_id": "owner",
+                "physical_id": "ILJ",
+                "revoked": 0,
+                "updated_at": "2026-11-25T06:22:11.707169+00:00"
+              },
+              "directions": [
+                "WIDTH"
+              ],
+              "length": 5,
+              "occupancies": [],
+              "origin": "SALE",
+              "origin_ledger": {
+                "grade": null,
+                "paid": 100,
+                "return_request_id": null,
+                "returned": 0
+              },
+              "pads": [],
+              "paid": 100,
+              "physical_id": "ILJ",
+              "sale_id": "troupe-sale-integrated",
+              "side": "L",
+              "stretch_to": 2,
+              "unit_id": "ILJ",
+              "usable": true,
+              "width": 2
+            },
+            {
+              "bindings": [
+                {
+                  "binding_id": "troupe-integrated:yi:L",
+                  "dancer_id": "yi",
+                  "pad_id": null,
+                  "pair_id": "troupe-integrated:yi",
+                  "released": 0,
+                  "run_id": "integrated-run",
+                  "run_until": "integrated-run-end",
+                  "tied_laces": 1,
+                  "width_delivered": 2
+                }
+              ],
+              "consigned": true,
+              "consignment": {
+                "consent_receipt": "consent-ILY",
+                "consented": 1,
+                "created_at": "2026-11-25T06:22:11.721028+00:00",
+                "dancer_id": "owner",
+                "physical_id": "ILY",
+                "revoked": 0,
+                "updated_at": "2026-11-25T06:22:11.721028+00:00"
+              },
+              "directions": [
+                "WIDTH"
+              ],
+              "length": 5,
+              "occupancies": [],
+              "origin": "SALE",
+              "origin_ledger": {
+                "grade": null,
+                "paid": 100,
+                "return_request_id": null,
+                "returned": 0
+              },
+              "pads": [],
+              "paid": 100,
+              "physical_id": "ILY",
+              "sale_id": "troupe-sale-integrated",
+              "side": "L",
+              "stretch_to": 2,
+              "unit_id": "ILY",
+              "usable": true,
+              "width": 2
+            },
+            {
+              "bindings": [
+                {
+                  "binding_id": "troupe-integrated:jia:R",
+                  "dancer_id": "jia",
+                  "pad_id": null,
+                  "pair_id": "troupe-integrated:jia",
+                  "released": 0,
+                  "run_id": "integrated-run",
+                  "run_until": "integrated-run-end",
+                  "tied_laces": 1,
+                  "width_delivered": 2
+                }
+              ],
+              "consigned": true,
+              "consignment": {
+                "consent_receipt": "consent-IR1",
+                "consented": 1,
+                "created_at": "2026-11-25T06:22:11.738372+00:00",
+                "dancer_id": "owner",
+                "physical_id": "IR1",
+                "revoked": 0,
+                "updated_at": "2026-11-25T06:22:11.738372+00:00"
+              },
+              "directions": [
+                "WIDTH"
+              ],
+              "length": 5,
+              "occupancies": [],
+              "origin": "SALE",
+              "origin_ledger": {
+                "grade": null,
+                "paid": 100,
+                "return_request_id": null,
+                "returned": 0
+              },
+              "pads": [],
+              "paid": 100,
+              "physical_id": "IR1",
+              "sale_id": "troupe-sale-integrated",
+              "side": "R",
+              "stretch_to": 2,
+              "unit_id": "IR1",
+              "usable": true,
+              "width": 2
+            },
+            {
+              "bindings": [
+                {
+                  "binding_id": "troupe-integrated:yi:R",
+                  "dancer_id": "yi",
+                  "pad_id": null,
+                  "pair_id": "troupe-integrated:yi",
+                  "released": 0,
+                  "run_id": "integrated-run",
+                  "run_until": "integrated-run-end",
+                  "tied_laces": 1,
+                  "width_delivered": 3
+                }
+              ],
+              "consigned": true,
+              "consignment": {
+                "consent_receipt": "consent-IR2",
+                "consented": 1,
+                "created_at": "2026-11-25T06:22:11.751632+00:00",
+                "dancer_id": "owner",
+                "physical_id": "IR2",
+                "revoked": 0,
+                "updated_at": "2026-11-25T06:22:11.751632+00:00"
+              },
+              "directions": [
+                "WIDTH"
+              ],
+              "length": 5,
+              "occupancies": [],
+              "origin": "SALE",
+              "origin_ledger": {
+                "grade": null,
+                "paid": 100,
+                "return_request_id": null,
+                "returned": 0
+              },
+              "pads": [],
+              "paid": 100,
+              "physical_id": "IR2",
+              "sale_id": "troupe-sale-integrated",
+              "side": "R",
+              "stretch_to": 3,
+              "unit_id": "IR2",
+              "usable": true,
+              "width": 3
+            }
+          ],
+          "shop_mode": "PRESTRETCH",
+          "slips": [
+            {
+              "directions": [
+                "WIDTH"
+              ],
+              "eligible_feet": [],
+              "length": 5,
+              "physical_id": "ILJ",
+              "released": true,
+              "side": "L",
+              "slip_id": "troupe-slip-ILJ",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "directions": [
+                "WIDTH"
+              ],
+              "eligible_feet": [],
+              "length": 5,
+              "physical_id": "ILY",
+              "released": true,
+              "side": "L",
+              "slip_id": "troupe-slip-ILY",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "directions": [
+                "WIDTH"
+              ],
+              "eligible_feet": [],
+              "length": 5,
+              "physical_id": "IR1",
+              "released": true,
+              "side": "R",
+              "slip_id": "troupe-slip-IR1",
+              "stretch_to": 2,
+              "width": 2
+            },
+            {
+              "directions": [
+                "WIDTH"
+              ],
+              "eligible_feet": [],
+              "length": 5,
+              "physical_id": "IR2",
+              "released": true,
+              "side": "R",
+              "slip_id": "troupe-slip-IR2",
+              "stretch_to": 3,
+              "width": 2
+            }
+          ]
+        },
+        "integrated_persistence": {
+          "allocation": {
+            "allocation_id": "troupe-integrated",
+            "confirmed": false,
+            "count": 2,
+            "excluded": [],
+            "ok": true,
+            "pads_used": 0,
+            "pairs": [
+              {
+                "L": {
+                  "pad": false,
+                  "physical_id": "ILJ",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "R": {
+                  "pad": false,
+                  "physical_id": "IR1",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "dancer_id": "jia"
+              },
+              {
+                "L": {
+                  "pad": false,
+                  "physical_id": "ILY",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "R": {
+                  "pad": false,
+                  "physical_id": "IR2",
+                  "raw_width": 3,
+                  "stretch": true
+                },
+                "dancer_id": "yi"
+              }
+            ],
+            "repeated": false,
+            "run": "integrated-run",
+            "shop_mode": "PRESTRETCH",
+            "stretch_used": 1
+          },
+          "delivery": {
+            "allocation_id": "troupe-integrated",
+            "bindings": [
+              {
+                "binding_id": "troupe-integrated:jia:L",
+                "dancer_id": "jia",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "ILJ",
+                "run_until": "integrated-run-end",
+                "side": "L",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-integrated:jia:R",
+                "dancer_id": "jia",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "IR1",
+                "run_until": "integrated-run-end",
+                "side": "R",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-integrated:yi:L",
+                "dancer_id": "yi",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "ILY",
+                "run_until": "integrated-run-end",
+                "side": "L",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-integrated:yi:R",
+                "dancer_id": "yi",
+                "effective_width": 3,
+                "pad_id": null,
+                "physical_id": "IR2",
+                "run_until": "integrated-run-end",
+                "side": "R",
+                "tied_laces": true,
+                "width_delivered": 3
+              }
+            ],
+            "ok": true,
+            "pairs_delivered": 2,
+            "shop_mode": "PRESTRETCH"
+          }
+        },
+        "jia_first_show": {
+          "allocation": {
+            "allocation_id": "troupe-jia-r",
+            "confirmed": false,
+            "count": 1,
+            "excluded": [],
+            "ok": true,
+            "pads_used": 0,
+            "pairs": [
+              {
+                "R": {
+                  "pad": false,
+                  "physical_id": "JIA-R",
+                  "raw_width": 3,
+                  "stretch": false
+                },
+                "dancer_id": "jia"
+              }
+            ],
+            "repeated": false,
+            "run": "show-1",
+            "shop_mode": "PRESTRETCH",
+            "stretch_used": 0
+          },
+          "delivery": {
+            "allocation_id": "troupe-jia-r",
+            "bindings": [
+              {
+                "binding_id": "troupe-jia-r:jia:R",
+                "dancer_id": "jia",
+                "effective_width": 3,
+                "pad_id": null,
+                "physical_id": "JIA-R",
+                "run_until": "show-1-end",
+                "side": "R",
+                "tied_laces": true,
+                "width_delivered": 3
+              }
+            ],
+            "ok": true,
+            "pairs_delivered": 1,
+            "shop_mode": "PRESTRETCH"
+          },
+          "return": {
+            "binding_id": "troupe-jia-r:jia:R",
+            "dancer_id": "jia",
+            "late": false,
+            "ok": true,
+            "on_time": true,
+            "physical_id": "JIA-R",
+            "receipt_id": "JIA-RETURN",
+            "released_at": "2026-11-25T06:22:11.678365+00:00",
+            "repeated": false,
+            "shop_mode": "PRESTRETCH"
+          }
+        },
+        "late_after_sales_return": {
+          "after": {
+            "allocation_id": "troupe-late-after",
+            "confirmed": false,
+            "count": 0,
+            "excluded": [
+              {
+                "physical_id": "LZ1",
+                "reason": "currently delivered/held"
+              },
+              {
+                "physical_id": "LZ2",
+                "reason": "currently delivered/held"
+              },
+              {
+                "physical_id": "RZ1",
+                "reason": "currently delivered/held"
+              },
+              {
+                "physical_id": "RZ2",
+                "reason": "origin unit returned"
+              }
+            ],
+            "ok": true,
+            "pads_used": 0,
+            "pairs": [],
+            "repeated": false,
+            "run": "late-run-2",
+            "shop_mode": "PRESTRETCH",
+            "stretch_used": 0
+          },
+          "before": {
+            "allocation_id": "troupe-late-before",
+            "confirmed": false,
+            "count": 2,
+            "excluded": [],
+            "ok": true,
+            "pads_used": 0,
+            "pairs": [
+              {
+                "L": {
+                  "pad": false,
+                  "physical_id": "LZ1",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "R": {
+                  "pad": false,
+                  "physical_id": "RZ1",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "dancer_id": "z1"
+              },
+              {
+                "L": {
+                  "pad": false,
+                  "physical_id": "LZ2",
+                  "raw_width": 2,
+                  "stretch": false
+                },
+                "R": {
+                  "pad": false,
+                  "physical_id": "RZ2",
+                  "raw_width": 3,
+                  "stretch": true
+                },
+                "dancer_id": "z2"
+              }
+            ],
+            "repeated": false,
+            "run": "late-run",
+            "shop_mode": "PRESTRETCH",
+            "stretch_used": 1
+          },
+          "confirmation": {
+            "affected_physicals": [
+              {
+                "physical_id": "RZ2",
+                "unit_id": "RZ2"
+              }
+            ],
+            "confirmation_id": "troupe-late-conf",
+            "ok": true,
+            "repeated": false,
+            "return_request_id": "troupe-late-return",
+            "returned_units": [
+              "RZ2"
+            ],
+            "sale_id": "troupe-sale-late"
+          },
+          "delivery": {
+            "allocation_id": "troupe-late-before",
+            "bindings": [
+              {
+                "binding_id": "troupe-late-before:z1:L",
+                "dancer_id": "z1",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "LZ1",
+                "run_until": "late-run-end",
+                "side": "L",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-late-before:z1:R",
+                "dancer_id": "z1",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "RZ1",
+                "run_until": "late-run-end",
+                "side": "R",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-late-before:z2:L",
+                "dancer_id": "z2",
+                "effective_width": 2,
+                "pad_id": null,
+                "physical_id": "LZ2",
+                "run_until": "late-run-end",
+                "side": "L",
+                "tied_laces": true,
+                "width_delivered": 2
+              },
+              {
+                "binding_id": "troupe-late-before:z2:R",
+                "dancer_id": "z2",
+                "effective_width": 3,
+                "pad_id": null,
+                "physical_id": "RZ2",
+                "run_until": "late-run-end",
+                "side": "R",
+                "tied_laces": true,
+                "width_delivered": 3
+              }
+            ],
+            "ok": true,
+            "pairs_delivered": 2,
+            "shop_mode": "PRESTRETCH"
+          },
+          "ledger_paid": {
+            "LZ1": 100,
+            "LZ2": 100,
+            "RZ1": 100,
+            "RZ2": 100
+          },
+          "ledger_return": {
+            "cumulative_refund": 100,
+            "inventory": {
+              "RESTOCK": {
+                "DANCE": 1
+              },
+              "SCRAP": {}
+            },
+            "items": [
+              {
+                "grade": "RESTOCK",
+                "original_paid": 100,
+                "refund": 100,
+                "sku": "DANCE",
+                "unit_id": "RZ2"
+              }
+            ],
+            "ok": true,
+            "refund_total": 100,
+            "remaining_refundable": [
+              "LZ1",
+              "LZ2",
+              "RZ1"
+            ],
+            "repeated": false,
+            "request_id": "troupe-late-return",
+            "sale_id": "troupe-sale-late",
+            "sale_total": 400
+          }
+        },
+        "pad_prestretch_own": {
+          "allocation_id": "troupe-pad-own",
+          "confirmed": false,
+          "count": 1,
+          "excluded": [],
+          "ok": true,
+          "pads_used": 1,
+          "pairs": [
+            {
+              "R": {
+                "pad": true,
+                "pad_id": "padown-PAD",
+                "physical_id": "padown-BR",
+                "raw_width": 3,
+                "stretch": false
+              },
+              "dancer_id": "bing"
+            }
+          ],
+          "repeated": false,
+          "run": "show-2",
+          "shop_mode": "PRESTRETCH",
+          "stretch_used": 0
+        },
+        "pad_prestretch_refuses_transfer": {
+          "allocation": {
+            "allocation_id": "troupe-pad-refused",
+            "confirmed": false,
+            "count": 0,
+            "excluded": [],
+            "ok": true,
+            "pads_used": 0,
+            "pairs": [],
+            "repeated": false,
+            "run": "show-2",
+            "shop_mode": "PRESTRETCH",
+            "stretch_used": 0
+          },
+          "error": "INVALID_SHOP_MODE"
+        },
+        "pad_transfer_replay": {
+          "allocation": {
+            "allocation_id": "troupe-pad-transfer",
+            "confirmed": false,
+            "count": 1,
+            "excluded": [],
+            "ok": true,
+            "pads_used": 1,
+            "pairs": [
+              {
+                "R": {
+                  "pad": true,
+                  "pad_id": "padborrow-PAD",
+                  "physical_id": "padborrow-BR",
+                  "raw_width": 3,
+                  "stretch": false
+                },
+                "dancer_id": "bing"
+              }
+            ],
+            "repeated": false,
+            "run": "show-2",
+            "shop_mode": "PERF_TRANSFER",
+            "stretch_used": 0
+          },
+          "pad_ledger": [
+            {
+              "content_json": "{\"from\":\"bing\",\"kind\":\"EXTERNAL\",\"pad_id\":\"padborrow-PAD\",\"receipt_id\":\"RET-EXT-1\",\"to\":\"troupe\",\"transfer_id\":\"troupe-pad-return\"}",
+              "created_at": "2026-11-25T06:22:11.675733+00:00",
+              "direction": "MOVE",
+              "holder": "troupe",
+              "pad_id": "padborrow-PAD",
+              "receipt_id": "RET-EXT-1",
+              "sequence": 1,
+              "transfer_id": "troupe-pad-return"
+            },
+            {
+              "content_json": "{\"from\":\"troupe\",\"kind\":\"ACQUIRE\",\"pad_id\":\"padborrow-PAD\",\"receipt_id\":\"EXT-RECEIPT-1\",\"to\":\"shop\",\"transfer_id\":\"troupe-acq\"}",
+              "created_at": "2026-11-25T06:22:11.675787+00:00",
+              "direction": "ACQUIRE",
+              "holder": "shop",
+              "pad_id": "padborrow-PAD",
+              "receipt_id": "EXT-RECEIPT-1",
+              "sequence": 2,
+              "transfer_id": "troupe-acq"
+            }
+          ]
+        },
+        "pair_after_clearing_occupancy_no_stretch": {
+          "allocation_id": "troupe-pair-4",
+          "confirmed": false,
+          "count": 1,
+          "excluded": [],
+          "ok": true,
+          "pads_used": 0,
+          "pairs": [
+            {
+              "L": {
+                "pad": false,
+                "physical_id": "LJ",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "R": {
+                "pad": false,
+                "physical_id": "R1",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "dancer_id": "jia"
+            }
+          ],
+          "repeated": false,
+          "run": "current-shift",
+          "shop_mode": "PRESTRETCH",
+          "stretch_used": 0
+        },
+        "pair_delivery": {
+          "allocation_id": "troupe-pair-1",
+          "bindings": [
+            {
+              "binding_id": "troupe-pair-1:jia:L",
+              "dancer_id": "jia",
+              "effective_width": 2,
+              "pad_id": null,
+              "physical_id": "LJ",
+              "run_until": "pair-run-end",
+              "side": "L",
+              "tied_laces": true,
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-pair-1:jia:R",
+              "dancer_id": "jia",
+              "effective_width": 2,
+              "pad_id": null,
+              "physical_id": "R1",
+              "run_until": "pair-run-end",
+              "side": "R",
+              "tied_laces": true,
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-pair-1:yi:L",
+              "dancer_id": "yi",
+              "effective_width": 2,
+              "pad_id": null,
+              "physical_id": "LY",
+              "run_until": "pair-run-end",
+              "side": "L",
+              "tied_laces": true,
+              "width_delivered": 2
+            },
+            {
+              "binding_id": "troupe-pair-1:yi:R",
+              "dancer_id": "yi",
+              "effective_width": 3,
+              "pad_id": null,
+              "physical_id": "R2",
+              "run_until": "pair-run-end",
+              "side": "R",
+              "tied_laces": true,
+              "width_delivered": 3
+            }
+          ],
+          "ok": true,
+          "pairs_delivered": 2,
+          "shop_mode": "PRESTRETCH"
+        },
+        "pair_r2_cannot_stretch": {
+          "allocation_id": "troupe-pair-2",
+          "confirmed": false,
+          "count": 1,
+          "excluded": [],
+          "ok": true,
+          "pads_used": 0,
+          "pairs": [
+            {
+              "L": {
+                "pad": false,
+                "physical_id": "LJ",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "R": {
+                "pad": false,
+                "physical_id": "R1",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "dancer_id": "jia"
+            }
+          ],
+          "repeated": false,
+          "run": "pair-run-2",
+          "shop_mode": "PRESTRETCH",
+          "stretch_used": 0
+        },
+        "pair_r2_occupied_by_prior_shift": {
+          "allocation_id": "troupe-pair-3",
+          "confirmed": false,
+          "count": 1,
+          "excluded": [
+            {
+              "physical_id": "R2",
+              "reason": "occupied by another run"
+            }
+          ],
+          "ok": true,
+          "pads_used": 0,
+          "pairs": [
+            {
+              "L": {
+                "pad": false,
+                "physical_id": "LJ",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "R": {
+                "pad": false,
+                "physical_id": "R1",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "dancer_id": "jia"
+            }
+          ],
+          "repeated": false,
+          "run": "current-shift",
+          "shop_mode": "PRESTRETCH",
+          "stretch_used": 0
+        },
+        "pair_with_stretch": {
+          "allocation_id": "troupe-pair-1",
+          "confirmed": false,
+          "count": 2,
+          "excluded": [],
+          "ok": true,
+          "pads_used": 0,
+          "pairs": [
+            {
+              "L": {
+                "pad": false,
+                "physical_id": "LJ",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "R": {
+                "pad": false,
+                "physical_id": "R1",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "dancer_id": "jia"
+            },
+            {
+              "L": {
+                "pad": false,
+                "physical_id": "LY",
+                "raw_width": 2,
+                "stretch": false
+              },
+              "R": {
+                "pad": false,
+                "physical_id": "R2",
+                "raw_width": 3,
+                "stretch": true
+              },
+              "dancer_id": "yi"
+            }
+          ],
+          "repeated": false,
+          "run": "pair-run",
+          "shop_mode": "PRESTRETCH",
+          "stretch_used": 1
+        }
+      }
+    },
     "two_level_tie_break": {
       "independent": [
         150,
@@ -3185,8 +5278,8 @@
     }
   },
   "summary": {
-    "checks": 19,
+    "checks": 38,
     "failed": 0,
-    "passed": 19
+    "passed": 38
   }
 }

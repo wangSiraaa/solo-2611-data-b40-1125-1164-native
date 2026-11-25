@@ -21,6 +21,35 @@ Supported ops::
     inventory          skus?
     audit_sales
     audit_inventory
+    set_shop_mode      mode
+    register_physical  physical_id, side, width, length?, stretch_to?, directions?, origin?, sale_id?, unit_id?, fitter?
+    recover_from_sale  physical_id, side, sale_id, unit_id, width, length?, stretch_to?, directions?, fitter?
+    get_physical       physical_id
+    stretch            physical_id, to_width, fitter?
+    update_fitting     physical_id, stretch_to? | directions? | length?
+    consign            physical_id, dancer_id, receipt_id
+    revoke_consignment physical_id
+    register_dancer    dancer_id, name?, left?, right?, run?
+    get_dancer         dancer_id
+    publish_fitting_slip  slip_id, physical_id
+    retract_fitting_slip  slip_id
+    get_fitting_slip   slip_id
+    register_pad       pad_id, width_step?, holder?
+    get_pad            pad_id
+    record_pad_receipt transfer_id, pad_id, from_holder, to_holder, receipt_id
+    acquire_borrowable_pad  transfer_id, pad_id, receipt_id
+    pad_ledger         pad_id?
+    assign_occupancy   physical_id, run_id
+    release_occupancy  physical_id, run_id
+    create_appointment appointment_id, needs, run?, stretch_budget?
+    allocate           allocation_id, needs, run?, stretch_budget?, use_pads?, require_slip?
+    get_allocation     allocation_id
+    confirm_delivery   allocation_id, run_until?, tied_laces?
+    return_delivery    binding_id, on_time?, receipt_id?
+    handover_return    show_id, on_time?, receipt_id?
+    list_bindings      active_only?
+    confirm_return     confirmation_id, return_request_id, sale_id
+    cabinet_view
 
 Any step may set ``"expect_error": <code>`` (string or list) to assert that the
 operation is rejected with that error code; the transcript then records a
@@ -144,6 +173,128 @@ def _execute(service, step: Mapping[str, Any], env: Mapping[str, Any]) -> Any:
         return service.audit_sales()
     if op == "audit_inventory":
         return service.audit_inventory()
+    # troupe fitting / cabinet / paired delivery ---------------------------
+    if op == "set_shop_mode":
+        return service.set_shop_mode(_require(step, "mode", op))
+    if op == "register_physical":
+        return service.register_physical(
+            _require(step, "physical_id", op),
+            _require(step, "side", op),
+            width=_require(step, "width", op),
+            length=step.get("length"),
+            stretch_to=step.get("stretch_to"),
+            directions=step.get("directions"),
+            origin=step.get("origin", "STOCK"),
+            sale_id=step.get("sale_id"),
+            unit_id=step.get("unit_id"),
+            fitter=step.get("fitter"),
+        )
+    if op == "recover_from_sale":
+        return service.recover_from_sale(
+            _require(step, "physical_id", op),
+            _require(step, "side", op),
+            _require(step, "sale_id", op),
+            _require(step, "unit_id", op),
+            width=_require(step, "width", op),
+            length=step.get("length"),
+            stretch_to=step.get("stretch_to"),
+            directions=step.get("directions"),
+            fitter=step.get("fitter"),
+        )
+    if op == "get_physical":
+        return service.get_physical(_require(step, "physical_id", op))
+    if op == "stretch":
+        return service.stretch(_require(step, "physical_id", op), _require(step, "to_width", op), fitter=step.get("fitter"))
+    if op == "update_fitting":
+        kwargs: Dict[str, Any] = {}
+        for key in ("stretch_to", "directions", "length"):
+            if key in step:
+                kwargs[key] = step[key]
+        return service.update_fitting(_require(step, "physical_id", op), **kwargs)
+    if op == "consign":
+        return service.consign(_require(step, "physical_id", op), _require(step, "dancer_id", op), _require(step, "receipt_id", op))
+    if op == "revoke_consignment":
+        return service.revoke_consignment(_require(step, "physical_id", op))
+    if op == "register_dancer":
+        return service.register_dancer(
+            _require(step, "dancer_id", op),
+            name=step.get("name"),
+            left=step.get("left"),
+            right=step.get("right"),
+            run=step.get("run"),
+        )
+    if op == "get_dancer":
+        return service.get_dancer(_require(step, "dancer_id", op))
+    if op == "publish_fitting_slip":
+        return service.publish_fitting_slip(_require(step, "slip_id", op), _require(step, "physical_id", op))
+    if op == "retract_fitting_slip":
+        return service.retract_fitting_slip(_require(step, "slip_id", op))
+    if op == "get_fitting_slip":
+        return service.get_fitting_slip(_require(step, "slip_id", op))
+    if op == "register_pad":
+        return service.register_pad(_require(step, "pad_id", op), width_step=step.get("width_step", 1), holder=step.get("holder", "shop"))
+    if op == "get_pad":
+        return service.get_pad(_require(step, "pad_id", op))
+    if op == "record_pad_receipt":
+        return service.record_pad_receipt(
+            _require(step, "transfer_id", op),
+            _require(step, "pad_id", op),
+            _require(step, "from_holder", op),
+            _require(step, "to_holder", op),
+            _require(step, "receipt_id", op),
+        )
+    if op == "acquire_borrowable_pad":
+        return service.acquire_borrowable_pad(
+            _require(step, "transfer_id", op), _require(step, "pad_id", op), _require(step, "receipt_id", op)
+        )
+    if op == "pad_ledger":
+        return service.pad_ledger(step.get("pad_id"))
+    if op == "assign_occupancy":
+        return service.assign_occupancy(_require(step, "physical_id", op), _require(step, "run_id", op))
+    if op == "release_occupancy":
+        return service.release_occupancy(_require(step, "physical_id", op), _require(step, "run_id", op))
+    if op == "create_appointment":
+        return service.create_appointment(
+            _require(step, "appointment_id", op),
+            _require(step, "needs", op),
+            run=step.get("run"),
+            stretch_budget=step.get("stretch_budget", 0),
+        )
+    if op == "allocate":
+        return service.allocate(
+            _require(step, "allocation_id", op),
+            _require(step, "needs", op),
+            run=step.get("run"),
+            stretch_budget=step.get("stretch_budget", 0),
+            use_pads=step.get("use_pads", True),
+            require_slip=step.get("require_slip", True),
+        )
+    if op == "get_allocation":
+        return service.get_allocation(_require(step, "allocation_id", op))
+    if op == "confirm_delivery":
+        return service.confirm_delivery(
+            _require(step, "allocation_id", op),
+            run_until=step.get("run_until", "run-end"),
+            tied_laces=step.get("tied_laces", True),
+        )
+    if op == "return_delivery":
+        return service.return_delivery(
+            _require(step, "binding_id", op), on_time=step.get("on_time", True), receipt_id=step.get("receipt_id")
+        )
+    if op == "handover_return":
+        return service.handover_return(
+            _require(step, "show_id", op), on_time=step.get("on_time", True), receipt_id=step.get("receipt_id")
+        )
+    if op == "list_bindings":
+        return service.list_bindings(active_only=step.get("active_only", False))
+    if op == "confirm_return":
+        return service.confirm_return(
+            _require(step, "confirmation_id", op),
+            _require(step, "return_request_id", op),
+            _require(step, "sale_id", op),
+        )
+    if op == "cabinet_view":
+        return service.cabinet_view()
     raise PlanError(f"unknown op {op!r}", step_index=-1, step=step, transcript=[])
 
 

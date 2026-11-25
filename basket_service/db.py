@@ -186,3 +186,145 @@ class Database:
             );
             """
         )
+        self._init_troupe_schema(conn)
+
+    def _init_troupe_schema(self, conn: sqlite3.Connection) -> None:
+        conn.executescript(TROUPE_SCHEMA)
+
+
+# ---------------------------------------------------------------------------
+# Troupe fitting / cabinet / paired-delivery schema
+# ---------------------------------------------------------------------------
+#
+# Every physical shoe (a real left or right object with its own fitting slip) is
+# recovered from a real sale unit (the original order's unit_id and stored paid
+# amount) or registered as store stock.  A shoe may enter the cabinet only when
+# a named dancer has deposited it and signed troupe-adjustment consent; a
+# returned origin unit or a revoked consent makes it unusable for *new*
+# allocation.  The cabinet consumes released fitting slips, resolves competing
+# claims and delivers whole pairs, binding each delivered shoe to one dancer for
+# the run of performances.  Pad custody (shop / troupe / dancer / in a shoe) is
+# tracked so the two shop modes can be contrasted.
+
+TROUPE_SCHEMA = """
+CREATE TABLE IF NOT EXISTS phys_shoes (
+    physical_id TEXT PRIMARY KEY,
+    side TEXT NOT NULL CHECK (side IN ('L', 'R')),
+    length INTEGER,
+    width INTEGER NOT NULL,
+    stretch_to INTEGER NOT NULL,
+    directions_json TEXT NOT NULL,
+    origin TEXT NOT NULL,
+    sale_id TEXT,
+    unit_id TEXT,
+    paid INTEGER,
+    usable INTEGER NOT NULL DEFAULT 1,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS phys_measurements (
+    seq INTEGER PRIMARY KEY AUTOINCREMENT,
+    physical_id TEXT NOT NULL,
+    width INTEGER NOT NULL,
+    stretch_to INTEGER NOT NULL,
+    fitter TEXT,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS phys_consignments (
+    physical_id TEXT PRIMARY KEY,
+    dancer_id TEXT NOT NULL,
+    consent_receipt TEXT NOT NULL,
+    consented INTEGER NOT NULL DEFAULT 1,
+    revoked INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS troupe_dancers (
+    dancer_id TEXT PRIMARY KEY,
+    content_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS fitting_slips (
+    slip_id TEXT PRIMARY KEY,
+    physical_id TEXT NOT NULL UNIQUE,
+    content_json TEXT NOT NULL,
+    released INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS appointments (
+    appointment_id TEXT PRIMARY KEY,
+    content_json TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cabinet_allocations (
+    allocation_id TEXT PRIMARY KEY,
+    content_json TEXT NOT NULL,
+    result_json TEXT NOT NULL,
+    confirmed INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pads (
+    pad_id TEXT PRIMARY KEY,
+    width_step INTEGER NOT NULL,
+    holder TEXT NOT NULL,
+    physical_id TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pad_transfers (
+    transfer_id TEXT PRIMARY KEY,
+    pad_id TEXT NOT NULL,
+    direction TEXT NOT NULL CHECK (direction IN ('ISSUE', 'RETURN', 'ACQUIRE', 'MOVE')),
+    holder TEXT NOT NULL,
+    receipt_id TEXT NOT NULL,
+    sequence INTEGER NOT NULL,
+    content_json TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS delivery_bindings (
+    binding_id TEXT PRIMARY KEY,
+    physical_id TEXT NOT NULL,
+    dancer_id TEXT NOT NULL,
+    pair_id TEXT NOT NULL,
+    run_id TEXT,
+    run_until TEXT NOT NULL,
+    width_delivered INTEGER NOT NULL,
+    pad_id TEXT,
+    tied_laces INTEGER NOT NULL DEFAULT 1,
+    released INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS occupancies (
+    physical_id TEXT NOT NULL,
+    run_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (physical_id, run_id)
+);
+
+CREATE TABLE IF NOT EXISTS return_confirmations (
+    confirmation_id TEXT PRIMARY KEY,
+    return_request_id TEXT NOT NULL,
+    sale_id TEXT NOT NULL,
+    content_json TEXT NOT NULL,
+    result_json TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS shop_config (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);
+"""

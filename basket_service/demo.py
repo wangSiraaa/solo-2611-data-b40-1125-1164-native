@@ -49,6 +49,286 @@ def _case_material() -> Dict[str, Any]:
     return {"basket": basket, "before": before, "added": added, "return_request": case["return_request"]}
 
 
+def _run_troupe_scenarios(svc) -> Dict[str, Any]:
+    """Drive the brief's fitting / cabinet / delivery narrative.
+
+    Most scenarios run on their own in-memory service so physical shoes from one
+    scenario never leak into another.  The final scenario runs on the shared
+    ``svc`` so the database-reopen check can assert troupe persistence.  Every
+    quoted pair count is also cross-checked against the independent
+    ``max_pairs_bruteforce`` reference, never against the planner's own output.
+    """
+
+    from .reference import max_pairs_bruteforce
+
+    out: Dict[str, Any] = {"scenarios": {}, "checks": []}
+    checks = out["checks"]
+
+    def add_check(name, ok, expected, actual, **extra):
+        checks.append({"check": name, "ok": bool(ok), "expected": expected, "actual": actual, **extra})
+
+    products = [{"sku": "DANCE", "price": 100}]
+
+    def new_sale(service, prefix, unit_ids):
+        snap = service.publish_snapshot(products, [], snapshot_id=f"troupe-snap-{prefix}")
+        basket = [{"unit_id": u, "sku": "DANCE", "price": 100} for u in unit_ids]
+        quote = service.quote(basket, [], f"troupe-q-{prefix}", snap)
+        return service.register_sale(f"troupe-sale-{prefix}", quote=quote)
+
+    def seed(service, physical_id, side, *, width, stretch_to, length=5, sale, origin="owner"):
+        service.recover_from_sale(physical_id, side, sale, physical_id, width=width, length=length, stretch_to=stretch_to)
+        service.consign(physical_id, origin, f"consent-{physical_id}")
+        service.publish_fitting_slip(f"troupe-slip-{physical_id}", physical_id)
+
+    def shoes_view(service, ids):
+        return [
+            {
+                "physical_id": p["physical_id"],
+                "side": p["side"],
+                "width": p["width"],
+                "stretch_to": p["stretch_to"],
+                "directions": p["directions"],
+                "length": p["length"],
+                "pad_step": 1,
+            }
+            for p in service.list_physicals()
+            if p["physical_id"] in ids
+        ]
+
+    # -- Pair scenario: 甲乙 lefts are dedicated; right feet suit widths 2 & 3.
+    pair = open_service(":memory:")
+    new_sale(pair, "pair", ["LJ", "LY", "R1", "R2"])
+    seed(pair, "LJ", "L", width=2, stretch_to=2, sale="troupe-sale-pair")
+    seed(pair, "LY", "L", width=2, stretch_to=2, sale="troupe-sale-pair")
+    seed(pair, "R1", "R", width=2, stretch_to=2, sale="troupe-sale-pair")
+    seed(pair, "R2", "R", width=2, stretch_to=3, sale="troupe-sale-pair")
+    pair_ids = {"LJ", "LY", "R1", "R2"}
+    needs = [
+        {"dancer_id": "jia", "left": {"width": 2, "length": 5}, "right": {"width": 2, "length": 5}},
+        {"dancer_id": "yi", "left": {"width": 2, "length": 5}, "right": {"width": 3, "length": 5}},
+    ]
+
+    with_stretch = pair.allocate("troupe-pair-1", needs, run="pair-run", stretch_budget=1)
+    independent_with = max_pairs_bruteforce(shoes_view(pair, pair_ids), needs, stretch_budget=1)
+    out["scenarios"]["pair_with_stretch"] = with_stretch
+    add_check("troupe.pair.one_stretch_two_pairs", with_stretch["count"] == 2 == independent_with, 2, with_stretch["count"])
+
+    # "只把 R2 的试楦结果改为不能再撑" -> only one pair.
+    pair.update_fitting("R2", stretch_to=2)
+    pair.publish_fitting_slip("troupe-slip-R2", "R2")
+    r2_blocked = pair.allocate("troupe-pair-2", needs, run="pair-run-2", stretch_budget=1)
+    independent_blocked = max_pairs_bruteforce(shoes_view(pair, pair_ids), needs, stretch_budget=1)
+    out["scenarios"]["pair_r2_cannot_stretch"] = r2_blocked
+    add_check("troupe.pair.r2_cannot_stretch_one_pair", r2_blocked["count"] == 1 == independent_blocked, 1, r2_blocked["count"])
+
+    # Restore the fitting, then hand R2's run occupancy to the prior shift.
+    pair.update_fitting("R2", stretch_to=3)
+    pair.publish_fitting_slip("troupe-slip-R2", "R2")
+    pair.assign_occupancy("R2", "prior-shift")
+    occupied = pair.allocate("troupe-pair-3", needs, run="current-shift", stretch_budget=1)
+    out["scenarios"]["pair_r2_occupied_by_prior_shift"] = occupied
+    add_check("troupe.pair.occupancy_handoff_one_pair", occupied["count"] == 1, 1, occupied["count"])
+    add_check(
+        "troupe.pair.occupancy_excludes_r2",
+        {"physical_id": "R2", "reason": "occupied by another run"} in occupied["excluded"],
+        True,
+        occupied["excluded"],
+    )
+    # Bookkeeping occupancy is not a width: clear it, R2 is still physically width 2.
+    pair.release_occupancy("R2", "prior-shift")
+    cleared = pair.allocate("troupe-pair-4", needs, run="current-shift", stretch_budget=0)
+    r2_width_before = pair.get_physical("R2")["width"]
+    out["scenarios"]["pair_after_clearing_occupancy_no_stretch"] = cleared
+    add_check(
+        "troupe.pair.clearing_occupancy_does_not_change_width",
+        r2_width_before == 2 and cleared["count"] == 1,
+        2,
+        r2_width_before,
+        pair_count=cleared["count"],
+    )
+    # Stretch R2 to 3 for real; that width is irreversible.
+    pair.stretch("R2", 3)
+    try:
+        pair.stretch("R2", 2)
+        shrink_blocked = False
+    except BasketError as exc:
+        shrink_blocked = exc.code == "WIDTH_IRREVERSIBLE"
+    add_check("troupe.width.irreversible", pair.get_physical("R2")["width"] == 3 and shrink_blocked, True, shrink_blocked)
+    # "不能靠清空账面占用把宽3恢复成宽2": clearing occupancy again still won't shrink it.
+    pair.assign_occupancy("R2", "x")
+    pair.release_occupancy("R2", "x")
+    try:
+        pair.stretch("R2", 2)
+        still_blocked = False
+    except BasketError as exc:
+        still_blocked = exc.code == "WIDTH_IRREVERSIBLE"
+    add_check("troupe.width.occupancy_cannot_unstretch", still_blocked and pair.get_physical("R2")["width"] == 3, True, still_blocked)
+
+    # Deliver the two pairs; binding + laces persist; held shoes are not re-promised.
+    delivered = pair.confirm_delivery("troupe-pair-1", run_until="pair-run-end")
+    out["scenarios"]["pair_delivery"] = delivered
+    add_check("troupe.delivery.two_pairs", delivered["pairs_delivered"] == 2, 2, delivered["pairs_delivered"])
+    add_check("troupe.delivery.laces_tied", all(b["tied_laces"] for b in delivered["bindings"]), True, [b["tied_laces"] for b in delivered["bindings"]])
+    realloc = pair.allocate("troupe-pair-realloc", needs, run="pair-run", stretch_budget=1)
+    add_check("troupe.binding.held_shoe_not_reallocated", realloc["count"] == 0, 0, realloc["count"])
+    pair.return_delivery(delivered["bindings"][0]["binding_id"], on_time=True, receipt_id="pair-return-1")
+    del pair
+
+    # -- Three-dancer pad scenario (甲乙丙) on its own service.
+    show2_needs = [
+        {"dancer_id": "yi", "left": None, "right": {"width": 2, "length": 5}},
+        {"dancer_id": "bing", "left": None, "right": {"width": 2, "length": 5}},
+    ]
+
+    def seed_pad_world(prefix, mode, pad_holder):
+        world = open_service(":memory:")
+        world.set_shop_mode(mode)
+        ids = {"JL": f"{prefix}-JL", "YL": f"{prefix}-YL", "BL": f"{prefix}-BL", "R": f"{prefix}-R", "BR": f"{prefix}-BR", "PAD": f"{prefix}-PAD"}
+        new_sale(world, prefix, list(ids.values())[:5])
+        seed(world, ids["JL"], "L", width=2, stretch_to=2, sale=f"troupe-sale-{prefix}")
+        seed(world, ids["YL"], "L", width=2, stretch_to=2, sale=f"troupe-sale-{prefix}")
+        seed(world, ids["BL"], "L", width=2, stretch_to=2, sale=f"troupe-sale-{prefix}")
+        seed(world, ids["R"], "R", width=2, stretch_to=3, sale=f"troupe-sale-{prefix}")
+        world.stretch(ids["R"], 3)
+        seed(world, ids["BR"], "R", width=3, stretch_to=3, sale=f"troupe-sale-{prefix}")
+        world.register_pad(ids["PAD"], holder=pad_holder)
+        return world, ids
+
+    # PRESTRETCH counter holds its own pad.
+    world, ids = seed_pad_world("padown", "PRESTRETCH", "shop")
+    own = world.allocate("troupe-pad-own", show2_needs, run="show-2", stretch_budget=1)
+    out["scenarios"]["pad_prestretch_own"] = own
+    pad_positions = [p["dancer_id"] for p in own["pairs"] if p.get("R", {}).get("pad_id")]
+    add_check("troupe.pad.prestretch_own_one_pair", own["count"] == 1, 1, own["count"])
+    add_check("troupe.pad.single_pad_used_once", len(pad_positions) == 1, 1, pad_positions)
+    del world
+
+    # 丙 already borrowed the pad from the troupe; counter receives the receipt.
+    world, ids = seed_pad_world("padborrow", "PERF_TRANSFER", "bing")
+    try:
+        world.acquire_borrowable_pad("troupe-acq-blocked", ids["PAD"], "EXT-RECEIPT-0")
+        blocked = None
+    except BasketError as exc:
+        blocked = exc.code
+    add_check("troupe.pad.cannot_acquire_while_borrowed", blocked == "INVALID_RECEIPT", "INVALID_RECEIPT", blocked)
+    # Replay: 丙 returns it to the troupe before 乙 signs.
+    world.record_pad_receipt("troupe-pad-return", ids["PAD"], "bing", "troupe", "RET-EXT-1")
+    world.acquire_borrowable_pad("troupe-acq", ids["PAD"], "EXT-RECEIPT-1")
+    ledger = world.pad_ledger(ids["PAD"])
+    transfer_ok = world.allocate("troupe-pad-transfer", show2_needs, run="show-2", stretch_budget=1)
+    out["scenarios"]["pad_transfer_replay"] = {"pad_ledger": ledger, "allocation": transfer_ok}
+    add_check(
+        "troupe.pad.return_then_acquire_enables_one_pair",
+        transfer_ok["count"] == 1
+        and [t["direction"] for t in ledger][-2:] == ["MOVE", "ACQUIRE"]
+        and ledger[-1]["receipt_id"] == "EXT-RECEIPT-1",
+        1,
+        transfer_ok["count"],
+    )
+    del world
+
+    # PRESTRETCH counter refuses the troupe pad business.
+    world, ids = seed_pad_world("padrefuse", "PRESTRETCH", "troupe")
+    try:
+        world.acquire_borrowable_pad("troupe-acq-refused", ids["PAD"], "EXT")
+        refused = None
+    except BasketError as exc:
+        refused = exc.code
+    refused_alloc = world.allocate("troupe-pad-refused", show2_needs, run="show-2", stretch_budget=1)
+    out["scenarios"]["pad_prestretch_refuses_transfer"] = {"error": refused, "allocation": refused_alloc}
+    add_check("troupe.pad.prestretch_refuses_transfer", refused == "INVALID_SHOP_MODE" and refused_alloc["count"] == 0, "INVALID_SHOP_MODE", refused)
+    del world
+
+    # -- 甲's first show: sign out the pre-stretched width-3 right and return it
+    #    on time; the physical width remains 3 forever after.
+    jia = open_service(":memory:")
+    new_sale(jia, "jia", ["JIA-R"])
+    seed(jia, "JIA-R", "R", width=2, stretch_to=3, sale="troupe-sale-jia")
+    jia.stretch("JIA-R", 3)
+    jia_alloc = jia.allocate("troupe-jia-r", [{"dancer_id": "jia", "left": None, "right": {"width": 3, "length": 5}}], run="show-1", stretch_budget=0)
+    jia_delivery = jia.confirm_delivery("troupe-jia-r", run_until="show-1-end")
+    jia_return = jia.return_delivery(jia_delivery["bindings"][0]["binding_id"], on_time=True, receipt_id="JIA-RETURN")
+    out["scenarios"]["jia_first_show"] = {"allocation": jia_alloc, "delivery": jia_delivery, "return": jia_return}
+    add_check(
+        "troupe.jia.width3_signed_and_returned_kept",
+        jia_alloc["count"] == 1 and jia_return["on_time"] and jia.get_physical("JIA-R")["width"] == 3,
+        True,
+        {"count": jia_alloc["count"], "width": jia.get_physical("JIA-R")["width"]},
+    )
+    del jia
+
+    # -- Late after-sales return of an original order, walked through the real
+    #    sale -> fitting -> confirmed delivery -> after-sales entries, with a
+    #    small (<3 dancer) order reopened.
+    late = open_service(":memory:")
+    late.set_shop_mode("PRESTRETCH")
+    late_sale = new_sale(late, "late", ["LZ1", "LZ2", "RZ1", "RZ2"])
+    seed(late, "LZ1", "L", width=2, stretch_to=2, sale="troupe-sale-late")
+    seed(late, "LZ2", "L", width=2, stretch_to=2, sale="troupe-sale-late")
+    seed(late, "RZ1", "R", width=2, stretch_to=2, sale="troupe-sale-late")
+    seed(late, "RZ2", "R", width=2, stretch_to=3, sale="troupe-sale-late")
+    late_needs = [
+        {"dancer_id": "z1", "left": {"width": 2, "length": 5}, "right": {"width": 2, "length": 5}},
+        {"dancer_id": "z2", "left": {"width": 2, "length": 5}, "right": {"width": 3, "length": 5}},
+    ]
+    before_late = late.allocate("troupe-late-before", late_needs, run="late-run", stretch_budget=1)
+    late_delivery = late.confirm_delivery("troupe-late-before", run_until="late-run-end")
+    # The troupe reopens the original order late and returns unit RZ2 (乙's shoe).
+    ret_late = late.return_units("troupe-late-return", "troupe-sale-late", ["RZ2"], {"RZ2": "RESTOCK"})
+    conf_late = late.confirm_return("troupe-late-conf", "troupe-late-return", "troupe-sale-late")
+    # A fresh shift after the return cannot source that shoe for a new dancer.
+    after_late = late.allocate(
+        "troupe-late-after",
+        [{"dancer_id": "z3", "left": None, "right": {"width": 3, "length": 5}}],
+        run="late-run-2",
+        stretch_budget=0,
+    )
+    out["scenarios"]["late_after_sales_return"] = {
+        "ledger_paid": {u["unit_id"]: u["paid"] for u in late_sale["units"]},
+        "before": before_late,
+        "delivery": late_delivery,
+        "ledger_return": ret_late,
+        "confirmation": conf_late,
+        "after": after_late,
+    }
+    add_check(
+        "troupe.aftersales.late_return_stops_new_issuance",
+        before_late["count"] == 2
+        and late_delivery["pairs_delivered"] == 2
+        and after_late["count"] == 0
+        and conf_late["affected_physicals"] == [{"physical_id": "RZ2", "unit_id": "RZ2"}]
+        and ret_late["refund_total"] == next(u["paid"] for u in late_sale["units"] if u["unit_id"] == "RZ2"),
+        {"before": 2, "delivered": 2, "after": 0},
+        {"before": before_late["count"], "delivered": late_delivery["pairs_delivered"], "after": after_late["count"]},
+    )
+    del late
+
+    # -- Integrated scenario on the shared session DB (persistence / reopen).
+    #    Three dancers, two deliverable complete pairs from the shared cabinet.
+    new_sale(svc, "integrated", ["ILJ", "ILY", "IR1", "IR2"])
+    seed(svc, "ILJ", "L", width=2, stretch_to=2, sale="troupe-sale-integrated")
+    seed(svc, "ILY", "L", width=2, stretch_to=2, sale="troupe-sale-integrated")
+    seed(svc, "IR1", "R", width=2, stretch_to=2, sale="troupe-sale-integrated")
+    seed(svc, "IR2", "R", width=2, stretch_to=3, sale="troupe-sale-integrated")
+    svc.set_shop_mode("PRESTRETCH")
+    integ_needs = [
+        {"dancer_id": "jia", "left": {"width": 2, "length": 5}, "right": {"width": 2, "length": 5}},
+        {"dancer_id": "yi", "left": {"width": 2, "length": 5}, "right": {"width": 3, "length": 5}},
+    ]
+    integ = svc.allocate("troupe-integrated", integ_needs, run="integrated-run", stretch_budget=1)
+    integ_delivery = svc.confirm_delivery("troupe-integrated", run_until="integrated-run-end")
+    out["scenarios"]["integrated_persistence"] = {"allocation": integ, "delivery": integ_delivery}
+    add_check(
+        "troupe.integrated.two_pairs_delivered",
+        integ["count"] == 2 and integ_delivery["pairs_delivered"] == 2,
+        2,
+        integ_delivery["pairs_delivered"],
+    )
+
+    out["scenarios"]["final_cabinet"] = svc.cabinet_view()
+    return out
+
+
 def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
     for suffix in ("", "-wal", "-shm"):
         candidate = Path(db_path + suffix)
@@ -398,6 +678,14 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
     })
 
     # ------------------------------------------------------------------
+    # 4b. Troupe fitting, cabinet and paired delivery.
+    # ------------------------------------------------------------------
+    troupe = _run_troupe_scenarios(svc)
+    results["scenarios"]["troupe"] = troupe
+    for check in troupe["checks"]:
+        results["checks"].append(check)
+
+    # ------------------------------------------------------------------
     # 5. Reopen the database and keep all state.
     # ------------------------------------------------------------------
     results["scenarios"]["before_reopen"] = {
@@ -405,6 +693,7 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
         "sale_ten": svc.get_sale("S-ten"),
         "audit_sales": svc.audit_sales(),
         "audit_inventory": svc.audit_inventory(),
+        "cabinet": svc.cabinet_view(),
     }
     del svc
     reopened = open_service(db_path)
@@ -415,6 +704,7 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
         "inventory": reopened.inventory(),
         "audit_sales": reopened.audit_sales(),
         "audit_inventory": reopened.audit_inventory(),
+        "cabinet": reopened.cabinet_view(),
     }
     results["checks"].append({
         "check": "reopen_preserves_quote_sale_return_inventory",
@@ -433,6 +723,21 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
             and reopened.inventory() == results["scenarios"]["before_reopen"]["inventory"]
         )
         else "differs",
+    })
+    before_cabinet = results["scenarios"]["before_reopen"]["cabinet"]
+    after_cabinet = results["scenarios"]["after_reopen"]["cabinet"]
+    # Compare the durable facts (ignore ordering-stable dict identity of full blobs).
+    reopen_bindings_ok = [(b["binding_id"], b["width_delivered"], b["tied_laces"], b["pad_id"]) for b in before_cabinet["bindings"]] == [
+        (b["binding_id"], b["width_delivered"], b["tied_laces"], b["pad_id"]) for b in after_cabinet["bindings"]
+    ]
+    reopen_widths_ok = [(p["physical_id"], p["width"]) for p in before_cabinet["physicals"]] == [
+        (p["physical_id"], p["width"]) for p in after_cabinet["physicals"]
+    ]
+    results["checks"].append({
+        "check": "reopen_preserves_cabinet_widths_laces_bindings_pads",
+        "ok": reopen_bindings_ok and reopen_widths_ok,
+        "expected": True,
+        "actual": reopen_bindings_ok and reopen_widths_ok,
     })
 
     # ------------------------------------------------------------------
@@ -526,6 +831,29 @@ def run_demo(db_path: str, out_path: str, plan_path: str) -> Dict[str, Any]:
             {"op": "return", "request_id": "r1", "sale_id": "S1", "unit_ids": ["b"], "grade": {"b": "RESTOCK"}},
             {"op": "return", "request_id": "ret-added-b", "sale_id": "S2", "unit_ids": ["b"], "grade": {"b": "SCRAP"}},
             {"op": "register_sale", "sale_id": "S1", "quote": "$q_added", "expect_error": "SALE_CONFLICT"},
+            # --- troupe cabinet (self-contained order + two pairs) ---------
+            {"op": "set_shop_mode", "mode": "PRESTRETCH"},
+            {"op": "publish_snapshot", "products": [{"sku": "DANCE", "price": 100}], "coupons": [], "snapshot_id": "troupe-plan-snap"},
+            {"name": "tq", "op": "quote", "basket": [{"unit_id": u, "sku": "DANCE", "price": 100} for u in ("tLJ", "tLY", "tR1", "tR2")], "coupons": [], "request_id": "troupe-plan-q", "snapshot_id": "troupe-plan-snap"},
+            {"op": "register_sale", "sale_id": "troupe-plan-sale", "quote_request_id": "troupe-plan-q"},
+            {"op": "recover_from_sale", "physical_id": "tLJ", "side": "L", "sale_id": "troupe-plan-sale", "unit_id": "tLJ", "width": 2, "length": 5, "stretch_to": 2},
+            {"op": "recover_from_sale", "physical_id": "tLY", "side": "L", "sale_id": "troupe-plan-sale", "unit_id": "tLY", "width": 2, "length": 5, "stretch_to": 2},
+            {"op": "recover_from_sale", "physical_id": "tR1", "side": "R", "sale_id": "troupe-plan-sale", "unit_id": "tR1", "width": 2, "length": 5, "stretch_to": 2},
+            {"op": "recover_from_sale", "physical_id": "tR2", "side": "R", "sale_id": "troupe-plan-sale", "unit_id": "tR2", "width": 2, "length": 5, "stretch_to": 3},
+            {"op": "consign", "physical_id": "tLJ", "dancer_id": "owner", "receipt_id": "c"},
+            {"op": "consign", "physical_id": "tLY", "dancer_id": "owner", "receipt_id": "c"},
+            {"op": "consign", "physical_id": "tR1", "dancer_id": "owner", "receipt_id": "c"},
+            {"op": "consign", "physical_id": "tR2", "dancer_id": "owner", "receipt_id": "c"},
+            {"op": "publish_fitting_slip", "slip_id": "t-slip-tLJ", "physical_id": "tLJ"},
+            {"op": "publish_fitting_slip", "slip_id": "t-slip-tLY", "physical_id": "tLY"},
+            {"op": "publish_fitting_slip", "slip_id": "t-slip-tR1", "physical_id": "tR1"},
+            {"op": "publish_fitting_slip", "slip_id": "t-slip-tR2", "physical_id": "tR2"},
+            {"name": "talloc", "op": "allocate", "allocation_id": "troupe-plan-alloc", "needs": [
+                {"dancer_id": "jia", "left": {"width": 2, "length": 5}, "right": {"width": 2, "length": 5}},
+                {"dancer_id": "yi", "left": {"width": 2, "length": 5}, "right": {"width": 3, "length": 5}},
+            ], "stretch_budget": 1},
+            {"op": "confirm_delivery", "allocation_id": "troupe-plan-alloc", "run_until": "run-end"},
+            {"op": "cabinet_view"},
         ],
     }
 

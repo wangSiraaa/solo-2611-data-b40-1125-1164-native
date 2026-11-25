@@ -159,6 +159,177 @@
       "op": "register_sale",
       "quote": "$q_added",
       "sale_id": "S1"
+    },
+    {
+      "mode": "PRESTRETCH",
+      "op": "set_shop_mode"
+    },
+    {
+      "coupons": [],
+      "op": "publish_snapshot",
+      "products": [
+        {
+          "price": 100,
+          "sku": "DANCE"
+        }
+      ],
+      "snapshot_id": "troupe-plan-snap"
+    },
+    {
+      "basket": [
+        {
+          "price": 100,
+          "sku": "DANCE",
+          "unit_id": "tLJ"
+        },
+        {
+          "price": 100,
+          "sku": "DANCE",
+          "unit_id": "tLY"
+        },
+        {
+          "price": 100,
+          "sku": "DANCE",
+          "unit_id": "tR1"
+        },
+        {
+          "price": 100,
+          "sku": "DANCE",
+          "unit_id": "tR2"
+        }
+      ],
+      "coupons": [],
+      "name": "tq",
+      "op": "quote",
+      "request_id": "troupe-plan-q",
+      "snapshot_id": "troupe-plan-snap"
+    },
+    {
+      "op": "register_sale",
+      "quote_request_id": "troupe-plan-q",
+      "sale_id": "troupe-plan-sale"
+    },
+    {
+      "length": 5,
+      "op": "recover_from_sale",
+      "physical_id": "tLJ",
+      "sale_id": "troupe-plan-sale",
+      "side": "L",
+      "stretch_to": 2,
+      "unit_id": "tLJ",
+      "width": 2
+    },
+    {
+      "length": 5,
+      "op": "recover_from_sale",
+      "physical_id": "tLY",
+      "sale_id": "troupe-plan-sale",
+      "side": "L",
+      "stretch_to": 2,
+      "unit_id": "tLY",
+      "width": 2
+    },
+    {
+      "length": 5,
+      "op": "recover_from_sale",
+      "physical_id": "tR1",
+      "sale_id": "troupe-plan-sale",
+      "side": "R",
+      "stretch_to": 2,
+      "unit_id": "tR1",
+      "width": 2
+    },
+    {
+      "length": 5,
+      "op": "recover_from_sale",
+      "physical_id": "tR2",
+      "sale_id": "troupe-plan-sale",
+      "side": "R",
+      "stretch_to": 3,
+      "unit_id": "tR2",
+      "width": 2
+    },
+    {
+      "dancer_id": "owner",
+      "op": "consign",
+      "physical_id": "tLJ",
+      "receipt_id": "c"
+    },
+    {
+      "dancer_id": "owner",
+      "op": "consign",
+      "physical_id": "tLY",
+      "receipt_id": "c"
+    },
+    {
+      "dancer_id": "owner",
+      "op": "consign",
+      "physical_id": "tR1",
+      "receipt_id": "c"
+    },
+    {
+      "dancer_id": "owner",
+      "op": "consign",
+      "physical_id": "tR2",
+      "receipt_id": "c"
+    },
+    {
+      "op": "publish_fitting_slip",
+      "physical_id": "tLJ",
+      "slip_id": "t-slip-tLJ"
+    },
+    {
+      "op": "publish_fitting_slip",
+      "physical_id": "tLY",
+      "slip_id": "t-slip-tLY"
+    },
+    {
+      "op": "publish_fitting_slip",
+      "physical_id": "tR1",
+      "slip_id": "t-slip-tR1"
+    },
+    {
+      "op": "publish_fitting_slip",
+      "physical_id": "tR2",
+      "slip_id": "t-slip-tR2"
+    },
+    {
+      "allocation_id": "troupe-plan-alloc",
+      "name": "talloc",
+      "needs": [
+        {
+          "dancer_id": "jia",
+          "left": {
+            "length": 5,
+            "width": 2
+          },
+          "right": {
+            "length": 5,
+            "width": 2
+          }
+        },
+        {
+          "dancer_id": "yi",
+          "left": {
+            "length": 5,
+            "width": 2
+          },
+          "right": {
+            "length": 5,
+            "width": 3
+          }
+        }
+      ],
+      "op": "allocate",
+      "stretch_budget": 1
+    },
+    {
+      "allocation_id": "troupe-plan-alloc",
+      "op": "confirm_delivery",
+      "run_until": "run-end"
+    },
+    {
+      "op": "cabinet_view"
     }
   ]
 }

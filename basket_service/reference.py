@@ -130,3 +130,81 @@ def expected_return(paid_by_unit: Mapping[str, int], unit_ids: Sequence[str]) ->
 
     per_unit = {unit_id: paid_by_unit[unit_id] for unit_id in unit_ids}
     return sum(per_unit.values()), per_unit
+
+
+def max_pairs_bruteforce(
+    shoes: Sequence[Mapping[str, Any]],
+    needs: Sequence[Mapping[str, Any]],
+    *,
+    pads_available: int = 0,
+    stretch_budget: int = 0,
+) -> int:
+    """Independent exhaustive maximum number of complete pairs.
+
+    Deliberately re-implements the feasibility rules instead of importing the
+    production planner.  A shoe fits a foot if the side matches, a pinned length
+    matches, and the foot's wanted width is reachable either directly (raw width
+    within ``[current, stretch_to]`` when stretch is allowed) or through the
+    single-step narrowing pad.  At most ``stretch_budget`` stretch operations and
+    at most ``pads_available`` padded positions may be used in total.
+    """
+
+    ordered_needs = list(needs)
+
+    def _widths(foot):
+        if "widths" in foot:
+            return set(foot["widths"])
+        return {foot["width"]}
+
+    def foot_feasible(shoe, foot):
+        if foot is None:
+            return [("none", 0, 0)]
+        if foot["length"] is not None:
+            if shoe["length"] is None or shoe["length"] != foot["length"]:
+                return []
+        current = shoe["width"]
+        can_stretch = "WIDTH" in shoe["directions"]
+        cap = max(shoe["stretch_to"] if can_stretch else current, current)
+        wanted = _widths(foot)
+        options = []
+        for raw in range(current, cap + 1):
+            stretch = 0 if raw == current else 1
+            if raw in wanted:
+                options.append((("raw", raw), stretch, 0))
+            if (raw - shoe.get("pad_step", 1)) in wanted:
+                options.append((("pad", raw), stretch, 1))
+        return options
+
+    best = 0
+
+    def dfs(index, used, pads, stretch, count):
+        nonlocal best
+        if index == len(ordered_needs):
+            best = max(best, count)
+            return
+        if count + (len(ordered_needs) - index) <= best:
+            return
+        need = ordered_needs[index]
+        left_shoes = [s for s in shoes if s["side"] == "L" and s["physical_id"] not in used]
+        right_shoes = [s for s in shoes if s["side"] == "R" and s["physical_id"] not in used]
+        left_opts = [(s, o) for s in left_shoes for o in foot_feasible(s, need["left"])] if need["left"] else [(None, ("none", 0, 0))]
+        right_opts = [(s, o) for s in right_shoes for o in foot_feasible(s, need["right"])] if need["right"] else [(None, ("none", 0, 0))]
+        for ls, lo in left_opts:
+            for rs, ro in right_opts:
+                if ls is not None and rs is not None and ls["physical_id"] == rs["physical_id"]:
+                    continue
+                new_pads = pads + lo[2] + ro[2]
+                new_stretch = stretch + lo[1] + ro[1]
+                if new_pads > pads_available or new_stretch > stretch_budget:
+                    continue
+                newly = set()
+                if ls is not None:
+                    newly.add(ls["physical_id"])
+                if rs is not None:
+                    newly.add(rs["physical_id"])
+                dfs(index + 1, used | newly, new_pads, new_stretch, count + 1)
+        dfs(index + 1, used, pads, stretch, count)
+
+    dfs(0, frozenset(), 0, 0, 0)
+    return best
+
